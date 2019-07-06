@@ -1,0 +1,21 @@
+[icon] {
+	height: 100%;
+}
+
+[icon~='fit-width'] {
+	width: 100%;
+	height: auto;
+}
+
+[icon~='fit-heigth'] {
+	height: 100%;
+	width: auto;
+}
+
+[icon~='blue'] {
+	filter: invert(65%) sepia(76%) saturate(5641%) hue-rotate(164deg) brightness(97%) contrast(101%);
+}
+
+[icon~='small'] {
+	height: 40px;
+}

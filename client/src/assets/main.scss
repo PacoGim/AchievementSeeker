@@ -1,0 +1,21 @@
+@import './styles/fonts.scss';
+@import './styles/icon.scss';
+@import './styles/atomics.scss';
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: 'Public Sans';
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@supports (font-variation-settings: normal) {
+	body {
+		font-family: 'Public Sans VF';
+	}
+}
