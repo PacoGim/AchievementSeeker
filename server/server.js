@@ -3,8 +3,11 @@ const Koa = require('koa')
 const app = new Koa()
 const http2 = require('http2')
 const fs = require('fs')
-const cors = require('koa-cors')
+const cors = require('@koa/cors')
 const path = require('path')
+
+const DB = require('./db')
+new DB('AchievementSeeker', 'Games').on('err', err => console.log(err))
 
 const port = process.env.PORT || 443
 

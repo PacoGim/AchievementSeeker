@@ -9,5 +9,9 @@
     "dev": "concurrently \"pnpm run server\" \"pnpm run client\" "
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^3.0.0",
+    "mongodb": "^3.2.7"
+  }
 }
