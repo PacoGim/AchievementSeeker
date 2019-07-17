@@ -1,5 +1,4 @@
 const db = require('../db').collections
-
 class Game {
 	constructor(name, steamID) {
 		this.name = name

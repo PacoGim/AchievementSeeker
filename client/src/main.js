@@ -2,7 +2,7 @@ import Vue from 'vue'
 import {plugin as VueFunctionAPI} from 'vue-function-api'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/store.js'
 import './registerServiceWorker'
 
 Vue.config.productionTip = false
