@@ -13,21 +13,62 @@ const router = new Router({
 			name: 'Home',
 			meta: {
 				routeName: 'Home',
-				fancyBGColor: 'linear-gradient(to bottom right, #0052d4, #4364f7, #6fb1fc)',
+				fancyBGColor: {
+					1: '#cb2d3e',
+					2: '#ef473a',
+				},
+				transform: {
+					1: 'skewY(2deg) translateY(-60px)',
+					2: 'skewY(-2deg) translateY(-60px)',
+				},
 			},
-			component: () => import(/* webpackChunkName: "" */ './views/home/Home.vue'),
+			component: () => import(/* webpackChunkName: "" */ './views/Home.vue'),
 		},
 		{
 			path: '/game/list',
 			name: 'Game List',
-			component: () => import(/* webpackChunkName: "GameList" */ '@/views/game/list/List.vue'),
+			meta: {
+				routeName: 'Game List',
+				fancyBGColor: {
+					1: '#4364f7',
+					2: '#6fb1fc',
+				},
+				transform: {
+					1: 'skewY(-2.5deg) translateY(-45px)',
+					2: 'skewY(1deg)',
+				},
+			},
+			component: () => import(/* webpackChunkName: "GameList" */ '@/views/game/GameList.vue'),
+		},
+		{
+			path: '/game/search',
+			name: 'Game Search',
+			meta: {
+				routeName: 'Search Game',
+				fancyBGColor: {
+					1: '#41295a',
+					2: '#2f0743',
+				},
+				transform: {
+					1: 'skewY(-5deg) translateY(-70px)',
+					2: 'skewY(20deg) translateY(-100px)',
+				},
+			},
+			component: () => import(/* webpackChunkName: "Search" */ '@/views/game/GameSearch.vue'),
 		},
 		{
 			path: '/game/:id',
 			name: 'Game',
 			meta: {
 				routeName: 'Loading Game...',
-				fancyBGColor: 'linear-gradient(to bottom right,  #ad5389, #3c1053)',
+				fancyBGColor: {
+					1: '#3a6186',
+					2: '#89253e',
+				},
+				transform: {
+					1: 'skewY(4deg) translateY(-70px)',
+					2: 'skewY(-2deg) translateY(-50px)',
+				},
 			},
 			component: () => import(/* webpackChunkName: "Game" */ '@/views/game/Game.vue'),
 		},
@@ -35,9 +76,13 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+	console.log(to)
 	store.set('currentRoute', to['meta']['routeName'])
 
-	document.documentElement.style.setProperty('--fancy-bg-color', to['meta']['fancyBGColor'])
+	document.documentElement.style.setProperty('--fancy-bg-color-1', to['meta']['fancyBGColor'][1])
+	document.documentElement.style.setProperty('--fancy-bg-color-2', to['meta']['fancyBGColor'][2])
+	document.documentElement.style.setProperty('--transform-1', to['meta']['transform'][1])
+	document.documentElement.style.setProperty('--transform-2', to['meta']['transform'][2])
 
 	next()
 })
