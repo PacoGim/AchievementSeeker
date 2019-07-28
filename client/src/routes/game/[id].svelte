@@ -1,9 +1,14 @@
 <script context="module">
   export async function preload({ params, query }) {
     const res = await this.fetch(`http://localhost:443/games/${params["id"]}`);
-    const data = await res.json();
 
-    return { game: data };
+    let data = await res.json();
+
+    if (res.status === 404) {
+      return this.redirect(404, "Error 404");
+    } else {
+      return { game: data };
+    }
   }
 </script>
 
@@ -15,7 +20,7 @@
   export let game;
 
   onMount(() => {
-    currentRoute.set(game['name']);
+    currentRoute.set(game["name"]);
   });
 </script>
 

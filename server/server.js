@@ -1,11 +1,11 @@
 // KoaJS Imports
 const Koa = require('koa')
 const app = new Koa()
-const http2 = require('http2')
+// const http2 = require('http2')
 const http=require('http')
-const fs = require('fs')
-const path = require('path')
-const cors = require('koa2-cors')
+// const fs = require('fs')
+// const path = require('path')
+// const cors = require('koa2-cors')
 
 const DB = require('./db')
 new DB('AchievementSeeker', 'Games').on('err', err => console.log(err))

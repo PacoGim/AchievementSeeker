@@ -11,15 +11,12 @@
     },
     {
       to: "game/list",
-      name: "Game List"
+      name: "Game List",
+      rel: "prefetch"
     },
     {
       to: "game/search",
       name: "Search Game"
-    },
-    {
-      to: "game/334Jvxn4145",
-      name: "Game"
     }
   ];
 
@@ -49,6 +46,7 @@
     top: 0;
     width: 100vw;
     justify-content: flex-end;
+    padding-right: 1rem;
   }
 
   a {
@@ -72,14 +70,20 @@
     font-weight: 600;
     border-bottom: 2px solid #fff;
   }
+
+
+
+  /* day-night:hover {
+  } */
 </style>
 
-<nav flex="justify-end">
+<nav flex="justify-end align-center">
   {#each routes as route}
     <a
       href={route.to}
       name={route.name}
       active={route.active}
+      rel={route.rel}
       on:click={() => preRouting(route.name)}>
       {route.name}
     </a>

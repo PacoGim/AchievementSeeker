@@ -20,7 +20,6 @@ export default {
 		input: config.client.input(),
 		output: config.client.output(),
 		plugins: [
-			// includePaths({ paths: ["./src"] }),
 			replace({
 				'process.browser': true,
 				'process.env.NODE_ENV': JSON.stringify(mode),
