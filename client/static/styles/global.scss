@@ -1,35 +1,36 @@
 @import 'atomics/@imports.scss';
 
-@font-face{
-  font-family: League-Spartan;
-	src: url(./fonts/LeagueSpartanVariable.woff2)
+@font-face {
+	font-family: League-Spartan;
+	src: url(./fonts/LeagueSpartanVariable.woff2);
 }
 
-:root{
-	--fancy-bg-color-1:#333;
-	--fancy-bg-color-2:#444;
-	--transform-1:skewY(0deg) translateY(0px);
-	--transform-2:skewY(0deg) translateY(0px);
+:root {
+	--fancy-bg-color-1: #333;
+	--fancy-bg-color-2: #444;
+	--transform-1: skewY(0deg) translateY(0px);
+	--transform-2: skewY(0deg) translateY(0px);
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
 }
 
 body {
+	overflow-x: hidden;
 	font-family: League-Spartan;
 	color: #fff;
 	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	background-color: #eee;
+	// background-color: #eee;
 }
 
 @supports (font-variation-settings: normal) {
-  body {
-    font-family: League-Spartan;
+	body {
+		font-family: League-Spartan;
 	}
 }

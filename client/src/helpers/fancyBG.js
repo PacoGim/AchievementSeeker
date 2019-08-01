@@ -52,4 +52,11 @@ function setFancyBG(name) {
 	}
 }
 
-export { setFancyBG }
+function setGameFancyBG() {
+	document.documentElement.style.setProperty('--fancy-bg-color-1', '#111')
+	document.documentElement.style.setProperty('--fancy-bg-color-2', '#222')
+	document.documentElement.style.setProperty('--transform-1', 'skewY(-5deg) translateY(0px)')
+	document.documentElement.style.setProperty('--transform-2', 'skewY(15deg) translateY(-45px)')
+}
+
+export { setFancyBG, setGameFancyBG }

@@ -17,6 +17,10 @@
 	filter: invert(65%) sepia(76%) saturate(5641%) hue-rotate(164deg) brightness(97%) contrast(101%);
 }
 
+[icon~='white'] {
+	filter: invert(100%);
+}
+
 [icon~='small'] {
 	height: 40px;
 }

@@ -3,18 +3,27 @@
 	display: flex;
 }
 
-[flex~='column-dir'] {
+[flex~='direction-column'] {
 	flex-direction: column;
+}
+
+[flex~='direction-row'] {
+	flex-direction: row;
 }
 
 [flex~='justify-center'] {
 	justify-content: center;
 }
 
+[flex~='justify-end'] {
+	justify-content: flex-end;
+}
+
+[flex~='justify-between'] {
+	justify-content: space-between;
+}
+
 [flex~='align-center'] {
 	align-items: center;
 }
 
-[flex~='justify-end'] {
-	justify-content: flex-end;
-}

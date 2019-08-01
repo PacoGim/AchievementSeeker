@@ -2,42 +2,66 @@
   import { onMount } from "svelte";
   import { setFancyBG } from "helpers/fancyBG.js";
 
-  import { currentRoute } from "store/store.js";
+  import { supportsWebp } from "helpers/functions.js";
+
+  import { currentRoute, isDay } from "store/store.js";
 
   import Nav from "components/Nav.svelte";
   import FancyBG from "components/FancyBG.svelte";
+
+  onMount(async () => {
+    if (window.supportsWebp === undefined) {
+      await supportsWebp();
+    }
+  });
 
   let routeName = "";
 
   currentRoute.subscribe(value => {
     routeName = value;
   });
+
+  let isDayBoolean;
+
+  isDay.subscribe(value => (isDayBoolean = value));
 </script>
 
 <style>
-  day-night {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: #fff;
-    mix-blend-mode: difference;
-  }
   route-name {
     height: 40vh;
     font-size: 3rem;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   app {
     display: block;
     min-height: 100vh;
   }
+
+  day-night {
+    position: fixed;
+    display: block;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    mix-blend-mode: difference;
+    z-index: 999;
+    pointer-events: none;
+
+    opacity: 1;
+
+    transition: opacity 1s;
+  }
+
+  day-night[isDay="true"] {
+    opacity: 0;
+  }
 </style>
 
 <app>
-  <day-night>Day/Night</day-night>
+  <day-night isDay={isDayBoolean} />
   <Nav />
   <FancyBG />
   <route-name flex="justify-center align-center">{routeName}</route-name>

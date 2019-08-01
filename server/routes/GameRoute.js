@@ -3,16 +3,33 @@ const koaBody = require('koa-body')
 
 const router = new Router({ prefix: '/games' })
 
-const { getGame, getGames } = require('../models/GameModel')
+const { getGame, getCustomGames, getGameHeader, getGameRandomBg } = require('../models/GameModel')
 
-router.post('/list', koaBody(), async ctx => {
-	let games = await getGames(JSON.parse(ctx['request']['body'])).catch(err => {
+router.post('/customGames', koaBody(), async ctx => {
+	let options = ctx['request']['body']
+	try {
+		options = JSON.parse(body)
+	} catch {}
+
+	let games = await getCustomGames(options).catch(err => {
 		ctx.status = 400
 		ctx.body = err
 	})
 
 	ctx.status = 200
 	ctx.body = games
+})
+
+router.get('/header/:id', async ctx => {
+	let id = ctx['params']['id']
+
+	ctx.body = await getGameHeader(id)
+})
+
+router.get('/background/:id', async ctx => {
+	let id = ctx['params']['id']
+
+	ctx.body = await getGameRandomBg(id)
 })
 
 router.get('/:id', async ctx => {

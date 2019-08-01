@@ -17,10 +17,13 @@
 
   import { currentRoute } from "store/store.js";
 
+  import { setGameFancyBG } from "helpers/fancyBG.js";
+
   export let game;
 
   onMount(() => {
     currentRoute.set(game["name"]);
+    setGameFancyBG()
   });
 </script>
 

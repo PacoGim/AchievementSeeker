@@ -4,6 +4,8 @@
 
   import { currentRoute } from "store/store.js";
 
+  import DayNightButton from 'components/DayNightButton.svelte'
+
   let routes = [
     {
       to: "/",
@@ -47,6 +49,7 @@
     width: 100vw;
     justify-content: flex-end;
     padding-right: 1rem;
+    height: 35px;
   }
 
   a {
@@ -88,6 +91,8 @@
       {route.name}
     </a>
   {/each}
+
+  <DayNightButton/>
 </nav>
 
 <!-- <page-name>{pageName}</page-name> -->

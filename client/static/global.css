@@ -3,20 +3,28 @@
   display: flex;
 }
 
-[flex~='column-dir'] {
+[flex~='direction-column'] {
   flex-direction: column;
+}
+
+[flex~='direction-row'] {
+  flex-direction: row;
 }
 
 [flex~='justify-center'] {
   justify-content: center;
 }
 
-[flex~='align-center'] {
-  align-items: center;
-}
-
 [flex~='justify-end'] {
   justify-content: flex-end;
+}
+
+[flex~='justify-between'] {
+  justify-content: space-between;
+}
+
+[flex~='align-center'] {
+  align-items: center;
 }
 
 /********************** Icon **********************/
@@ -38,6 +46,10 @@
   filter: invert(65%) sepia(76%) saturate(5641%) hue-rotate(164deg) brightness(97%) contrast(101%);
 }
 
+[icon~='white'] {
+  filter: invert(100%);
+}
+
 [icon~='small'] {
   height: 40px;
 }
@@ -48,10 +60,10 @@
 }
 
 :root {
-  --fancy-bg-color-1:#333;
-  --fancy-bg-color-2:#444;
-  --transform-1:skewY(0deg) translateY(0px);
-  --transform-2:skewY(0deg) translateY(0px);
+  --fancy-bg-color-1: #333;
+  --fancy-bg-color-2: #444;
+  --transform-1: skewY(0deg) translateY(0px);
+  --transform-2: skewY(0deg) translateY(0px);
 }
 
 * {
@@ -61,12 +73,12 @@
 }
 
 body {
+  overflow-x: hidden;
   font-family: League-Spartan;
   color: #fff;
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #eee;
 }
 
 @supports (font-variation-settings: normal) {
