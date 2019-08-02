@@ -8,7 +8,7 @@ const { getGame, getCustomGames, getGameHeader, getGameRandomBg } = require('../
 router.post('/customGames', koaBody(), async ctx => {
 	let options = ctx['request']['body']
 	try {
-		options = JSON.parse(body)
+		options = JSON.parse(options)
 	} catch {}
 
 	let games = await getCustomGames(options).catch(err => {

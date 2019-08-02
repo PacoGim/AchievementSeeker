@@ -7,19 +7,7 @@
     fetchImageArrayBuffer
   } from "helpers/functions.js";
 
-  export let name;
-  export let _id;
-  export let _v;
-  export let difficulty;
-  export let platforms;
-  export let genres;
-  export let popularity;
-  export let isFree;
-  export let releaseDate;
-  export let appid;
-  export let score;
-  export let points;
-  export let totalAchievements;
+  export let game;
   export let index;
 
   let isImageLoading = true;
@@ -31,7 +19,7 @@
     }
 
     if (window.supportsWebp) {
-      fetchImageBase64(`http://localhost:443/games/header/${_id}`).then(
+      fetchImageBase64(`http://localhost:443/games/header/${game["_id"]}`).then(
         imageUrl => {
           imageSrc = imageUrl;
           isImageLoading = false;
@@ -39,7 +27,7 @@
       );
     } else {
       fetchImageArrayBuffer(
-        `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/header.jpg`
+        `https://steamcdn-a.akamaihd.net/steam/apps/${game["appid"]}/header.jpg`
       ).then(imageUrl => {
         imageSrc = imageUrl;
         isImageLoading = false;
@@ -69,14 +57,14 @@
 </style>
 
 <game-card flex="direction-col">
-  <a href="/game/{_id}">
+  <a href="/game/{game['_id']}">
 
     {#if isImageLoading}
       <img src="icons/puff.svg" alt="" />
     {:else}
       <img src={imageSrc} alt="" />
     {/if}
-    <p>{name}</p>
+    <p>{game['name']}</p>
     <p>{index + 1}</p>
   </a>
 </game-card>

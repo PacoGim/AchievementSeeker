@@ -11,8 +11,8 @@ const values = {
 	},
 	'game list': {
 		fancyBGColor: {
-			1: '#4364f7',
-			2: '#6fb1fc',
+			1: '#6fb1fc',
+			2: '#4364f7',
 		},
 		transform: {
 			1: 'skewY(-2.5deg) translateY(-45px)',
@@ -45,6 +45,7 @@ function setFancyBG(name) {
 	name = name.toLowerCase()
 
 	if (values[name]) {
+		document.documentElement.style.setProperty('--fancy-bg-opacity', 1)
 		document.documentElement.style.setProperty('--fancy-bg-color-1', values[name]['fancyBGColor'][1])
 		document.documentElement.style.setProperty('--fancy-bg-color-2', values[name]['fancyBGColor'][2])
 		document.documentElement.style.setProperty('--transform-1', values[name]['transform'][1])
@@ -53,10 +54,11 @@ function setFancyBG(name) {
 }
 
 function setGameFancyBG() {
-	document.documentElement.style.setProperty('--fancy-bg-color-1', '#111')
-	document.documentElement.style.setProperty('--fancy-bg-color-2', '#222')
-	document.documentElement.style.setProperty('--transform-1', 'skewY(-5deg) translateY(0px)')
-	document.documentElement.style.setProperty('--transform-2', 'skewY(15deg) translateY(-45px)')
+	document.documentElement.style.setProperty('--fancy-bg-opacity', '.5')
+	document.documentElement.style.setProperty('--fancy-bg-color-1', '#000')
+	document.documentElement.style.setProperty('--fancy-bg-color-2', '#000')
+	document.documentElement.style.setProperty('--transform-1', 'skewY(-5deg) translateY(-100px)')
+	document.documentElement.style.setProperty('--transform-2', 'skewY(20deg) translateY(-100px)')
 }
 
 export { setFancyBG, setGameFancyBG }

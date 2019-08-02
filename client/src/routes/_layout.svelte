@@ -1,5 +1,7 @@
 <script>
   import { onMount } from "svelte";
+  import { fade, fly } from "svelte/transition";
+
   import { setFancyBG } from "helpers/fancyBG.js";
 
   import { supportsWebp } from "helpers/functions.js";
@@ -13,12 +15,6 @@
     if (window.supportsWebp === undefined) {
       await supportsWebp();
     }
-  });
-
-  let routeName = "";
-
-  currentRoute.subscribe(value => {
-    routeName = value;
   });
 
   let isDayBoolean;
@@ -64,6 +60,6 @@
   <day-night isDay={isDayBoolean} />
   <Nav />
   <FancyBG />
-  <route-name flex="justify-center align-center">{routeName}</route-name>
+  <route-name flex="justify-center align-center"  transition:fly={{y:300}}>{$currentRoute}</route-name>
   <slot />
 </app>
