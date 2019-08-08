@@ -1,5 +1,5 @@
 const values = {
-	home: {
+	'home-route': {
 		fancyBGColor: {
 			1: '#cb2d3e',
 			2: '#ef473a',
@@ -9,17 +9,17 @@ const values = {
 			2: 'skewY(-2deg) translateY(-60px)',
 		},
 	},
-	'game list': {
+	'game-list-route': {
 		fancyBGColor: {
-			1: '#6fb1fc',
-			2: '#4364f7',
+			1: '#4364f7',
+			2: '#6fb1fc',
 		},
 		transform: {
 			1: 'skewY(-2.5deg) translateY(-45px)',
 			2: 'skewY(1deg)',
 		},
 	},
-	'search game': {
+	'game-search-route': {
 		fancyBGColor: {
 			1: '#41295a',
 			2: '#2f0743',
@@ -57,8 +57,8 @@ function setGameFancyBG() {
 	document.documentElement.style.setProperty('--fancy-bg-opacity', '.5')
 	document.documentElement.style.setProperty('--fancy-bg-color-1', '#000')
 	document.documentElement.style.setProperty('--fancy-bg-color-2', '#000')
-	document.documentElement.style.setProperty('--transform-1', 'skewY(-5deg) translateY(-100px)')
-	document.documentElement.style.setProperty('--transform-2', 'skewY(20deg) translateY(-100px)')
+	document.documentElement.style.setProperty('--transform-1', 'skewY(-5deg) translateY(-0px)')
+	document.documentElement.style.setProperty('--transform-2', 'skewY(5deg) translateY(-0px)')
 }
 
 export { setFancyBG, setGameFancyBG }

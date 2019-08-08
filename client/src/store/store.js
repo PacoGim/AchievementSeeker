@@ -1,5 +1,7 @@
-import { writable } from 'svelte/store'
+// import { writable } from 'svelte/store'
 
-export const currentRoute = writable('Route')
+import createCurrentRoute from 'store/modules/currentRoute.js'
+import createRouter from 'store/modules/router.js'
 
-export const isDay = writable(true)
+export const currentRoute = createCurrentRoute()
+export const router = createRouter()

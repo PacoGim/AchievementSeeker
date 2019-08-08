@@ -1,8 +1,12 @@
 <script>
   import { onMount } from "svelte";
 
+  import { currentRoute } from "store/store.js";
+
+  import Link from "components/Link.svelte";
+
   import {
-    supportsWebp,
+    isWebpSupported,
     fetchImageBase64,
     fetchImageArrayBuffer
   } from "helpers/functions.js";
@@ -14,25 +18,18 @@
   let imageSrc = "";
 
   onMount(async () => {
-    if (window.supportsWebp === undefined) {
-      await supportsWebp();
+    if (window.isWebpSupported === undefined) {
+      await isWebpSupported();
     }
 
-    if (window.supportsWebp) {
-      fetchImageBase64(`http://localhost:443/games/header/${game["_id"]}`).then(
-        imageUrl => {
-          imageSrc = imageUrl;
-          isImageLoading = false;
-        }
-      );
-    } else {
-      fetchImageArrayBuffer(
-        `https://steamcdn-a.akamaihd.net/steam/apps/${game["appid"]}/header.jpg`
-      ).then(imageUrl => {
-        imageSrc = imageUrl;
-        isImageLoading = false;
-      });
-    }
+    fetchImageArrayBuffer(
+      window.isWebpSupported
+        ? `http://localhost:443/games/header/${game["_id"]}`
+        : `https://steamcdn-a.akamaihd.net/steam/apps/${game["appid"]}/header.jpg`
+    ).then(imageUrl => {
+      imageSrc = imageUrl;
+      isImageLoading = false;
+    });
   });
 </script>
 
@@ -57,8 +54,7 @@
 </style>
 
 <game-card flex="direction-col">
-  <a href="/game/{game['_id']}">
-
+  <Link rel="prefetch" id="game-link-{game['_id']}" to="/game/{game['_id']}">
     {#if isImageLoading}
       <img src="icons/puff.svg" alt="" />
     {:else}
@@ -66,5 +62,5 @@
     {/if}
     <p>{game['name']}</p>
     <p>{index + 1}</p>
-  </a>
+  </Link>
 </game-card>

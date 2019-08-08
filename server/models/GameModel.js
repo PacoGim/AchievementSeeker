@@ -29,7 +29,7 @@ async function getCustomGames(options) {
 			options = { filter: {}, project: { _id: 0, name: 1 }, sort: { releaseDate: -1 }, limit: 10, skip: 0 }
 		}
 
-		let { filter, project, sort = { releaseDate: -1 }, limit = 10, skip = 0, isOne = false } = options
+		let { filter, project, sort = { releaseDate: -1 }, limit = 10, skip = 0, getOne = false } = options
 
 		if (limit > 20) {
 			return reject({
@@ -43,7 +43,7 @@ async function getCustomGames(options) {
 			.skip(skip)
 			.limit(limit)
 			.toArray((err, docs) => {
-				if (options['isOne'] === true) {
+				if (options['getOne'] === true) {
 					resolve(docs[0])
 				} else {
 					resolve(docs)
@@ -54,24 +54,43 @@ async function getCustomGames(options) {
 
 async function getGameHeader(_id) {
 	return new Promise(async (resolve, reject) => {
-		let game = await getCustomGames({ filter: { _id }, project: { appid: 1, _id: 1, name: 1 }, isOne: true })
+		let game = await getCustomGames({ filter: { _id }, project: { appid: 1, _id: 1, name: 1 }, getOne: true })
 
-		let imageBuffer = await getImage(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/header.jpg`, `/images/${escapeString(game['name'])}-${game['_id']}`, `header.webp`)
+		let imagePath = await getImage(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/header.jpg`, `/images/${escapeString(game['name'])}-${game['_id']}`, `header.webp`)
 
-		resolve(imageBuffer)
+		resolve(imagePath)
 	})
 }
 
-async function getGameRandomBg(_id) {
+async function getGameRandomBg(_id, isWebpSupported) {
 	return new Promise(async (resolve, reject) => {
-		let game = await getCustomGames({ filter: { _id }, project: { appid: 1, backgrounds: 1, _id: 1, name: 1 }, isOne: true }, true)
+		let game = await getCustomGames({ filter: { _id }, project: { appid: 1, backgrounds: 1, _id: 1, name: 1 }, getOne: true })
 
 		let background = game['backgrounds'][genNum(0, game['backgrounds'].length - 1)]
+
+		if (!isWebpSupported) {
+			return resolve(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/${background}`)
+		}
+
 		let hashedName = hashCode(background)
 
-		let imageBuffer = await getImage(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/${background}`, `/images/${escapeString(game['name'])}-${game['_id']}/backgrounds`, `${hashedName}.webp`)
+		let imagePath = await getImage(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/${background}`, `/images/${escapeString(game['name'])}-${game['_id']}/backgrounds`, `${hashedName}.webp`)
 
-		resolve(imageBuffer)
+		resolve(imagePath)
+	})
+}
+
+function getGameLogo(_id, isWebpSupported) {
+	return new Promise(async (resolve, reject) => {
+		let game = await getCustomGames({ filter: { _id }, project: { name: 1 }, getOne: true })
+
+		let filePath = path.join(path.resolve(), `server/images/${escapeString(game['name'])}-${game['_id']}/Logos/logo.${isWebpSupported ? 'webp' : 'png'}`)
+
+		if (fs.existsSync(filePath)) {
+			resolve(filePath)
+		} else {
+			resolve(null)
+		}
 	})
 }
 
@@ -83,16 +102,17 @@ function getImage(fileUrl, filePath, fileName) {
 			let fullPath = path.join(filePath, fileName)
 
 			if (fs.existsSync(fullPath)) {
-				resolve(`data:image/webp;base64,${encode(fs.readFileSync(fullPath))}`)
+				resolve(fullPath)
 			} else {
 				await fs.mkdirp(filePath)
 				get(fileUrl, { responseType: 'arraybuffer' }).then(res => {
 					sharp(new Buffer.from(res['data']))
 						.webp({ quality: 80 })
-						.toBuffer((err, buffer) => {
-							resolve(`data:image/webp;base64,${encode(buffer)}`)
+						.toFile(fullPath, (err, output) => {
+							if (!err) {
+								resolve(fullPath)
+							}
 						})
-						.toFile(fullPath)
 				})
 			}
 		} catch (ex) {
@@ -105,4 +125,4 @@ function escapeString(string) {
 	return string.replace(/[^a-z0-9]/gi, '').substring(0, 20)
 }
 
-module.exports = { Game, getGame, getCustomGames, getGameHeader, getGameRandomBg }
+module.exports = { Game, getGame, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo }
