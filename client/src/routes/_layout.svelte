@@ -7,8 +7,8 @@
 
   import { currentRoute } from "store/store.js";
 
-  import Navbar from "components/Navbar.svelte";
-  import FancyBG from "components/FancyBG.svelte";
+  import Navbar from "constant/Navbar.svelte";
+  import FancyBG from "constant/FancyBG.svelte";
 
   onMount(async () => {
     if (window.isWebpSupported === undefined) {

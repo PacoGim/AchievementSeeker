@@ -4,10 +4,25 @@ const send = require('koa-send')
 
 const router = new Router({ prefix: '/games' })
 
-const { getGame, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo } = require('../models/GameModel')
+const { getGame, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo, getGameList } = require('../models/GameModel')
+
+const { setCache } = require('../cache')
+
+router.get('/list', async ctx => {
+	let games
+
+	const reqUrl = ctx['req']['url']
+
+	games = await getGameList()
+
+	setCache(reqUrl, games)
+
+	ctx.body = games
+})
 
 router.post('/customGames', koaBody(), async ctx => {
 	let options = ctx['request']['body']
+
 	try {
 		options = JSON.parse(options)
 	} catch {}
@@ -61,7 +76,39 @@ router.get('/logo/:id/:isWebpSupported', async ctx => {
 	}
 })
 
+router.get('/:id/:options', async ctx => {
+	const reqUrl = ctx['req']['url']
+
+	let { id, options } = ctx['params']
+	options = options.split(',')
+
+	let project = {}
+
+	for (let option of options) {
+		project[option] = 1
+	}
+
+	const game = await getCustomGames({
+		filter: {
+			_id: id,
+		},
+		project,
+	})
+
+	if (!game) {
+		ctx.status = 404
+		ctx.body = { err: `The id:${id} doesn\'t match any game.` }
+	} else {
+		ctx.status = 200
+		ctx.body = game
+	}
+
+	setCache(reqUrl, game)
+})
+
 router.get('/:id', async ctx => {
+	const reqUrl = ctx['req']['url']
+
 	const id = ctx['params']['id']
 	const game = await getGame(id).catch(err => console.log(err))
 
@@ -72,6 +119,8 @@ router.get('/:id', async ctx => {
 		ctx.status = 200
 		ctx.body = game
 	}
+
+	setCache(reqUrl, game)
 })
 
 module.exports = {

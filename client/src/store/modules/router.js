@@ -20,6 +20,11 @@ export default function() {
 			to: 'game/search',
 			name: 'Search Game',
 		},
+		{
+			id: 'register',
+			to: 'user/register/NzY1NjExOTgwNTM3MjI0NDI',
+			name: 'Regsiter'
+		},
 	]
 
 	const { subscribe, update } = writable(routes)

@@ -50,6 +50,6 @@
   }
 </style>
 
-<a {id} class={useClass} href={to} {active} on:click={() => preRouting()}>
+<a {id} class={useClass} {rel} href={to} {active} on:click={() => preRouting()}>
   <slot />
 </a>

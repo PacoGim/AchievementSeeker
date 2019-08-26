@@ -3,3 +3,4 @@ server/keys
 fonts
 dist
 server/images
+.env

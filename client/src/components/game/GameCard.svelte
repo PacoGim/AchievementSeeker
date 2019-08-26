@@ -41,11 +41,6 @@
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
   }
 
-  a {
-    width: 256px;
-    height: 15rem;
-  }
-
   img {
     display: block;
     height: 120px;

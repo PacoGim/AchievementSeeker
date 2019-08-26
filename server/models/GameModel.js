@@ -4,7 +4,7 @@ const { get } = require('axios')
 const sharp = require('sharp')
 const path = require('path')
 const fs = require('fs-extra')
-const { encode } = require('base64-arraybuffer')
+// const { encode } = require('base64-arraybuffer')
 
 const { genNum, hashCode } = require('../helpers/functions')
 
@@ -121,8 +121,18 @@ function getImage(fileUrl, filePath, fileName) {
 	})
 }
 
+function getGameList() {
+	return new Promise(async (resolve, reject) => {
+		await db.Games.find({})
+			.project({ name: 1, _id: 1 })
+			.toArray((err, docs) => {
+				resolve(docs)
+			})
+	})
+}
+
 function escapeString(string) {
 	return string.replace(/[^a-z0-9]/gi, '').substring(0, 20)
 }
 
-module.exports = { Game, getGame, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo }
+module.exports = { Game, getGame, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo, getGameList }
