@@ -58,6 +58,10 @@
   cursor: pointer;
 }
 
+[shadow] {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
 @font-face {
   font-family: League-Spartan;
   src: url(./fonts/LeagueSpartanVariable.woff2);

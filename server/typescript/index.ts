@@ -1,14 +1,23 @@
 // KoaJS Imports
-const Koa = require('koa')
+import Koa from 'koa'
 const server = new Koa()
-const http = require('http')
+import http from 'http'
 
 require('dotenv').config()
-
 
 const passport = require('koa-passport')
 
 const SteamStrategy = require('passport-steam').Strategy
+
+import { DBConnector } from './db/index'
+// import collections from './db/collections'
+
+new DBConnector('AchievementSeeker')
+	.connect()
+	.on('err', (err: string) => console.log(err))
+	.on('connected', async () => {
+		console.log('Connected')
+	})
 
 passport.use(
 	new SteamStrategy({
@@ -25,17 +34,14 @@ server.use(passport.initialize())
 // const path = require('path')
 // const cors = require('koa2-cors')
 
-const DB = require('./db')
-new DB('AchievementSeeker', 'Games').on('err', err => console.log(err))
+const port: number = Number(process.env.PORT) || 443
 
-const port = process.env.PORT || 443
-
-const { getCache, setCache } = require('./cache')
+import { getCacheUrl } from './url-cache'
 
 // app.use(cors())
 
 server.use(async (ctx, next) => {
-	const startDate = new Date()
+	const startDate: number = Number(new Date())
 	ctx.set('Strict-Transport-Security', 'max-age=3600')
 	ctx.set('X-Content-Type-Options', 'nosniff')
 	ctx.set('X-Frame-Options', 'deny')
@@ -43,22 +49,24 @@ server.use(async (ctx, next) => {
 	ctx.set('X-XSS-Protection', '1; mode=block')
 	await next()
 
-	console.log(`${ctx['req']['url']} served in ${new Date() - startDate} ms`)
+	console.log(`${ctx['req']['url']} served in ${Number(new Date()) - startDate} ms`)
 })
 
 server.use(async (ctx, next) => {
-	const reqUrl = ctx['req']['url']
+	console.log('Fetching Cache')
+	const reqUrl = ctx['req']['url'] || ''
 
-	if (getCache()[reqUrl]) {
+	if (getCacheUrl(reqUrl) !== null) {
 		ctx.status = 200
-		ctx.body = getCache()[reqUrl]
+		ctx.body = getCacheUrl(reqUrl)
 	} else {
 		await next()
 	}
 })
 
 // Loads routes dynamically
-require('./routes/index')(server)
+import routesLoader from './routes/index'
+routesLoader(server)
 
 process.on('uncaughtException', err => console.log(err))
 
@@ -78,9 +86,16 @@ process.on('uncaughtException', err => console.log(err))
 // 		}
 // 	})
 
-http.createServer(server.callback()).listen(port, err => {
-	if (err) throw new Error(err)
-	else {
-		console.log(`🚀 Server running on port ${port}`)
-	}
+// http
+// 	.createServer(server.callback())
+// 	.listen(port)
+// 	.on('connection', () => {
+// 		console.log(`🚀 Server running on port ${port}`)
+// 	})
+// 	.on('error', (err: string) => {
+// 		if (err) throw new Error(err)
+// 	})
+
+server.listen(port, () => {
+	console.log(`🚀 Server running on port ${port}`)
 })

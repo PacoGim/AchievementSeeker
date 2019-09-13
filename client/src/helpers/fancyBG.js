@@ -29,6 +29,16 @@ const values = {
 			2: 'skewY(20deg) translateY(-100px)',
 		},
 	},
+	'register': {
+		fancyBGColor: {
+			1: '#C81949',
+			2: '#1A1408',
+		},
+		transform: {
+			1: 'skewY(15deg) translateY(-10px)',
+			2: 'skewY(-15deg) translateY(-60px)',
+		},
+	},
 	game: {
 		fancyBGColor: {
 			1: '#3a6186',
@@ -42,6 +52,7 @@ const values = {
 }
 
 function setFancyBG(name) {
+	console.log(name)
 	name = name.toLowerCase()
 
 	if (values[name]) {

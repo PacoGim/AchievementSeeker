@@ -1,21 +1,21 @@
-const Router = require('koa-router')
-const koaBody = require('koa-body')
-const send = require('koa-send')
+import Router from 'koa-router'
+import koaBody from 'koa-body'
+import send from 'koa-send'
 
 const router = new Router({ prefix: '/games' })
 
-const { getGame, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo, getGameList } = require('../models/GameModel')
+import { getGame, getRandomGames, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo, getGameList } from '../models/Game.model'
 
-const { setCache } = require('../cache')
+import { setCacheUrl } from '../url-cache'
 
 router.get('/list', async ctx => {
 	let games
 
-	const reqUrl = ctx['req']['url']
+	const reqUrl = ctx['req']['url'] || ''
 
 	games = await getGameList()
 
-	setCache(reqUrl, games)
+	setCacheUrl(reqUrl, JSON.stringify(games))
 
 	ctx.body = games
 })
@@ -27,7 +27,7 @@ router.post('/customGames', koaBody(), async ctx => {
 		options = JSON.parse(options)
 	} catch {}
 
-	let games = await getCustomGames(options).catch(err => {
+	let games = await getCustomGames(options).catch((err: Error) => {
 		ctx.status = 400
 		ctx.body = err
 	})
@@ -63,7 +63,7 @@ router.get('/logo/:id/:isWebpSupported', async ctx => {
 
 	let logoPath = await getGameLogo(id, isWebpSupported)
 
-	if (logoPath) {
+	if (logoPath !== '') {
 		ctx.set('Content-Type', isWebpSupported ? 'image/webp' : 'image/png')
 		ctx.status = 200
 		await send(ctx, logoPath, { root: '/' })
@@ -76,13 +76,19 @@ router.get('/logo/:id/:isWebpSupported', async ctx => {
 	}
 })
 
+router.get('/RandomGames/:quantity', async ctx => {
+	const { quantity } = ctx['params']
+
+	ctx['body'] = await getRandomGames(quantity)
+})
+
 router.get('/:id/:options', async ctx => {
-	const reqUrl = ctx['req']['url']
+	const reqUrl = ctx['req']['url'] || ''
 
 	let { id, options } = ctx['params']
 	options = options.split(',')
 
-	let project = {}
+	let project: { [index: string]: number } = {}
 
 	for (let option of options) {
 		project[option] = 1
@@ -103,11 +109,11 @@ router.get('/:id/:options', async ctx => {
 		ctx.body = game
 	}
 
-	setCache(reqUrl, game)
+	setCacheUrl(reqUrl, JSON.stringify(game))
 })
 
 router.get('/:id', async ctx => {
-	const reqUrl = ctx['req']['url']
+	const reqUrl = ctx['req']['url'] || ''
 
 	const id = ctx['params']['id']
 	const game = await getGame(id).catch(err => console.log(err))
@@ -120,7 +126,7 @@ router.get('/:id', async ctx => {
 		ctx.body = game
 	}
 
-	setCache(reqUrl, game)
+	setCacheUrl(reqUrl, JSON.stringify(game))
 })
 
 module.exports = {

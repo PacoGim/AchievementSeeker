@@ -1,7 +1,5 @@
-const Router = require('koa-router')
-const passport = require('koa-passport')
-
-const fetch = require('node-fetch')
+import Router from 'koa-router'
+import passport from 'koa-passport'
 
 const router = new Router({ prefix: '/steam' })
 

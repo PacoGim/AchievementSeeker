@@ -23,7 +23,12 @@ export default function() {
 		{
 			id: 'register',
 			to: 'user/register/NzY1NjExOTgwNTM3MjI0NDI',
-			name: 'Regsiter'
+			name: 'Regsiter w/ user'
+		},
+		{
+			id: 'register',
+			to: 'user/register',
+			name: 'Register'
 		},
 	]
 

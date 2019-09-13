@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"server": "nodemon ./server/server.js",
+		"server": "nodemon ./server/dist/index.js",
 		"client": "rimraf client/__sapper__/dev && cd client && pnpm run dev",
 		"watch:sass": "npm run compile:sass && onchange \"client/static/styles/**/*.scss\" -- npm run compile:sass",
 		"compile:sass": "node-sass ./client/static/styles/global.scss --output ./client/static --output-style expanded",

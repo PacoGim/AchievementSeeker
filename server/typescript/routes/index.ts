@@ -1,12 +1,13 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import Koa from 'koa'
 
-module.exports = function(app) {
+export default function(app: Koa) {
 	return new Promise((resolve, reject) => {
 		try {
-			let routes = []
+			let routes: string[] = []
 
-			fs.readdirSync(path.join(__dirname)).forEach(fileName => {
+			fs.readdirSync(path.join(__dirname)).forEach((fileName: string) => {
 				if (fileName !== 'index.js') {
 					let route = require('./' + fileName)
 
