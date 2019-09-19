@@ -1,0 +1,55 @@
+Get All steam games:
+http://api.steampowered.com/ISteamApps/GetAppList/v0002/
+
+Game Score:
+http://store.steampowered.com/appreviews/291860?json=1
+store.steampowered.com/appreviews/275850?json=1&num_per_page=100&filter=recent
+
+Get game data:
+http://store.steampowered.com/api/appdetails?appids=275200
+    data.name
+    data.header_image
+    data.developpers
+    data.publishers
+    data.platforms
+    data.achievements.total
+    data.release_date
+
+
+Recently played games:
+http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442&format=json
+
+Gets user data:
+http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=D86C0558453E2B587942EB24D4379D08&steamids=76561198053722442
+    response.players.0.avatar
+
+Gets player games
+http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442&format=json
+    response.game_count
+    response.games = all user games
+    response.games.loop.appid
+
+
+Get Game Achievements:
+http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=D86C0558453E2B587942EB24D4379D08&appid=413150
+    game.availableGameStats.achievements.loop
+        .displayName
+        .hidden
+        .description
+        .icon
+
+Get Achievement Unlock Time:
+http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=413150&key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442
+    playerstats.achievements.loop
+        .apiname
+        .achieved
+        .unlocktime
+
+Get Global Achievements Percentage:
+http://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/?gameid=275200
+    achievementpercentages.achievements.loop
+        .name
+        .percent
+
+Get User Gotten Achievement for game
+http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=413150&key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442

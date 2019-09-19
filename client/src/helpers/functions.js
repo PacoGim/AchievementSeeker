@@ -1,18 +1,21 @@
 function isWebpSupported() {
 	return new Promise(async resolve => {
-		console.log('Checking WebP support...')
-		if (!self.createImageBitmap) return false
-		const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA='
-		const blob = await fetch(webpData).then(r => r.blob())
-		let isWebpSupported = await createImageBitmap(blob).then(() => true, () => false)
+		if (window.isWebpSupported === undefined) {
+			// console.log('Checking WebP support...')
+			if (!self.createImageBitmap) return false
+			const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA='
+			const blob = await fetch(webpData).then(r => r.blob())
+			let isWebpSupported = await createImageBitmap(blob).then(() => true, () => false)
 
-		// window.isWebpSupported = false
-		window.isWebpSupported = isWebpSupported
+			// window.isWebpSupported = false
+			window.isWebpSupported = isWebpSupported
 
-		isWebpSupported ? console.log('This browser supports Webp.') : console.log("This browser doesn't support Webp :(")
+			// isWebpSupported ? console.log('This browser supports Webp.') : console.log("This browser doesn't support Webp :(")
 
-		// resolve(false)
-		resolve(isWebpSupported)
+			// resolve(false)
+		}
+
+		resolve(window.isWebpSupported)
 	})
 }
 
@@ -63,4 +66,8 @@ function imageArrayBufferToUrl(buffer) {
 	})
 }
 
-export { isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl, fetchImageBase64, fetchImageArrayBuffer }
+function genNum(min, max) {
+	return Number(Math.floor(Math.random() * (max - min + 1) + min))
+}
+
+export { isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl, fetchImageBase64, fetchImageArrayBuffer, genNum }

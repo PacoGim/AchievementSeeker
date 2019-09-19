@@ -1,7 +1,7 @@
 @import 'atomics/@imports.scss';
 
 @font-face {
-	font-family: League-Spartan;
+	font-family: 'League Spartan';
 	src: url(./fonts/LeagueSpartanVariable.woff2);
 }
 
@@ -21,7 +21,7 @@
 
 body {
 	overflow-x: hidden;
-	font-family: League-Spartan;
+	font-family: 'League Spartan', Arial;
 	color: #fff;
 	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 	-webkit-font-smoothing: antialiased;
@@ -32,6 +32,6 @@ body {
 
 @supports (font-variation-settings: normal) {
 	body {
-		font-family: League-Spartan;
+		font-family: 'League Spartan', Arial;
 	}
 }

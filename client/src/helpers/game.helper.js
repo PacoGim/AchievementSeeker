@@ -1,12 +1,23 @@
-import { isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl } from 'helpers/functions.js'
+import { genNum, isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl } from 'helpers/functions.js'
 
-function getGameBackground(id) {
+function getGameBackground(id, appid, backgrounds) {
 	return new Promise(async (resolve, reject) => {
+		console.log('Loading BG')
 		if (window.isWebpSupported === undefined) {
 			await isWebpSupported()
 		}
 
-		fetch(`http://localhost:443/games/background/${id}/${window.isWebpSupported}`).then(async res => {
+		let fetchUrl = ''
+
+		if (window.isWebpSupported) {
+			fetchUrl = `http://localhost:443/images/background/${id}`
+		} else {
+			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/${backgrounds[genNum(0, backgrounds.length - 1)]}`
+		}
+
+		fetch(fetchUrl).then(async res => {
+			console.log('Bg Fetched')
+
 			const contentType = res['headers'].get('Content-Type')
 
 			let imageArrBuff

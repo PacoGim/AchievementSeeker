@@ -1,6 +1,6 @@
 node_modules
-server/keys
-fonts
+keys
 dist
-server/images
+fonts
 .env
+server/public/images

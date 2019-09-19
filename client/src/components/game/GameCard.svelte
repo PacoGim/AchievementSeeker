@@ -22,14 +22,14 @@
       await isWebpSupported();
     }
 
-    fetchImageArrayBuffer(
-      window.isWebpSupported
-        ? `http://localhost:443/games/header/${game["_id"]}`
-        : `https://steamcdn-a.akamaihd.net/steam/apps/${game["appid"]}/header.jpg`
-    ).then(imageUrl => {
-      imageSrc = imageUrl;
-      isImageLoading = false;
-    });
+    // fetchImageArrayBuffer(
+    //   window.isWebpSupported
+    //     ? `http://localhost:443/games/header/${game["_id"]}`
+    //     : `https://steamcdn-a.akamaihd.net/steam/apps/${game["appid"]}/header.jpg`
+    // ).then(imageUrl => {
+    //   imageSrc = imageUrl;
+    //   isImageLoading = false;
+    // });
   });
 </script>
 
@@ -45,16 +45,20 @@
     display: block;
     height: 120px;
     margin: 0 auto;
+    min-width: 256.75px;
   }
 </style>
 
 <game-card flex="direction-col">
   <Link rel="prefetch" id="game-link-{game['_id']}" to="/game/{game['_id']}">
-    {#if isImageLoading}
-      <img src="icons/puff.svg" alt="" />
-    {:else}
-      <img src={imageSrc} alt="" />
-    {/if}
+    <picture>
+      <source
+        srcset="http://localhost:443/images/header/{game._id}"
+        type="image/webp" />
+      <img
+        src="https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/header.jpg"
+        alt={game.name} />
+    </picture>
     <p>{game['name']}</p>
     <p>{index + 1}</p>
   </Link>

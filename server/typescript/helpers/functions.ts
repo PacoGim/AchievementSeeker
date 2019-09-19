@@ -2,18 +2,18 @@ function genNum(min: number, max: number): number {
 	return Number(Math.floor(Math.random() * (max - min + 1) + min))
 }
 
-function hashCode(input: string) {
+function hashCode(input: string): string {
 	if (!input) input = ''
-	var hash = 0,
-		i,
-		chr
-	if (input.length === 0) return hash
+	let hash = 0
+	let i
+	let chr
+
+	if (input.length === 0) return ''
 	for (i = 0; i < input.length; i++) {
 		chr = input.charCodeAt(i)
 		hash = (hash << 5) - hash + chr
 		hash |= 0 // Convert to 32bit integer
 	}
-	// return hash
 
 	let code = ''
 

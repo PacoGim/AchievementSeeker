@@ -1,10 +1,9 @@
 import Router from 'koa-router'
 import koaBody from 'koa-body'
-import send from 'koa-send'
 
 const router = new Router({ prefix: '/games' })
 
-import { getGame, getRandomGames, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo, getGameList } from '../models/Game.model'
+import { getGame, getCustomGames, getGameList } from '../models/Game.model'
 
 import { setCacheUrl } from '../url-cache'
 
@@ -36,52 +35,6 @@ router.post('/customGames', koaBody(), async ctx => {
 	ctx.body = games
 })
 
-router.get('/header/:id', async ctx => {
-	let { id } = ctx['params']
-
-	await send(ctx, await getGameHeader(id), { root: '/' })
-})
-
-router.get('/background/:id/:isWebpSupported', async ctx => {
-	let { id, isWebpSupported } = ctx['params']
-
-	isWebpSupported = isWebpSupported === 'true' ? true : false
-
-	if (isWebpSupported) {
-		ctx.set('Content-Type', 'image/webp')
-		await send(ctx, await getGameRandomBg(id, isWebpSupported), { root: '/' })
-	} else {
-		ctx.set('Content-Type', 'text/plain')
-		ctx.body = await getGameRandomBg(id, isWebpSupported)
-	}
-})
-
-router.get('/logo/:id/:isWebpSupported', async ctx => {
-	let { id, isWebpSupported } = ctx['params']
-
-	isWebpSupported = isWebpSupported === 'true' ? true : false
-
-	let logoPath = await getGameLogo(id, isWebpSupported)
-
-	if (logoPath !== '') {
-		ctx.set('Content-Type', isWebpSupported ? 'image/webp' : 'image/png')
-		ctx.status = 200
-		await send(ctx, logoPath, { root: '/' })
-	} else {
-		ctx.set('Content-Type', 'application/json')
-		ctx.status = 404
-		ctx.body = {
-			err: 'No logo available.',
-		}
-	}
-})
-
-router.get('/RandomGames/:quantity', async ctx => {
-	const { quantity } = ctx['params']
-
-	ctx['body'] = await getRandomGames(quantity)
-})
-
 router.get('/:id/:options', async ctx => {
 	const reqUrl = ctx['req']['url'] || ''
 
@@ -94,12 +47,14 @@ router.get('/:id/:options', async ctx => {
 		project[option] = 1
 	}
 
-	const game = await getCustomGames({
+	const games = await getCustomGames({
 		filter: {
 			_id: id,
 		},
 		project,
 	})
+
+	const game = games[0]
 
 	if (!game) {
 		ctx.status = 404

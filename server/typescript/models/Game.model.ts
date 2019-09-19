@@ -1,11 +1,12 @@
 import collections from '../db/collections'
 
-import axios from 'axios'
-import sharp from 'sharp'
-import path from 'path'
-import fs from 'fs-extra'
-
 import { genNum, hashCode } from '../helpers/functions'
+
+interface Achievement {
+	_id: number
+	img: string
+	imgGray:string
+}
 
 class Game {
 	name: string
@@ -13,12 +14,14 @@ class Game {
 	_id: string
 	appid: number
 	backgrounds: string[]
-	constructor(_id: string, name: string, points: number, appid: number, backgrounds: string[]) {
+	achievements: Achievement[]
+	constructor(_id: string, name: string, points: number, appid: number, backgrounds: string[], achievements: Achievement[]) {
 		this._id = _id
 		this.appid = appid
 		this.name = name
 		this.points = points
 		this.backgrounds = backgrounds
+		this.achievements = achievements
 	}
 
 	save() {
@@ -49,7 +52,7 @@ function getGame(_id: string) {
 }
 
 interface Options {
-	filter: Object
+	filter?: Object
 	project: Object
 	sort?: Object
 	limit?: number
@@ -83,77 +86,10 @@ async function getCustomGames(options: Options): Promise<Game[]> {
 	})
 }
 
-async function getGameHeader(_id: string): Promise<string> {
+async function getCustomGame(options: Options): Promise<Game> {
 	return new Promise(async (resolve, reject) => {
-		let games = await getCustomGames({ filter: { _id }, project: { appid: 1, _id: 1, name: 1 } })
-
-		let game = games[0]
-
-		let imagePath: string = await getImage(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/header.jpg`, `/images/${escapeString(game['name'])}-${game['_id']}`, `header.webp`)
-
-		resolve(imagePath)
-	})
-}
-
-async function getGameRandomBg(_id: string, isWebpSupported: boolean):Promise<string> {
-	return new Promise(async (resolve, reject) => {
-		let games = await getCustomGames({ filter: { _id }, project: { appid: 1, backgrounds: 1, _id: 1, name: 1 } })
-
-		let game = games[0]
-
-		let background = game['backgrounds'][genNum(0, game['backgrounds'].length - 1)]
-
-		if (!isWebpSupported) {
-			return resolve(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/${background}`)
-		}
-
-		let hashedName = hashCode(background)
-
-		let imagePath:string = await getImage(`https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/${background}`, `/images/${escapeString(game['name'])}-${game['_id']}/backgrounds`, `${hashedName}.webp`)
-
-		resolve(imagePath)
-	})
-}
-
-function getGameLogo(_id: string, isWebpSupported: boolean):Promise<string> {
-	return new Promise(async (resolve, reject) => {
-		let games = await getCustomGames({ filter: { _id }, project: { name: 1 } })
-		let game = games[0]
-
-		let filePath = path.join(path.resolve(), `server/images/${escapeString(game['name'])}-${game['_id']}/Logos/logo.${isWebpSupported ? 'webp' : 'png'}`)
-
-		if (fs.existsSync(filePath)) {
-			resolve(filePath)
-		} else {
-			resolve('')
-		}
-	})
-}
-
-function getImage(fileUrl: string, filePath: string, fileName: string): Promise<string> {
-	return new Promise(async (resolve, reject) => {
-		try {
-			filePath = path.join(path.resolve(), 'server', filePath, '/')
-
-			let fullPath = path.join(filePath, fileName)
-
-			if (fs.existsSync(fullPath)) {
-				resolve(fullPath)
-			} else {
-				await fs.mkdirp(filePath)
-				axios.get(fileUrl, { responseType: 'arraybuffer' }).then(res => {
-					sharp(Buffer.from(res['data']))
-						.webp({ quality: 80 })
-						.toFile(fullPath, (err, output) => {
-							if (!err) {
-								resolve(fullPath)
-							}
-						})
-				})
-			}
-		} catch (ex) {
-			console.log(ex)
-		}
+		let games = await getCustomGames(options)
+		resolve(games[0])
 	})
 }
 
@@ -173,4 +109,4 @@ function escapeString(charChain: string) {
 	return charChain.replace(/[^a-z0-9]/gi, '').substring(0, 20)
 }
 
-export { Game, getRandomGames, getGame, getCustomGames, getGameHeader, getGameRandomBg, getGameLogo, getGameList }
+export { Game, getRandomGames, getGame, getCustomGames, getCustomGame, getGameList }

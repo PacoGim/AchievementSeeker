@@ -11,9 +11,9 @@ setInterval(() => {
  * @param {string} url
  * @returns {string}
  */
-function getCacheUrl(keyUrl: string): string | null {
+function getCacheUrl(keyUrl: string): string | undefined {
 	if (urlCache[keyUrl] !== undefined) return urlCache[keyUrl]
-	else return null
+	else return undefined
 }
 
 /**
@@ -23,7 +23,7 @@ function getCacheUrl(keyUrl: string): string | null {
  * @param {string} urlData
  */
 function setCacheUrl(keyUrl: string, urlData: string) {
-	if (urlCache[keyUrl] !== undefined) urlCache[keyUrl] = urlData
+	if (urlCache[keyUrl] === undefined) urlCache[keyUrl] = urlData
 }
 
 export { getCacheUrl, setCacheUrl }

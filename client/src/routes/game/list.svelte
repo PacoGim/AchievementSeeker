@@ -135,7 +135,7 @@
     <container
       flex="direction-row"
       style="transform:translateX({gameListTranslate}px)">
-      {#each games as game, index (game['_id'])}
+      {#each games as game, index}
         <GameCard {game} {index} />
       {/each}
     </container>

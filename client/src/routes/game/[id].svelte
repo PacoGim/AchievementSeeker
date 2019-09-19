@@ -21,6 +21,8 @@
 
   import { getGameBackground, getGameLogo } from "helpers/game.helper.js";
 
+  import Achievement from "components/game/Achievement.svelte";
+
   export let game;
   let background;
   let logoUrl = undefined;
@@ -30,10 +32,12 @@
   onMount(async () => {
     setGameFancyBG();
 
-    getGameBackground(game["_id"]).then(res => {
-      background = res;
-      opacity = 1;
-    });
+    getGameBackground(game["_id"], game["appid"], game["backgrounds"]).then(
+      res => {
+        background = res;
+        opacity = 1;
+      }
+    );
 
     getGameLogo(game["_id"])
       .then(res => {
@@ -80,6 +84,8 @@
 
   logo img {
     transition: transform 1s;
+    font-size: 3rem;
+    font-weight: 600;
   }
 </style>
 
@@ -91,9 +97,22 @@
   <background-image
     style="background-image:url({background}); opacity:{opacity}" />
   <logo flex="justify-center align-center">
-    <img style="transform:rotateY({rotateY}deg)" src={logoUrl} alt="" />
+    <picture>
+      <source
+        srcset="http://localhost:443/server/public/images/{game._id}/logos/logo.webp"
+        type="image/webp" />
+      <source
+        srcset="http://localhost:443/server/public/images/{game._id}/logos/logo.png"
+        type="image/png" />
+      <img src="" alt={game.name} />
+    </picture>
   </logo>
-  {#if logoUrl === null}
-    <name flex="justify-center align-center">{game['name']}</name>
-  {/if}
+  <achievements>
+    <h1>Achievements</h1>
+
+    {#each game['achievements'] as achievement, index}
+      <Achievement {achievement} gameName={game['name']} appid={game['appid']} {index} gameId={game['_id']} />
+    {/each}
+
+  </achievements>
 </game>

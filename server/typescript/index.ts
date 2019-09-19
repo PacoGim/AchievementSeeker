@@ -53,10 +53,9 @@ server.use(async (ctx, next) => {
 })
 
 server.use(async (ctx, next) => {
-	console.log('Fetching Cache')
 	const reqUrl = ctx['req']['url'] || ''
 
-	if (getCacheUrl(reqUrl) !== null) {
+	if (getCacheUrl(reqUrl) !== undefined) {
 		ctx.status = 200
 		ctx.body = getCacheUrl(reqUrl)
 	} else {
