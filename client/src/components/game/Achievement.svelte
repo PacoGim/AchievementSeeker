@@ -25,6 +25,7 @@
 
 <style>
   achievement {
+    /* color: black; */
     background-color: rgba(0, 0, 0, 0.5);
   }
   /*
@@ -79,10 +80,31 @@
     top: 0;
     left: 0;
   }
+
+  imeru {
+    height: 64px;
+    width: 64px;
+  }
+
+  placeholder {
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+    border: #333 5px solid;
+  }
+
+  imeru img {
+    height: 100%;
+    width: 100%;
+    border: #333 5px solid;
+  }
 </style>
 
 <achievement id={achievement._id} flex="direction-row align-center">
   <index>{index}</index>
   <name>{achievement.name}</name>
-  <img src={imgUrl} alt="" />
+  <imeru grid="overlap">
+    <placeholder />
+    <img src={imgUrl} alt="" />
+  </imeru>
 </achievement>

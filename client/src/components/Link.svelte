@@ -1,13 +1,13 @@
 <script>
   import { onMount } from "svelte";
   import { router } from "store/store.js";
-  import { setFancyBG } from "helpers/fancyBG.js";
+  // import { setFancyBG } from "helpers/fancyBG.js";
 
   export let to;
   export let id;
   export let rel;
   export let name = undefined;
-  export let active = undefined;
+  export let isActive = undefined;
   export let useClass = undefined;
   export let loadFancyBG = undefined;
   let currentEl;
@@ -22,12 +22,12 @@
 
   function preRouting() {
     router.setRouteActive(name);
-    setFancyBG(id);
   }
 </script>
 
 <style>
   a.navbar-link {
+    user-select: none;
     display: inline;
     font-size: 1.1rem;
     color: #fff;
@@ -44,12 +44,13 @@
     font-weight: 600;
   }
 
-  a.navbar-link[active="true"] {
+  a.navbar-link[isActive="true"] {
+    pointer-events: none;
     font-weight: 600;
     border-bottom: 2px solid #fff;
   }
 </style>
 
-<a {id} class={useClass} {rel} href={to} {active} on:click={() => preRouting()}>
+<a {id} class={useClass} {rel} href={to} {isActive} on:click={() => preRouting()}>
   <slot />
 </a>

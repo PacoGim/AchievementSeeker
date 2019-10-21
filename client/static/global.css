@@ -27,6 +27,15 @@
   align-items: center;
 }
 
+[grid] {
+  display: grid;
+}
+
+[grid~='overlap'] * {
+  grid-column: 1;
+  grid-row: 1;
+}
+
 /********************** Icon **********************/
 [icon] {
   height: 100%;

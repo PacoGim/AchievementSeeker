@@ -1,3 +1,4 @@
+import { ParameterizedContext } from 'koa'
 import Router from 'koa-router'
 import passport from 'koa-passport'
 
@@ -10,7 +11,7 @@ router.get(
 	})
 )
 
-router.get('/return', async ctx => {
+router.get('/return', async (ctx:ParameterizedContext) => {
 	const userSteamId = ctx['query']['openid.identity'].replace('https://steamcommunity.com/openid/id/', '')
 
 	console.log(userSteamId)

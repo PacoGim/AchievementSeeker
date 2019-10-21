@@ -42,11 +42,11 @@ export default function() {
 
 			for (let route of routes) {
 				if (route['name'] === newRoute) {
-					route['active'] = true
+					route['isActive'] = true
 					routeFoundName = route['name']
 					routeFound = true
 				} else {
-					delete route['active']
+					delete route['isActive']
 				}
 			}
 

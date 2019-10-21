@@ -1,8 +1,8 @@
-function genNum(min: number, max: number): number {
+export function genNum(min: number, max: number): number {
 	return Number(Math.floor(Math.random() * (max - min + 1) + min))
 }
 
-function hashCode(input: string): string {
+export function hashCode(input: string): string {
 	if (!input) input = ''
 	let hash = 0
 	let i
@@ -58,7 +58,7 @@ function hashCode(input: string): string {
 	return code
 }
 
-function genID() {
+export function genID() {
 	let options: { [index: string]: Function } = {
 		'0': () => {
 			return ['b', 'n', 'z'][genNum(0, 2)]
@@ -110,4 +110,23 @@ function genID() {
 		.toUpperCase()
 }
 
-export { genNum, hashCode, genID }
+export function getDifficulty(easy: number, medium: number, hard: number) {
+	let sum = 100 / (easy + medium + hard)
+
+	medium = medium * sum
+	easy = easy * sum + medium / 2
+	hard = hard * sum + medium / 2
+
+	const average = Math.round((100 / (easy + hard)) * hard)
+
+	if (average > 0 && average <= 10) return { value: average, text: `Piece of Cake (${average})` }
+	if (average > 10 && average <= 20) return { value: average, text: `Soft (${average})` }
+	if (average > 20 && average <= 30) return { value: average, text: `Very Easy (${average})` }
+	if (average > 30 && average <= 40) return { value: average, text: `Easy (${average})` }
+	if (average > 40 && average <= 50) return { value: average, text: `Mildly Easy (${average})` }
+	if (average > 50 && average <= 60) return { value: average, text: `Normal (${average})` }
+	if (average > 60 && average <= 70) return { value: average, text: `Mildy Hard (${average})` }
+	if (average > 70 && average <= 80) return { value: average, text: `Hard (${average})` }
+	if (average > 80 && average <= 90) return { value: average, text: `Very Hard (${average})` }
+	if (average > 90 && average <= 100) return { value: average, text: `Insane (${average})` }
+}

@@ -17,11 +17,11 @@
 
   import { currentRoute } from "store/store.js";
 
-  import { setGameFancyBG } from "helpers/fancyBG.js";
-
   import { getGameBackground, getGameLogo } from "helpers/game.helper.js";
 
   import Achievement from "components/game/Achievement.svelte";
+
+  import { setFancyBG } from "services/fancyBG.service.js";
 
   export let game;
   let background;
@@ -30,7 +30,13 @@
   let rotateY = 540;
 
   onMount(async () => {
-    setGameFancyBG();
+    setFancyBG(
+      "#000",
+      "#000",
+      "skewY(-5deg) translateY(-0px)",
+      "skewY(5deg) translateY(-0px)",
+      0.5
+    );
 
     getGameBackground(game["_id"], game["appid"], game["backgrounds"]).then(
       res => {
@@ -111,7 +117,12 @@
     <h1>Achievements</h1>
 
     {#each game['achievements'] as achievement, index}
-      <Achievement {achievement} gameName={game['name']} appid={game['appid']} {index} gameId={game['_id']} />
+      <Achievement
+        {achievement}
+        gameName={game['name']}
+        appid={game['appid']}
+        {index}
+        gameId={game['_id']} />
     {/each}
 
   </achievements>

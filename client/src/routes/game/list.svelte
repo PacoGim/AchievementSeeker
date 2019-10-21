@@ -30,7 +30,19 @@
 
 <script>
   import GameCard from "components/game/GameCard.svelte";
+
   import { onMount } from "svelte";
+
+  import { setFancyBG } from "services/fancyBG.service.js";
+
+  onMount(() => {
+    setFancyBG(
+      "#4364f7",
+      "#6fb1fc",
+      "skewY(-2.5deg) translateY(-45px)",
+      "skewY(1deg)"
+    );
+  });
 
   export let games;
 

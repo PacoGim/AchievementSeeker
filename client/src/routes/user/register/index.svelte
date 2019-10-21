@@ -22,7 +22,7 @@
   }
 
   #steam-auth-button > * {
-    padding: .75rem 2rem;
+    padding: 0.75rem 2rem;
     width: calc(100%);
     text-align: center;
   }
@@ -36,9 +36,24 @@
   #steam-auth-button steam-auth-text-2 {
     background-color: #313131;
     border-radius: 0 0 10px 10px;
-    font-size: .95rem;
+    font-size: 0.95rem;
   }
 </style>
+
+<script>
+  import { onMount } from "svelte";
+
+  import { setFancyBG } from "services/fancyBG.service.js";
+
+  onMount(() => {
+    setFancyBG(
+      "#C81949",
+      "#1A1408",
+      "skewY(15deg) translateY(-10px)",
+      "skewY(-15deg) translateY(-60px)"
+    );
+  });
+</script>
 
 <svelte:head>
   <title>Register</title>

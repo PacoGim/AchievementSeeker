@@ -1,14 +1,12 @@
 <script>
   import { onMount } from "svelte";
 
-  import { setFancyBG } from "helpers/fancyBG.js";
-
   import { isWebpSupported } from "helpers/functions.js";
 
   import { currentRoute } from "store/store.js";
 
-  import Navbar from "constant/Navbar.svelte";
-  import FancyBG from "constant/FancyBG.svelte";
+  import Navbar from "components/Navbar.svelte";
+  import FancyBG from "components/FancyBG.svelte";
 
   onMount(async () => {
     if (window.isWebpSupported === undefined) {
@@ -23,7 +21,8 @@
     font-size: 3rem;
     font-weight: 600;
 
-    transition: opacity .5s;
+    transition: opacity, transform cubic-bezier(0, 0, 0, 2);
+    transition-duration: 0.5s;
   }
 
   app {
