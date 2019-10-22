@@ -7,7 +7,7 @@
 			"path": "client"
 		},
 		{
-			"path": "server\\typescript"
+			"path": "server\\src"
 		},
 		{
 			"path": "server"

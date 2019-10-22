@@ -1,30 +1,8 @@
 <script context="module">
+  import { getGameListGames } from "services/graphql.service.js";
   export async function preload({ params, query }) {
-    const res = await this.fetch(`http://localhost:443/games/customGames`, {
-      method: "POST",
-      body: JSON.stringify({
-        project: {
-          name: 1,
-          _id: 1,
-          _v: 1,
-          difficulty: 1,
-          platforms: 1,
-          genres: 1,
-          popularity: 1,
-          isFree: 1,
-          releaseDate: 1,
-          appid: 1,
-          score: 1,
-          points: 1,
-          totalAchievements: 1
-        },
-        sort: {
-          "popularity.count": -1
-        }
-      })
-    });
-
-    return { games: await res.json() };
+    let res = await getGameListGames().then(res => res.json());
+    return { games: res["data"]["games"] };
   }
 </script>
 

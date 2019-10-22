@@ -30,6 +30,7 @@ import { getCacheUrl } from './url-cache'
 
 async function startApp() {
 	const app = new Koa()
+	const port: number = Number(process.env.PORT) || 4000
 
 	new DBConnector()
 		.connect()
@@ -42,8 +43,6 @@ async function startApp() {
 		resolvers: [GameResolver, DeveloperResolver, PublisherResolver, GenreResolver],
 	})
 
-	app.use(mount('/graphql', graphqlHTTP({ schema, graphiql: true })))
-
 	passport.use(
 		new SteamStrategy({
 			returnURL: `http://localhost:443/steam/return`,
@@ -53,8 +52,6 @@ async function startApp() {
 	)
 
 	app.use(passport.initialize())
-
-	const port: number = Number(process.env.PORT) || 8443
 
 	app.use(async (ctx, next) => {
 		const startDate: number = Number(new Date())
@@ -82,24 +79,36 @@ async function startApp() {
 	// Loads routes dynamically
 	routesLoader(app)
 
+	app.use(mount('/graphql', graphqlHTTP({ schema, graphiql: true })))
+
 	process.on('uncaughtException', err => console.log(err))
 
-	// openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out example.crt -keyout example.key
-
-	http2
-		.createSecureServer(
-			{
-				key: fs.readFileSync(path.join(__dirname, '../keys/example.key')),
-				cert: fs.readFileSync(path.join(__dirname, '../keys/example.crt')),
-				allowHTTP1: true,
-			},
-			app.callback()
-		)
-		.listen(8443)
+	app
+		.listen(port)
 		.on('error', err => console.error(err))
 		.on('listening', () => {
 			console.log(`🚀 Server running on port ${port}`)
 		})
+
+	// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
+	// openssl req -newkey rsa:4096 -x509 -sha256 -days 3650 -nodes -out example.crt -keyout example.key
+
+	// http2
+	// 	.createSecureServer(
+	// 		{
+	// 			key: fs.readFileSync(path.join(__dirname, '../keys/example.key')),
+	// 			cert: fs.readFileSync(path.join(__dirname, '../keys/example.crt')),
+	// 			allowHTTP1: true,
+	// 			rejectUnauthorized:false
+	// 		},
+	// 		app.callback()
+	// 	)
+	// 	.listen(8443)
+	// 	.on('error', err => console.error(err))
+	// 	.on('listening', () => {
+	// 		console.log(`🚀 Server running on port ${port}`)
+	// 	})
 }
 
 startApp()

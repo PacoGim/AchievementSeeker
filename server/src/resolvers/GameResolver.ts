@@ -77,7 +77,7 @@ interface IFilterOptionObject {
 /* #region  Interface SortOptionObject */
 interface ISortOptionObject {
 	'difficulty.average'?: number
-	trend?:number
+	trend?: number
 }
 /* #endregion */
 
@@ -133,10 +133,6 @@ export default class {
 				sort['trend'] = sortBy['trend']
 			}
 		}
-
-		// console.log(filterBy)
-		// console.log(filter)
-		// console.log(sort)
 
 		return await GameCollection.get()
 			.find(filter)

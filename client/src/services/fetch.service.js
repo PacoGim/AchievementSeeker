@@ -1,4 +1,17 @@
 import { setCache, getCache } from 'services/cache.service.js'
+import fetch from "node-fetch";
+
+const serverURL = `http://localhost:4000`
+
+export function gqlFetch(notThis, query) {
+	console.log(query)
+	return new Promise(async (resolve, reject) => {
+		let response = await fetch(`${serverURL}/graphql?query=${query}`).catch(err => {
+			console.log(err)
+		})
+		resolve(response)
+	})
+}
 
 export function fetchImage(url) {
 	return new Promise((resolve, reject) => {
