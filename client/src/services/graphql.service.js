@@ -1,13 +1,39 @@
 import { gqlFetch } from 'services/fetch.service.js'
 
-export function getGameListGames(notThis, limit = 20, sort = '{}', filter = '{}') {
+export function getGame({ id }) {
 	return new Promise(async (resolve, reject) => {
-		let data = await gqlFetch(notThis, getQueryGameListBase(limit, sort, filter))
-		resolve(data)
+		gqlFetch(getGameQuery(id))
+			.then(res => res.json())
+			.then(game => resolve(game['data']['gameById']))
 	})
 }
 
-function getQueryGameListBase(limit, sort, filter) {
+export function getGameListGames({ limit = 20, sort = '{}', filter = '{}' }) {
+	return new Promise(async (resolve, reject) => {
+		gqlFetch(getQueryGameList(limit, sort, filter))
+			.then(res => res.json())
+			.then(game => resolve(game["data"]["games"]))
+	})
+}
+
+function getGameQuery(id) {
+	return `
+    {
+      gameById(id:"${id}"){
+        name
+        _id
+        appid
+        achievements{
+          name
+          _id
+          value
+        }
+      }
+    }
+  `
+}
+
+function getQueryGameList(limit, sort, filter) {
 	return `
       {
         games(limit: ${limit}, sortBy: ${sort},filterBy:${filter}) {
@@ -25,6 +51,7 @@ function getQueryGameListBase(limit, sort, filter) {
           score
           points
           achievementCount
+          _id
         }
       }`
 }

@@ -15,7 +15,7 @@
 </style>
 
 <navbar flex="justify-end align-center">
-  {#each $router as route}
+  {#each $router['routes'] as route}
     <Link to={route['to']} id={route['id']} rel={route['rel']} name={route['name']} isActive={route['isActive']}  useClass="navbar-link">
       {route['name']}
     </Link>

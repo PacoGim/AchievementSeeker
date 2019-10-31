@@ -1,6 +1,6 @@
 import { genNum, isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl } from 'helpers/functions.js'
 
-function getGameBackground(id, appid, backgrounds) {
+export function getGameBackground(id, appid, backgrounds) {
 	return new Promise(async (resolve, reject) => {
 		console.log('Loading BG')
 		if (window.isWebpSupported === undefined) {
@@ -36,7 +36,7 @@ function getGameBackground(id, appid, backgrounds) {
 	})
 }
 
-function getGameLogo(id) {
+export function getGameLogo(id) {
 	// http://localhost:443/games/logo/pt6Sr89j06gkS/false
 	// image/webp Status: 200
 	// image/png Status: 200
@@ -63,4 +63,6 @@ function getGameLogo(id) {
 	})
 }
 
-export { getGameBackground, getGameLogo }
+export function getSafeFolderName(id,name) {
+	return `${name.replace(/[^a-zA-Z0-9]+/g, "")}-${id}`
+}

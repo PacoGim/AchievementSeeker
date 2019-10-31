@@ -1,58 +1,84 @@
 import { writable } from 'svelte/store'
 
-import { currentRoute } from 'store/store.js'
+let setCurrentRouteStylesTimeout = undefined
 
 export default function() {
 	const routes = [
 		{
+			name: 'Achievement Seeker',
 			id: 'home-route',
 			to: '/',
-			name: 'Home',
-		},
-		{
-			id: 'game-list-route',
-			to: 'game/list',
-			name: 'Game List',
 			rel: 'prefetch',
 		},
 		{
-			id: 'game-search-route',
-			to: 'game/search',
-			name: 'Search Game',
+			name: 'Game List',
+			id: 'game-list-route',
+			to: 'game/list',
 		},
 		{
-			id: 'register',
+			name: 'Regsiter w/ user',
+			id: 'register-route',
 			to: 'user/register/NzY1NjExOTgwNTM3MjI0NDI',
-			name: 'Regsiter w/ user'
 		},
 		{
-			id: 'register',
+			name: 'Register',
+			id: 'register-route',
 			to: 'user/register',
-			name: 'Register'
 		},
 	]
 
-	const { subscribe, update } = writable(routes)
+	const currentRoute = ''
+
+	const { subscribe, update } = writable({
+		routes,
+		currentRoute,
+	})
 
 	return {
 		subscribe,
-		setRouteActive: function(newRoute) {
-			let routeFound = false
-			let routeFoundName = ''
+		setActiveRoute(newRoute) {
+			let currentRouteMatched = ''
 
+			// Iterates through the routes and sets the current route as active.
 			for (let route of routes) {
 				if (route['name'] === newRoute) {
 					route['isActive'] = true
-					routeFoundName = route['name']
-					routeFound = true
+					currentRouteMatched = route['name']
 				} else {
 					delete route['isActive']
 				}
 			}
 
-			routeFound ? currentRoute.set(routeFoundName) : currentRoute.set('')
+			update(() => {
+				return {
+					routes,
+					currentRoute,
+				}
+			})
 
-			return update(routes => (routes = routes))
+			this.setRouteName(currentRouteMatched)
+		},
+		setRouteName(newRouteName) {
+			setRouteNameStyles(0, 'translateY(-100px)')
+
+			clearTimeout(setCurrentRouteStylesTimeout)
+
+			setCurrentRouteStylesTimeout = setTimeout(() => {
+				setRouteNameStyles(1, 'translateY(0px)')
+
+				update(() => {
+					return {
+						routes,
+						currentRoute: newRouteName,
+					}
+				})
+			}, 500)
 		},
 	}
+}
+
+function setRouteNameStyles(opacity, transform) {
+	let $routeName = document.querySelector('route-name').style
+	$routeName.opacity = opacity
+	$routeName.transform = transform
 }

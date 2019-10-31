@@ -11,15 +11,17 @@
   let imgUrl = "";
 
   onMount(async () => {
-    await isWebpSupported();
+    setTimeout(async () => {
+      await isWebpSupported();
 
-    if (window.isWebpSupported) {
-      imgUrl = await fetchImage(
-        `http://localhost:443/images/achievement/${gameId}/${achievement["_id"]}`
-      );
-    } else {
-      imgUrl = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievement["img"]}`;
-    }
+      if (window.isWebpSupported) {
+        imgUrl = await fetchImage(
+          `http://localhost:4000/images/achievement/${gameId}/${achievement["_id"]}`
+        );
+      } else {
+        imgUrl = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievement["img"]}`;
+      }
+    }, index * 50);
   });
 </script>
 
@@ -57,7 +59,7 @@
     height: 100%;
   } */
 
-  achievement image {
+  /* achievement image {
     display: inline-block;
     position: relative;
     height: 64px;
@@ -79,7 +81,7 @@
     position: absolute;
     top: 0;
     left: 0;
-  }
+  } */
 
   imeru {
     height: 64px;
@@ -90,13 +92,36 @@
     background-color: #fff;
     height: 100%;
     width: 100%;
-    border: #333 5px solid;
+    border: #333 2px solid;
   }
 
   imeru img {
     height: 100%;
     width: 100%;
-    border: #333 5px solid;
+    border: transparent 2px solid;
+  }
+  imeru img[value="0"] {
+    border-color: #bd5c0e;
+  }
+  imeru img[value="1"] {
+    border-color: #a2b6b8;
+  }
+
+  imeru img[value="2"] {
+    border-color: #ffa601;
+  }
+
+  imeru img[value="3"] {
+    border-color: #bd5c0e;
+  }
+
+  imeru img[value="4"] {
+    border-color: #100e75;
+  }
+
+  img {
+    transform: scale(0) rotateZ(360deg);
+    transition: transform 0.75s cubic-bezier(0, 0, 0, 1.5);
   }
 </style>
 
@@ -105,6 +130,10 @@
   <name>{achievement.name}</name>
   <imeru grid="overlap">
     <placeholder />
-    <img src={imgUrl} alt="" />
+    <img
+      value={achievement['value']}
+      onload="this.setAttribute('loaded','true')"
+      src={imgUrl}
+      alt="" />
   </imeru>
 </achievement>

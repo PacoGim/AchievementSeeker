@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"devDependencies": {
-		"node-sass": "^4.12.0",
+		"node-sass": "^4.13.0",
 		"onchange": "^6.1.0",
 		"rimraf": "^3.0.0",
 		"typescript": "^3.6.4"

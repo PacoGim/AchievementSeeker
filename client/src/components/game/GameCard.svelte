@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  import { currentRoute } from "store/store.js";
+  // import { currentRoute } from "store/store.js";
 
   import Link from "components/Link.svelte";
 
@@ -53,7 +53,7 @@
   <Link rel="prefetch" id="game-link-{game['_id']}" to="/game/{game['_id']}">
     <picture>
       <source
-        srcset="http://localhost:443/images/header/{game._id}"
+        srcset="http://localhost:4000/images/header/{game._id}"
         type="image/webp" />
       <img
         src="https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/header.jpg"

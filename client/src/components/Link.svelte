@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import { router } from "store/store.js";
-  // import { setFancyBG } from "helpers/fancyBG.js";
 
   export let to;
   export let id;
@@ -10,18 +9,15 @@
   export let isActive = undefined;
   export let useClass = undefined;
   export let loadFancyBG = undefined;
-  let currentEl;
 
   onMount(() => {
-    currentEl = document.querySelector(`#${id}`);
-
     if (name === document.title) {
-      preRouting();
+      setCurrentRouteAsActive();
     }
   });
 
-  function preRouting() {
-    router.setRouteActive(name);
+  function setCurrentRouteAsActive() {
+    router.setActiveRoute(name);
   }
 </script>
 
@@ -37,20 +33,29 @@
     padding-bottom: 0.2rem;
     margin: 0 0.5rem;
     border-bottom: 2px solid transparent;
+    font-variation-settings: "XPRN" 0, "slnt" 1, "ital" 1;
 
-    transition: font-weight 0.3s, border-bottom 1s;
-  }
-  a.navbar-link:hover {
-    font-weight: 600;
+    transition: font-weight 0.3s, border-bottom 1s, font-variation-settings 0.3s;
   }
 
   a.navbar-link[isActive="true"] {
     pointer-events: none;
-    font-weight: 600;
     border-bottom: 2px solid #fff;
+  }
+
+  a.navbar-link:hover,
+  a.navbar-link[isActive="true"] {
+    font-variation-settings: "XPRN" 1, "slnt" -15, "ital" 1;
+    font-weight: 600;
   }
 </style>
 
-<a {id} class={useClass} {rel} href={to} {isActive} on:click={() => preRouting()}>
+<a
+  {id}
+  class={useClass}
+  {rel}
+  href={to}
+  {isActive}
+  on:click={() => setCurrentRouteAsActive()}>
   <slot />
 </a>

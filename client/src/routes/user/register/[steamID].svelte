@@ -7,6 +7,8 @@
   let avatar = "Loading...";
   let name = undefined;
 
+  const componentName = "Register";
+
   onMount(() => {
     setFancyBG(
       "#C81949",
@@ -27,7 +29,7 @@
 </script>
 
 <svelte:head>
-  <title>Register</title>
+  <title>{componentName}</title>
 </svelte:head>
 
 <register-step-2>

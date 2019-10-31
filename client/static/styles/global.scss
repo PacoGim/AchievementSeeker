@@ -5,12 +5,20 @@
 	src: url(./fonts/LeagueSpartanVariable.woff2);
 }
 
+@font-face {
+	font-family: 'Recursive';
+	src: url(./fonts/recursive.woff2) format('woff2-variations');
+	font-weight: 300 900;
+}
+
 :root {
-	--fancy-bg-color-1: #333;
-	--fancy-bg-color-2: #444;
-	--transform-1: skewY(0deg) translateY(0px);
-	--transform-2: skewY(0deg) translateY(0px);
-	--fancy-bg-opacity: 1;
+	// --fancy-bg-color-1: #333;
+	// --fancy-bg-color-2: #444;
+	// --fancy-bg-height: 50vh;
+	// --fancy-bg-width: 100vw;
+	// --fancy-bg-transform-1: skewY(0deg) translateY(-50vh);
+	// --fancy-bg-transform-2: skewY(0deg) translateY(-50vh);
+	// --fancy-bg-opacity: 1;
 }
 
 * {
@@ -21,17 +29,25 @@
 
 body {
 	overflow-x: hidden;
-	font-family: 'League Spartan', Arial;
+	font-family: 'Recursive', Arial;
 	color: #fff;
 	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
-	// background-color: #eee;
+	background-color: #141a24;
+}
+
+achievement imeru img[loaded='true'] {
+	// opacity: 1;
+	transform: scale(1) rotateZ(0deg);
 }
 
 @supports (font-variation-settings: normal) {
 	body {
-		font-family: 'League Spartan', Arial;
+		font-variation-settings: 'MONO' 1, 'XPRN' 0, 'slnt' 0, 'ital' 0;
+		font-family: 'Recursive', Arial;
+
+		// font-family: 'League Spartan', Arial;
 	}
 }

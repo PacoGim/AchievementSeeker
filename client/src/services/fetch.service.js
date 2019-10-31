@@ -3,8 +3,7 @@ import fetch from "node-fetch";
 
 const serverURL = `http://localhost:4000`
 
-export function gqlFetch(notThis, query) {
-	console.log(query)
+export function gqlFetch(query) {
 	return new Promise(async (resolve, reject) => {
 		let response = await fetch(`${serverURL}/graphql?query=${query}`).catch(err => {
 			console.log(err)

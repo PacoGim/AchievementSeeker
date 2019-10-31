@@ -45,6 +45,8 @@
 
   import { setFancyBG } from "services/fancyBG.service.js";
 
+  const componentName = "Register";
+
   onMount(() => {
     setFancyBG(
       "#C81949",
@@ -56,7 +58,7 @@
 </script>
 
 <svelte:head>
-  <title>Register</title>
+  <title>{componentName}</title>
 </svelte:head>
 
 <register flex="align-center direction-column" shadow>

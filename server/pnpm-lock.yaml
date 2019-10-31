@@ -5,15 +5,17 @@ dependencies:
   dotenv: 8.2.0
   fs-extra: 8.1.0
   graphql: 14.5.8
-  koa: 2.10.0
+  koa: 2.11.0
   koa-body: 4.1.1
   koa-graphql: 0.8.0_graphql@14.5.8
   koa-mount: 4.0.0
   koa-passport: 4.1.3
   koa-router: 7.4.0
   koa-send: 5.0.0
+  koa-static: 5.0.0
   koa2-cors: 2.0.6
   mongodb: 3.3.3
+  node-fetch: 2.6.0
   passport-openid: 0.4.0
   passport-steam: 1.0.11
   reflect-metadata: 0.1.13
@@ -28,7 +30,7 @@ devDependencies:
   '@types/koa-router': 7.0.42
   '@types/koa-send': 4.1.2
   '@types/mongodb': 3.3.6
-  '@types/node': 12.11.2
+  '@types/node': 12.11.7
   '@types/node-fetch': 2.5.2
   '@types/sharp': 0.23.0
 lockfileVersion: 5.1
@@ -50,7 +52,7 @@ packages:
       integrity: sha512-2KhFjtPueJG6xVj2HnqXt9BlANOfYCVLyu+pXYjPGBDT8yk+vQwc/6tsceIj+mayKcoxMau2JimggXRPHgoc8w==
   /@types/accepts/1.3.5:
     dependencies:
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-jOdnI/3qTpHABjM5cx1Hc0sKsPoYCp+DP/GJRGtDlPd7fiV9oXGGIcjW/ZOxLIvjGz8MA+uMZI9metHlgqbgwQ==
@@ -61,19 +63,19 @@ packages:
   /@types/body-parser/1.17.1:
     dependencies:
       '@types/connect': 3.4.32
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-RoX2EZjMiFMjZh9lmYrwgoP9RTpAjSHiJxdp4oidAQVO02T7HER3xj9UKue5534ULWeqVEkujhWcyvUce+d68w==
   /@types/bson/4.0.0:
     dependencies:
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-pq/rqJwJWkbS10crsG5bgnrisL8pML79KlMKQMoQwLUjlPAkrUHMvHJ3oGwE7WHR61Lv/nadMwXVAD2b+fpD8Q==
   /@types/connect/3.4.32:
     dependencies:
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-4r8qa0quOvh7lGD0pre62CAb1oni1OO6ecJLGCezTmhQ8Fz50Arx9RUszryR8KlgK6avuSXvviL6yWyViQABOg==
@@ -82,7 +84,7 @@ packages:
       '@types/connect': 3.4.32
       '@types/express': 4.17.1
       '@types/keygrip': 1.0.1
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-oTGtMzZZAVuEjTwCjIh8T8FrC8n/uwy+PG0yTvQcdZ7etoel7C7/3MSd7qrukENTgQtotG7gvBlBojuVs7X5rw==
@@ -92,7 +94,7 @@ packages:
       integrity: sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
   /@types/express-serve-static-core/4.16.10:
     dependencies:
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
       '@types/range-parser': 1.2.3
     dev: true
     resolution:
@@ -108,13 +110,13 @@ packages:
   /@types/formidable/1.0.31:
     dependencies:
       '@types/events': 3.0.0
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: false
     resolution:
       integrity: sha512-dIhM5t8lRP0oWe2HF8MuPvdd1TpPTjhDMAqemcq6oIZQCBQTovhBAdTQ5L5veJB4pdQChadmHuxtB0YzqvfU3Q==
   /@types/fs-extra/8.0.1:
     dependencies:
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-J00cVDALmi/hJOYsunyT52Hva5TnJeKP5yd1r+mH/ZU0mbYZflR0Z5kw5kITtKTRYMhm1JMClOFYdHnQszEvqw==
@@ -122,7 +124,7 @@ packages:
     dependencies:
       '@types/events': 3.0.0
       '@types/minimatch': 3.0.3
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: false
     resolution:
       integrity: sha512-1Bh06cbWJUHMC97acuD6UMG29nMt0Aqz1vF3guLfG+kHHJhy3AyohZFFxYk2f7Q1SQIrNwvncxAE0N/9s70F2w==
@@ -166,7 +168,7 @@ packages:
       '@types/http-assert': 1.5.1
       '@types/keygrip': 1.0.1
       '@types/koa-compose': 3.2.4
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-L5e/l6Z+SR9Jk6HM0wNYdkvWhSUBOvi+7Q5Uwn7kE/VmBXX7NIxARMigARWAyXAtXiv5Ry1P2HmebolFdvuIVg==
@@ -181,19 +183,19 @@ packages:
   /@types/mongodb/3.3.6:
     dependencies:
       '@types/bson': 4.0.0
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-bPv0lGnkL/iOoA+GSAcS5ad9QyPc/rW547vrF5j+AKX4spaMZgpaCWQ4D6ipVSN6OKuks3ueCFEPinyJJSk2zA==
   /@types/node-fetch/2.5.2:
     dependencies:
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-djYYKmdNRSBtL1x4CiE9UJb9yZhwtI1VC+UxZD0psNznrUj80ywsxKlEGAE+QL1qvLjPbfb24VosjkYM6W4RSQ==
-  /@types/node/12.11.2:
+  /@types/node/12.11.7:
     resolution:
-      integrity: sha512-dsfE4BHJkLQW+reOS6b17xhZ/6FB1rB8eRRvO08nn5o+voxf3i74tuyFWNH6djdfgX7Sm5s6LD8t6mJug4dpDw==
+      integrity: sha512-JNbGaHFCLwgHn/iCckiGSOZ1XYHsKFwREtzPwSGCVld1SGhOlmZw2D4ZI94HQCrBHbADzW9m4LER/8olJTRGHA==
   /@types/passport/1.0.1:
     dependencies:
       '@types/express': 4.17.1
@@ -204,10 +206,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
-  /@types/semver/6.0.2:
+  /@types/semver/6.2.0:
     dev: false
     resolution:
-      integrity: sha512-G1Ggy7/9Nsa1Jt2yiBR2riEuyK2DFNnqow6R7cromXPMNynackRY1vqFTLz/gwnef1LHokbXThcPhqMRjUbkpQ==
+      integrity: sha512-1OzrNb4RuAzIT7wHSsgZRlMBlNsJl+do6UblR7JMW4oB7bbR+uBEYtUh7gEc/jM84GGilh68lSOokyM/zNUlBA==
   /@types/serve-static/1.13.3:
     dependencies:
       '@types/express-serve-static-core': 4.16.10
@@ -217,7 +219,7 @@ packages:
       integrity: sha512-oprSwp094zOglVrXdlo/4bAHtKTAxX6VT8FOZlBKrmyLbNvE1zxZyJ6yikMVtHIvwP45+ZQGJn+FdXGKTozq0g==
   /@types/sharp/0.23.0:
     dependencies:
-      '@types/node': 12.11.2
+      '@types/node': 12.11.7
     dev: true
     resolution:
       integrity: sha512-lZxg80QILInYfuh1RIqd4+s+zprqs8Z7w7Pd5fNDlQdlgND5wb9bM/S5TqElwCUxegL2rafuBstu89aPhcl4IQ==
@@ -645,7 +647,7 @@ packages:
       integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==
   /fs-extra/8.1.0:
     dependencies:
-      graceful-fs: 4.2.2
+      graceful-fs: 4.2.3
       jsonfile: 4.0.0
       universalify: 0.1.2
     dev: false
@@ -703,10 +705,10 @@ packages:
       node: '>=0.10'
     resolution:
       integrity: sha512-6QCQAaKJlSd/1dUqvdQf7zzfb3uiZHsG8yhCfOdCVRfMuPZ/VDIEB47y5SYwjPQJPs7ebfW5jj6PeobB9JJ4JA==
-  /graceful-fs/4.2.2:
+  /graceful-fs/4.2.3:
     dev: false
     resolution:
-      integrity: sha512-IItsdsea19BoLC7ELy13q1iJFNmd7ofZH5+X/pJr90/nRoPEX0DJo1dHDbgtYWOhJhcCgMDTOw84RZ72q6lB+Q==
+      integrity: sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
   /graphql-query-complexity/0.3.0_graphql@14.5.8:
     dependencies:
       graphql: 14.5.8
@@ -885,7 +887,7 @@ packages:
   /jsonfile/4.0.0:
     dev: false
     optionalDependencies:
-      graceful-fs: 4.2.2
+      graceful-fs: 4.2.3
     resolution:
       integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
   /jsprim/1.4.1:
@@ -948,10 +950,6 @@ packages:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0
     resolution:
       integrity: sha512-mzXQjRQxcxKM78Ds/0/JEfy4DCt+ZxLKhCjjWsqpLtXie/b8LeF1MGiLYRIMKaw61ZbODLs3+WMdf1DJn1KhEA==
-  /koa-is-json/1.0.0:
-    dev: false
-    resolution:
-      integrity: sha1-JzwH7c3Ljfaiwat9We52SRRR7BQ=
   /koa-mount/4.0.0:
     dependencies:
       debug: 4.1.1
@@ -993,7 +991,16 @@ packages:
       node: '>= 7.6.0'
     resolution:
       integrity: sha512-90ZotV7t0p3uN9sRwW2D484rAaKIsD8tAVtypw/aBU+ryfV+fR2xrcAwhI8Wl6WRkojLUs/cB9SBSCuIb+IanQ==
-  /koa/2.10.0:
+  /koa-static/5.0.0:
+    dependencies:
+      debug: 3.2.6
+      koa-send: 5.0.0
+    dev: false
+    engines:
+      node: '>= 7.6.0'
+    resolution:
+      integrity: sha512-UqyYyH5YEXaJrf9S8E23GoJFQZXkBVJ9zYYMPGz919MSX1KuvAcycIuS0ci150HCoPf4XQVhQ84Qf8xRPWxFaQ==
+  /koa/2.11.0:
     dependencies:
       accepts: 1.3.7
       cache-content-type: 1.0.1
@@ -1013,7 +1020,6 @@ packages:
       is-generator-function: 1.0.7
       koa-compose: 4.1.0
       koa-convert: 1.2.0
-      koa-is-json: 1.0.0
       on-finished: 2.3.0
       only: 0.0.2
       parseurl: 1.3.3
@@ -1024,7 +1030,7 @@ packages:
     engines:
       node: ^4.8.4 || ^6.10.1 || ^7.10.1 || >= 8.1.4
     resolution:
-      integrity: sha512-vcZopGEWHDokchYtjU6jF1BCy+2MA2hnvGP7xPi26qWoIS0OiAUb4+lCqkqf05qG5ULnGYUFTvFnSK9RyOoiKw==
+      integrity: sha512-EpR9dElBTDlaDgyhDMiLkXrPwp6ZqgAIBvhhmxQ9XN4TFgW+gEz6tkcsNI6BnUbUftrKDjVFj4lW2/J2aNBMMA==
   /koa2-cors/2.0.6:
     dev: false
     engines:
@@ -1154,6 +1160,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-VhPBXCIcvmo/5K8HPmnWJyyhvgKxnHTUMXR/XwGHV68+wrgkzST4UmQrY/XszSWA5dtnXpNp528zkcyJ/pzVcw==
+  /node-fetch/2.6.0:
+    dev: false
+    engines:
+      node: 4.x || >=6.0.0
+    resolution:
+      integrity: sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
   /noop-logger/0.1.1:
     dev: false
     resolution:
@@ -1685,8 +1697,8 @@ packages:
   /type-graphql/0.17.5_graphql@14.5.8:
     dependencies:
       '@types/glob': 7.1.1
-      '@types/node': 12.11.2
-      '@types/semver': 6.0.2
+      '@types/node': 12.11.7
+      '@types/semver': 6.2.0
       class-validator: 0.10.2
       glob: 7.1.5
       graphql: 14.5.8
@@ -1797,7 +1809,7 @@ specifiers:
   '@types/koa-router': ^7.0.42
   '@types/koa-send': ^4.1.2
   '@types/mongodb': ^3.3.6
-  '@types/node': ^12.11.2
+  '@types/node': ^12.11.7
   '@types/node-fetch': ^2.5.2
   '@types/sharp': ^0.23.0
   base64-arraybuffer: ^0.2.0
@@ -1806,15 +1818,17 @@ specifiers:
   dotenv: ^8.2.0
   fs-extra: ^8.1.0
   graphql: ^14.5.8
-  koa: ^2.10.0
+  koa: ^2.11.0
   koa-body: ^4.1.1
   koa-graphql: ^0.8.0
   koa-mount: ^4.0.0
   koa-passport: ^4.1.3
   koa-router: ^7.4.0
   koa-send: ^5.0.0
+  koa-static: ^5.0.0
   koa2-cors: ^2.0.6
   mongodb: ^3.3.3
+  node-fetch: ^2.6.0
   passport-openid: ^0.4.0
   passport-steam: ^1.0.11
   reflect-metadata: ^0.1.13

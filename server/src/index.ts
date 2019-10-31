@@ -5,6 +5,7 @@ import path from 'path'
 // KoaJS Imports
 import Koa from 'koa'
 const mount = require('koa-mount')
+const serve = require('koa-static');
 const passport = require('koa-passport')
 const SteamStrategy = require('passport-steam').Strategy
 
@@ -28,7 +29,7 @@ import { DBConnector } from './db/index'
 //Url Cache
 import { getCacheUrl } from './url-cache'
 
-async function startApp() {
+async function main() {
 	const app = new Koa()
 	const port: number = Number(process.env.PORT) || 4000
 
@@ -52,6 +53,9 @@ async function startApp() {
 	)
 
 	app.use(passport.initialize())
+
+	// Serve static public folder
+	app.use(serve(path.join(__dirname,'../public')));
 
 	app.use(async (ctx, next) => {
 		const startDate: number = Number(new Date())
@@ -111,4 +115,4 @@ async function startApp() {
 	// 	})
 }
 
-startApp()
+main()

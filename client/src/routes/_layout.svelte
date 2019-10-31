@@ -3,7 +3,7 @@
 
   import { isWebpSupported } from "helpers/functions.js";
 
-  import { currentRoute } from "store/store.js";
+  import { router } from "store/store.js";
 
   import Navbar from "components/Navbar.svelte";
   import FancyBG from "components/FancyBG.svelte";
@@ -34,6 +34,6 @@
 <app>
   <Navbar />
   <FancyBG />
-  <route-name flex="justify-center align-center">{$currentRoute}</route-name>
+  <route-name flex="justify-center align-center">{$router['currentRoute']}</route-name>
   <slot />
 </app>

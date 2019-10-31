@@ -78,6 +78,7 @@ interface IFilterOptionObject {
 interface ISortOptionObject {
 	'difficulty.average'?: number
 	trend?: number
+	name?: number
 }
 /* #endregion */
 
@@ -112,7 +113,7 @@ export default class {
 			}
 
 			if (filterBy['difficulty'] !== undefined) {
-				filter['difficulty.average'] = { $gte: filterBy['difficulty'], $lt: filterBy['difficulty'] + 10 }
+				filter['difficulty.average'] = { $gte: filterBy['difficulty'], $lt: filterBy['difficulty'] }
 			}
 
 			if (filterBy['year'] !== undefined) {
@@ -131,6 +132,10 @@ export default class {
 
 			if (sortBy['trend'] !== undefined) {
 				sort['trend'] = sortBy['trend']
+			}
+
+			if (sortBy['name'] !== undefined) {
+				sort['name'] = sortBy['name']
 			}
 		}
 
