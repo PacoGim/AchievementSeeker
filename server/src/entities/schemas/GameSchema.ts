@@ -33,3 +33,11 @@ export class GraphQLGame {
 	@Field(type => Int) version: number
 	@Field(type => Int) visitCount: number
 }
+
+@ObjectType()
+export class GraphQLSearchGame {
+	@Field() _id: string
+	@Field(type => [String]) alias: string[]
+	@Field(type => Int) appid: number
+	@Field() name: string
+}

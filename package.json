@@ -4,10 +4,12 @@
 	"description": "",
 	"main": "index.js",
 	"devDependencies": {
+		"concurrently": "^5.0.0",
 		"node-sass": "^4.13.0",
+		"nodemon": "^1.19.4",
 		"onchange": "^6.1.0",
 		"rimraf": "^3.0.0",
-		"typescript": "^3.6.4"
+		"typescript": "^3.7.0-beta"
 	},
 	"scripts": {
 		"server": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\"",

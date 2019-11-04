@@ -2,7 +2,7 @@ import { Resolver, Query, Arg, FieldResolver, Root, Args, ArgsType, Field, Objec
 import GameCollection from '../db/collections/GameCollection'
 import { IGame, Platform } from '../entities/GameEntity'
 import { Max } from 'class-validator'
-import { GraphQLGame } from '../entities/schemas/GameSchema'
+import { GraphQLGame, GraphQLSearchGame } from '../entities/schemas/GameSchema'
 
 registerEnumType(Platform, {
 	name: 'Platform',
@@ -16,6 +16,8 @@ export class QuerySortBy {
 	@Field({ nullable: true }) releaseDate: number
 	@Field({ nullable: true }) achievementCount: number
 	@Field({ nullable: true }) difficulty: number
+	@Field({ nullable: true }) year: number
+	@Field({ nullable: true }) month: number
 	@Field({ nullable: true }) trend: number
 }
 /* #endregion */
@@ -79,6 +81,8 @@ interface ISortOptionObject {
 	'difficulty.average'?: number
 	trend?: number
 	name?: number
+	'releaseDateSplit.month'?: number
+	'releaseDateSplit.year'?: number
 }
 /* #endregion */
 
@@ -126,18 +130,31 @@ export default class {
 		}
 
 		if (sortBy !== undefined) {
+
+			console.log(sortBy)
+
 			if (sortBy['difficulty'] !== undefined) {
 				sort['difficulty.average'] = sortBy['difficulty']
-			}
-
-			if (sortBy['trend'] !== undefined) {
-				sort['trend'] = sortBy['trend']
 			}
 
 			if (sortBy['name'] !== undefined) {
 				sort['name'] = sortBy['name']
 			}
+
+			if (sortBy['year'] !== undefined) {
+				sort['releaseDateSplit.year'] = sortBy['year']
+			}
+
+			if (sortBy['month'] !== undefined) {
+				sort['releaseDateSplit.month'] = sortBy['month']
+			}
+
+			if (sortBy['trend'] !== undefined) {
+				sort['trend'] = sortBy['trend']
+			}
 		}
+
+		console.log(sort)
 
 		return await GameCollection.get()
 			.find(filter)

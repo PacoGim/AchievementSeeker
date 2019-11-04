@@ -13,5 +13,7 @@
 			"path": "server"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"typescript.tsdk": "achievement-seeker\\node_modules\\typescript\\lib"
+	}
 }

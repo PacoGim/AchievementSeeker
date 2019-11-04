@@ -2,10 +2,9 @@
   import { getGameListGames } from "services/graphql.service.js";
   export async function preload({ params, query }) {
     let games = await getGameListGames({
-      sort: "{trend:-1}",
-      filter: `{year:${new Date().getUTCFullYear()} month:${new Date().getUTCMonth() +
-        1}}`
+      sort: "{year:-1,month:-1,trend:-1}"
     });
+
     return { games };
   }
 </script>

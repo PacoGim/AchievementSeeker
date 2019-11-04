@@ -12,6 +12,16 @@ export function gqlFetch(query) {
 	})
 }
 
+export function fetchServer() {
+	return new Promise((resolve, reject) => {
+		fetch(`http://localhost:4000/games/allgames`)
+			.then(res => res.json())
+			.then(data => {
+				resolve(data)
+			});
+	})
+}
+
 export function fetchImage(url) {
 	return new Promise((resolve, reject) => {
 		if (getCache(url) !== undefined) {

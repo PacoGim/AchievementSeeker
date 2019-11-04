@@ -1,38 +1,32 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
+  import { fetchServer } from "services/fetch.service.js";
 
   let searchGameInput = "";
-  let gameSearchHistory = [];
+  let gameList = [];
+  let gameFiltered = [];
+  let timeout;
 
-  onMount(() => {
-    let localStoredGameSearchHistory = localStorage.getItem(
-      "GameSearchHistory"
-    );
-
-    if (localStoredGameSearchHistory !== null) {
-      gameSearchHistory = JSON.parse(localStoredGameSearchHistory);
-    }
+  onMount(async () => {
+    gameList = await fetchServer("/allGames");
+    searchGame();
   });
 
+  $: {
+    searchGameInput;
+    searchGame();
+  }
+
   function searchGame() {
-    console.log(searchGameInput);
-
-    let localStoredGameSearchHistory = localStorage.getItem(
-      "GameSearchHistory"
-    );
-
-    if (localStoredGameSearchHistory !== null) {
-      localStoredGameSearchHistory = JSON.parse(
-        localStoredGameSearchHistory
-      ).push(searchGameInput);
-    } else {
-      localStoredGameSearchHistory = [searchGameInput];
+    gameFiltered = [];
+    clearInterval(timeout);
+    if (searchGameInput !== "" && searchGameInput !== undefined) {
+      timeout = setTimeout(() => {
+        gameFiltered = gameList.filter(game =>
+          game["name"].toLowerCase().includes(searchGameInput.toLowerCase())
+        );
+      }, 1000);
     }
-
-    localStorage.setItem(
-      "GameSearchHistory",
-      JSON.stringify(localStoredGameSearchHistory)
-    );
   }
 </script>
 
@@ -42,7 +36,7 @@
     width: 33vw;
   }
 
-  search-box icon {
+  search-box search-icon {
     height: inherit;
     width: auto;
     background: #fff;
@@ -75,17 +69,13 @@
   }
 
   search-input input:focus ~ search-input-placeholder,
-  search-input input:not([value=""]) ~ search-input-placeholder {
+  search-input input[value] ~ search-input-placeholder {
     transform: translateY(-40px);
     font-size: 0.85rem;
   }
 
   search-input input:focus ~ search-input-placeholder span #here-now::after,
-  search-input
-    input:not([value=""])
-    ~ search-input-placeholder
-    span
-    #here-now::after {
+  search-input input[value] ~ search-input-placeholder span #here-now::after {
     content: "now";
   }
 
@@ -102,6 +92,7 @@
   }
 </style>
 
+<!--         on:input={searchGame} -->
 <game-search>
   <search-box flex="direction-row align-center">
     <search-input grid="overlap">
@@ -109,17 +100,13 @@
         list="gameSearchHistory"
         font="white"
         type="text"
-        value=""
-        oninput="this.setAttribute('value',this.value)"
-        on:keypress={evt => {
-          if (evt['keyCode'] === 13) searchGame();
-        }}
+        oninput="this.value===''?this.removeAttribute('value'):this.setAttribute('value',this.value)"
         bind:value={searchGameInput} />
-      <datalist id="gameSearchHistory">
+      <!-- <datalist id="gameSearchHistory">
         {#each gameSearchHistory as game}
           <option value={game} />
         {/each}
-      </datalist>
+      </datalist> -->
       <search-input-placeholder flex="align-center justify-center" font="white">
         <span>
           Type
@@ -129,8 +116,13 @@
         <span font="italic bold">&nbsp;&nbsp;Search for Games</span>
       </search-input-placeholder>
     </search-input>
-    <icon on:click={searchGame}>
+    <search-icon>
       <img class="icon" icon="fit-height" src="icons/search.svg" alt="" />
-    </icon>
+    </search-icon>
   </search-box>
+  <game-list>
+    {#each gameFiltered as game}
+      <p>{game['name']}</p>
+    {/each}
+  </game-list>
 </game-search>

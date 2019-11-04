@@ -5,7 +5,7 @@ import path from 'path'
 // KoaJS Imports
 import Koa from 'koa'
 const mount = require('koa-mount')
-const serve = require('koa-static');
+const serve = require('koa-static')
 const passport = require('koa-passport')
 const SteamStrategy = require('passport-steam').Strategy
 
@@ -55,7 +55,7 @@ async function main() {
 	app.use(passport.initialize())
 
 	// Serve static public folder
-	app.use(serve(path.join(__dirname,'../public')));
+	app.use(serve(path.join(__dirname, '../public')))
 
 	app.use(async (ctx, next) => {
 		const startDate: number = Number(new Date())
@@ -65,8 +65,7 @@ async function main() {
 		ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
 		ctx.set('X-XSS-Protection', '1; mode=block')
 		await next()
-
-		console.log(`${ctx['req']['url']} served in ${Number(new Date()) - startDate} ms`)
+		if (ctx['req']['url']) console.log(`${decodeURI(ctx['req']['url'])} served in ${Number(new Date()) - startDate} ms`)
 	})
 
 	app.use(async (ctx, next) => {
