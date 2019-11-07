@@ -16,6 +16,7 @@ const router = new Router({ prefix: '/images' })
 
 // GET - Params: type: string, id:string
 router.get('/:type/:id', async (ctx: ParameterizedContext) => {
+
 	// ctx.set('Cache-Control', 'public, max-age=604421')
 
 	let { type, id }: { type: string; id: string } = ctx['params']
@@ -51,14 +52,14 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 		}
 	} else if (type === 'background') {
 		// Fetches the game by _id. Gets only the appid and backgrounds.
-		let game = await GameCollection.get().findOne({ _id: id })
+		// let game = await GameCollection.get().findOne({ _id: id })
 
-		if (!game) {
-			ctx.status = 404
-			ctx.set('Content-Type', 'application/json')
-			ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
-			return
-		}
+		// if (!game) {
+		// 	ctx.status = 404
+		// 	ctx.set('Content-Type', 'application/json')
+		// 	ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
+		// 	return
+		// }
 
 		let { appid, backgrounds } = game
 
@@ -95,6 +96,9 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 		fetchAndSaveImage(fetchUrl, dirPath, fullPath).catch()
 	} else {
 		ctx.set('Content-Type', 'image/webp')
+
+		ctx.set('Cache-Control','max-age=604800')
+
 		// Sends back to the user the raw image.
 		await send(ctx, fullPath, { root: '/' })
 	}

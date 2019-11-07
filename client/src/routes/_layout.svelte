@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
 
-  import { isWebpSupported } from "helpers/functions.js";
+  import { isWebpSupported } from "services/helper.service.js"
 
   import { router } from "store/store.js";
 
@@ -15,7 +15,9 @@
   });
 </script>
 
-<style>
+<style lang="scss" global>
+  @import "assets/styles/global.scss";
+
   route-name {
     height: 40vh;
     font-size: 3rem;
@@ -34,6 +36,8 @@
 <app>
   <Navbar />
   <FancyBG />
-  <route-name flex="justify-center align-center">{$router['currentRoute']}</route-name>
+  <route-name flex="justify-center align-center">
+    {$router['currentRoute']}
+  </route-name>
   <slot />
 </app>

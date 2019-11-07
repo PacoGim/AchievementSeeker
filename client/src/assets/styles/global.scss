@@ -2,13 +2,13 @@
 
 @font-face {
 	font-family: 'League Spartan';
-	src: url(./fonts/LeagueSpartanVariable.woff2);
+	src: url(fonts/LeagueSpartanVariable.woff2);
 }
 
 @font-face {
 	font-family: 'Recursive';
-	src: url(./fonts/recursive.woff2) format('woff2-variations');
-	font-weight: 300 900;
+	src: url(../fonts/recursive.woff2) format('woff2-variations');
+	font-weight: 300 1000;
 }
 
 :root {
@@ -45,7 +45,7 @@ achievement imeru img[loaded='true'] {
 
 @supports (font-variation-settings: normal) {
 	body {
-		font-variation-settings: 'MONO' 1, 'XPRN' 0, 'slnt' 0, 'ital' 0;
+		font-variation-settings: 'MONO' 0.5, 'CASL' 0, 'ital' 1, 'slnt' 0;
 		font-family: 'Recursive', Arial;
 
 		// font-family: 'League Spartan', Arial;

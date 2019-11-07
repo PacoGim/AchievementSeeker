@@ -14,11 +14,33 @@ export function gqlFetch(query) {
 
 export function fetchServer() {
 	return new Promise((resolve, reject) => {
-		fetch(`http://localhost:4000/games/allgames`)
+		fetch(`${serverURL}/games/allgames`)
 			.then(res => res.json())
 			.then(data => {
 				resolve(data)
 			});
+	})
+}
+
+export function fetchGameHeaderImage(gameID) {
+	return new Promise((resolve, reject) => {
+
+		fetch(`${serverURL}/images/header/${gameID}`)
+			.then(res => {
+				const contentType = res.headers.get('Content-Type')
+
+				if (contentType === 'image/webp') {
+					res.arrayBuffer().then(imageBuffer => {
+						const arrayBufferView = new Uint8Array(imageBuffer)
+						const blob = new Blob([arrayBufferView], { type: 'image/webp' })
+						const urlCreator = window.URL || window.webkitURL
+						const imageUrl = urlCreator.createObjectURL(blob)
+						resolve(imageUrl)
+					})
+				} else {
+					res.text().then(imageUrl => resolve(imageUrl))
+				}
+			})
 	})
 }
 

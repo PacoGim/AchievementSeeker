@@ -1,4 +1,4 @@
-import { genNum, isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl } from 'helpers/functions.js'
+import { genNum, isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl } from 'services/helper.service.js'
 
 export function getGameBackground(id, appid, backgrounds) {
 	return new Promise(async (resolve, reject) => {

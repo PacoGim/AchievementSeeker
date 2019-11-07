@@ -16,9 +16,11 @@ export class QuerySortBy {
 	@Field({ nullable: true }) releaseDate: number
 	@Field({ nullable: true }) achievementCount: number
 	@Field({ nullable: true }) difficulty: number
-	@Field({ nullable: true }) year: number
-	@Field({ nullable: true }) month: number
+	@Field({ nullable: true }) score: number
+	@Field({ nullable: true }) points: number
 	@Field({ nullable: true }) trend: number
+	@Field({ nullable: true }) month: number
+	@Field({ nullable: true }) year: number
 }
 /* #endregion */
 
@@ -41,7 +43,7 @@ class GetGamesArgs {
 	@Field(type => Int, { defaultValue: 0 })
 	skip: number
 
-	@Field(type => Int)
+	@Field(type => Int, { nullable: true, defaultValue: 20 })
 	@Max(40)
 	limit: number
 
@@ -78,6 +80,10 @@ interface IFilterOptionObject {
 
 /* #region  Interface SortOptionObject */
 interface ISortOptionObject {
+	score?: number
+	releaseDate?: number
+	achievementCount?: number
+	points?: number
 	'difficulty.average'?: number
 	trend?: number
 	name?: number
@@ -131,7 +137,26 @@ export default class {
 
 		if (sortBy !== undefined) {
 
-			console.log(sortBy)
+			if (sortBy['year'] !== undefined) {
+				sort['releaseDateSplit.year'] = sortBy['year']
+			}
+
+			if (sortBy['month'] !== undefined) {
+				sort['releaseDateSplit.month'] = sortBy['month']
+			}
+
+			if (sortBy['releaseDate'] !== undefined) {
+				sort['releaseDate'] = sortBy['releaseDate']
+			}
+
+
+			if (sortBy['points'] !== undefined) {
+				sort['points'] = sortBy['points']
+			}
+
+			if (sortBy['achievementCount'] !== undefined) {
+				sort['achievementCount'] = sortBy['achievementCount']
+			}
 
 			if (sortBy['difficulty'] !== undefined) {
 				sort['difficulty.average'] = sortBy['difficulty']
@@ -141,17 +166,14 @@ export default class {
 				sort['name'] = sortBy['name']
 			}
 
-			if (sortBy['year'] !== undefined) {
-				sort['releaseDateSplit.year'] = sortBy['year']
-			}
-
-			if (sortBy['month'] !== undefined) {
-				sort['releaseDateSplit.month'] = sortBy['month']
+			if (sortBy['score'] !== undefined) {
+				sort['score'] = sortBy['score']
 			}
 
 			if (sortBy['trend'] !== undefined) {
 				sort['trend'] = sortBy['trend']
 			}
+
 		}
 
 		console.log(sort)

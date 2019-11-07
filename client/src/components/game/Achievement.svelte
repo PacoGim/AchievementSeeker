@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
-  import { isWebpSupported } from "helpers/functions.js";
+
+  import { isWebpSupported } from "services/helper.service.js";
   import { fetchImage } from "services/fetch.service.js";
 
   export let achievement;
@@ -12,15 +13,15 @@
 
   onMount(async () => {
     setTimeout(async () => {
-      await isWebpSupported();
-
-      if (window.isWebpSupported) {
-        imgUrl = await fetchImage(
-          `http://localhost:4000/images/achievement/${gameId}/${achievement["_id"]}`
-        );
-      } else {
-        imgUrl = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievement["img"]}`;
-      }
+      isWebpSupported().then(async isSupported => {
+        if (isSupported) {
+          imgUrl = await fetchImage(
+            `http://localhost:4000/images/achievement/${gameId}/${achievement["_id"]}`
+          );
+        } else {
+          imgUrl = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievement["img"]}`;
+        }
+      });
     }, index * 50);
   });
 </script>

@@ -29,16 +29,27 @@ import { DBConnector } from './db/index'
 //Url Cache
 import { getCacheUrl } from './url-cache'
 
-async function main() {
-	const app = new Koa()
-	const port: number = Number(process.env.PORT) || 4000
-
+function connectToDB() {
 	new DBConnector()
 		.connect()
-		.on('err', (err: string) => console.log(err))
+		.on('err', (err: Error) => {
+			if (err['name'] === 'MongoTimeoutError') {
+				console.log('Warning! MongoDB is unreachable. Trying to connect again in 10 seconds...')
+				setTimeout(() => {
+					connectToDB()
+				}, 10000);
+			}
+		})
 		.on('connected', async () => {
 			console.log('Server connected to MongoDB!')
 		})
+}
+
+async function main() {
+	connectToDB()
+	const app = new Koa()
+	const port: number = Number(process.env.PORT) || 4000
+
 
 	const schema = await buildSchema({
 		resolvers: [GameResolver, DeveloperResolver, PublisherResolver, GenreResolver],

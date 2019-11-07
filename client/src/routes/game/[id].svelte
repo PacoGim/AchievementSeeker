@@ -23,7 +23,7 @@
     getGameBackground,
     getGameLogo,
     getSafeFolderName
-  } from "helpers/game.helper.js";
+  } from "services/game.service.js";
 
   import Achievement from "components/game/Achievement.svelte";
 

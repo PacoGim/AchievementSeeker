@@ -1,23 +1,43 @@
 import { gqlFetch } from 'services/fetch.service.js'
 
 export function getGame({ id }) {
-	return new Promise(async (resolve, reject) => {
-		gqlFetch(getGameQuery(id))
-			.then(res => res.json())
-			.then(game => resolve(game['data']['gameById']))
-	})
+  return new Promise(async (resolve, reject) => {
+    gqlFetch(getGameQuery(id))
+      .then(res => res.json())
+      .then(game => resolve(game['data']['gameById']))
+  })
 }
 
-export function getGameListGames({ limit = 20, sort = '{}', filter = '{}' }) {
-	return new Promise(async (resolve, reject) => {
-		gqlFetch(getQueryGameList(limit, sort, filter))
-			.then(res => res.json())
-			.then(game => resolve(game["data"]["games"]))
-	})
+export function getGameListGames({ limit = 20, skip = 0, sort = '{}', filter = '{}' }) {
+  return new Promise(async (resolve, reject) => {
+    gqlFetch(getGameListQuery(limit, skip, sort, filter))
+      .then(res => res.json())
+      .then(games => resolve(games["data"]["games"]))
+  })
+}
+
+const defaultQuery = `_id appid name`
+
+export function getGameSearchGames({ query = defaultQuery, limit = 20, skip = 0, sort = {}, filter = {} }) {
+  return new Promise((resolve, reject) => {
+    gqlFetch(getGameSearchQuery(query, skip, limit, sort, filter))
+      .then(res => res.json())
+      .then(game => resolve(game["data"]["games"]))
+  })
+}
+
+function getGameSearchQuery(query, skip, limit, sort, filter) {
+  return `
+    {
+      games(limit: ${limit},skip:${skip}, sortBy: ${sort},filterBy:${filter}) {
+        ${query}
+      }
+    }
+  `
 }
 
 function getGameQuery(id) {
-	return `
+  return `
     {
       gameById(id:"${id}"){
         name
@@ -33,10 +53,10 @@ function getGameQuery(id) {
   `
 }
 
-function getQueryGameList(limit, sort, filter) {
-	return `
+function getGameListQuery(limit, skip, sort, filter) {
+  return `
       {
-        games(limit: ${limit}, sortBy: ${sort},filterBy:${filter}) {
+        games(limit: ${limit},skip:${skip}, sortBy: ${sort},filterBy:${filter}) {
           name
           difficulty {
             average
@@ -55,5 +75,3 @@ function getQueryGameList(limit, sort, filter) {
         }
       }`
 }
-
-// export const QueryGameList=Object.assign(, )

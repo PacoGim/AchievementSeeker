@@ -4,7 +4,7 @@ devDependencies:
   nodemon: 1.19.4
   onchange: 6.1.0
   rimraf: 3.0.0
-  typescript: 3.7.0-dev.20191021
+  typescript: 3.7.2
 lockfileVersion: 5.1
 packages:
   /@blakeembrey/deque/1.0.5:
@@ -2727,13 +2727,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
-  /typescript/3.7.0-dev.20191021:
+  /typescript/3.7.2:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-SSx/+QkyW7PMcaGQXzVmVkrRmmaLFsdOYXhP9sY9eYMiHrfmtZE9EL2hjtbihfnpyWfCmPup69VgbB4dTTEQgg==
+      integrity: sha512-ml7V7JfiN2Xwvcer+XAf2csGO1bPBdRbFCkYBczNZggrBZ9c7G3riSUeJmqEU5uOtXNPMhE3n+R4FA/3YOAWOQ==
   /undefsafe/2.0.2:
     dependencies:
       debug: 2.6.9
@@ -2969,4 +2969,4 @@ specifiers:
   nodemon: ^1.19.4
   onchange: ^6.1.0
   rimraf: ^3.0.0
-  typescript: ^3.7.0-beta
+  typescript: ^3.7.2

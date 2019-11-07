@@ -1,4 +1,4 @@
-function isWebpSupported() {
+export function isWebpSupported() {
 	return new Promise(async resolve => {
 		if (window.isWebpSupported === undefined) {
 			// console.log('Checking WebP support...')
@@ -19,7 +19,11 @@ function isWebpSupported() {
 	})
 }
 
-function fetchImageBase64(url) {
+export function genNum(min, max) {
+	return Number(Math.floor(Math.random() * (max - min + 1) + min))
+}
+
+export function fetchImageBase64(url) {
 	return new Promise((resolve, reject) => {
 		fetch(url)
 			.then(res => res.text())
@@ -27,7 +31,7 @@ function fetchImageBase64(url) {
 	})
 }
 
-function fetchImageArrayBuffer(url) {
+export function fetchImageArrayBuffer(url) {
 	return new Promise((resolve, reject) => {
 		fetch(url).then(async res => {
 			if (res['headers'].get('Content-Type') === 'text/plain') {
@@ -45,7 +49,7 @@ function fetchImageArrayBuffer(url) {
 	})
 }
 
-function fetchImageBuffer(url) {
+export function fetchImageBuffer(url) {
 	return new Promise(async (resolve, reject) => {
 		const imageBuffer = await fetch(url)
 			.then(res => res.arrayBuffer())
@@ -56,7 +60,7 @@ function fetchImageBuffer(url) {
 	})
 }
 
-function imageArrayBufferToUrl(buffer) {
+export function imageArrayBufferToUrl(buffer) {
 	return new Promise((resolve, reject) => {
 		const arrayBufferView = new Uint8Array(buffer)
 		const blob = new Blob([arrayBufferView])
@@ -65,9 +69,3 @@ function imageArrayBufferToUrl(buffer) {
 		resolve(imageUrl)
 	})
 }
-
-function genNum(min, max) {
-	return Number(Math.floor(Math.random() * (max - min + 1) + min))
-}
-
-export { isWebpSupported, fetchImageBuffer, imageArrayBufferToUrl, fetchImageBase64, fetchImageArrayBuffer, genNum }

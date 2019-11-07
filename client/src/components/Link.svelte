@@ -33,7 +33,7 @@
     padding-bottom: 0.2rem;
     margin: 0 0.5rem;
     border-bottom: 2px solid transparent;
-    font-variation-settings: "XPRN" 0, "slnt" 1, "ital" 1;
+    font-variation-settings: "MONO" 0.5, "CASL" 0, "ital" 1, "slnt" 0;
 
     transition: font-weight 0.3s, border-bottom 1s, font-variation-settings 0.3s;
   }
@@ -45,8 +45,11 @@
 
   a.navbar-link:hover,
   a.navbar-link[isActive="true"] {
-    font-variation-settings: "XPRN" 1, "slnt" -15, "ital" 1;
+    font-variation-settings: "MONO" 0.5, "CASL" 1, "ital" 1, "slnt" -15;
     font-weight: 600;
+  }
+  a.navbar-link[isActive="true"] {
+    font-variation-settings: "MONO" 0.5, "CASL" 1, "ital" 1, "slnt" -15;
   }
 </style>
 
