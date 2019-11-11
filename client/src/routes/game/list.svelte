@@ -1,45 +1,59 @@
+<script context="module">
+  import { buildQuery } from "services/graphql.service.js";
+  export async function preload({ params, query: urlQuery }) {
+    let { query, sort, filter } = await buildQuery(urlQuery);
+
+    let gameList = await getGameSearchGames({
+      query: query,
+      sort: sort,
+      filter: filter
+    });
+
+    return { gameList };
+  }
+</script>
+
 <script>
   import { onMount } from "svelte";
-
-  import { setFancyBG } from "services/fancyBG.service.js";
-
-  import { sortAchievementAmount, sortDifficulty } from "store/store.js";
 
   import GameSearch from "components/game/list/GameSearch.svelte";
   import GameSortFilter from "components/game/list/GameSortFilter.svelte";
 
+  import { setFancyBG } from "services/fancyBG.service.js";
   import { getGameSearchGames } from "services/graphql.service.js";
+
+  import { sortAchievementAmount, sortDifficulty,sortPoints } from "store/store.js";
 
   const componentName = "Game List";
 
-  let gameList = [];
+  export let gameList;
+
+  // Checks if the reactive statements were run already. Avoids running the reactive statements at component mount/launch.
+  let dirty = false;
 
   $: {
-    let query = "_id appid name ";
-    let sort = "{";
-    let filter = "{";
+    if (dirty === true) {
+      console.log("Running reactive statements...");
 
-    let achievementCount = $sortAchievementAmount;
-    let difficulty = $sortDifficulty;
+      $sortAchievementAmount;
+      $sortDifficulty;
+      $sortPoints;
 
-    if (difficulty !== 2) {
-      query += "difficulty{average} ";
-      sort += `difficulty:${difficulty === 0 ? "-1" : "1"} `;
+      buildQuery().then(({ query, sort, filter }) => {
+        // console.log("List.svelte Query", query);
+        // console.log("List.svelte Sort", sort);
+        // console.log("List.svelte Filter", filter);
+        getGameSearchGames({
+          query: query,
+          sort: sort,
+          filter: filter
+        }).then(res => {
+          gameList = res;
+        });
+      });
+    } else {
+      dirty = true;
     }
-
-    if (achievementCount !== 2) {
-      query += "achievementCount ";
-      sort += `achievementCount:${achievementCount === 0 ? "-1" : "1"} `;
-    }
-
-    sort += "}";
-    filter += "}";
-
-    console.log(sort);
-
-    getGameSearchGames({ query, sort, filter }).then(res => {
-      gameList = res;
-    });
   }
 
   onMount(() => {
@@ -57,18 +71,46 @@
   <h1>Or choose options below</h1>
   <GameSortFilter />
 
-  {#each gameList as game (game['_id'])}
-    <p>
-      <span>{game['name']}</span>
-      {#if game['difficulty']}
-        <span>Difficulty:{game['difficulty']['average']}</span>
-      {/if}
-      {#if game['achievementCount']}
-        <span>Ach Count:{game['achievementCount']}</span>
-      {/if}
-    </p>
-  {/each}
-
+  {#if gameList !== undefined}
+    {#each gameList as game (game['_id'])}
+      <p>
+        <span>{game['name']}</span>
+        {#if game['difficulty']}
+          <span>Difficulty:{game['difficulty']['average']}</span>
+        {/if}
+        {#if game['points']}
+          <span>Points:{game['points']}</span>
+        {/if}
+        {#if game['achievementCount']}
+          <span>Ach Count:{game['achievementCount']}</span>
+        {/if}
+        {#if game['genres']}
+          <span>
+            Genres:
+            {#each game['genres'] as genre (game['genres']['type'])}
+              {genre['type']},
+            {/each}
+          </span>
+        {/if}
+        {#if game['developers']}
+          <span>
+            Developers:
+            {#each game['developers'] as developer (game['developers']['name'])}
+              {developer['name']},
+            {/each}
+          </span>
+        {/if}
+        {#if game['publishers']}
+          <span>
+            Publishers:
+            {#each game['publishers'] as publisher (game['publishers']['name'])}
+              {publisher['name']},
+            {/each}
+          </span>
+        {/if}
+      </p>
+    {/each}
+  {/if}
 </game-list>
 
 <svelte:head>

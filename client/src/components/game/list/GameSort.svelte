@@ -1,5 +1,5 @@
 <script>
-  import { sortAchievementAmount, sortDifficulty } from "store/store.js";
+  import { sortAchievementAmount, sortDifficulty,sortPoints } from "store/store.js";
 
   let sortTimeout;
 
@@ -41,9 +41,11 @@
       <span>Difficulty</span>
       <state value={$sortDifficulty} />
     </sort-option>
-    <sort-option>
+    <sort-option
+      cursor="pointer"
+      on:click={() => sortPoints.update(n => (n + 1) % 3)}>
       <span>Points</span>
-      <state />
+      <state value={$sortPoints} />
     </sort-option>
     <sort-option>
       <span>Release Date</span>

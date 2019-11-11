@@ -24,14 +24,26 @@ export class QuerySortBy {
 }
 /* #endregion */
 
+/* #region  InputType QueryFilterDifficulty */
+@ObjectType()
+@InputType('QueryFilterDifficulty')
+class Difficulty {
+	@Field() min: number
+	@Field() max: number
+}
+/* #endregion */
+
 /* #region  InputType QueryFilterBy */
 @ObjectType()
 @InputType('QueryFilterByInput')
-export class QueryFilterBy {
+class QueryFilterBy {
+	@Field(type => [String], { nullable: true }) genres: string[]
+	@Field(type => [String], { nullable: true }) developers: string[]
+	@Field(type => [String], { nullable: true }) publishers: string[]
 	@Field({ nullable: true }) hasCeleste: boolean
 	@Field({ nullable: true }) isFree: boolean
 	@Field(type => Platform, { nullable: true }) platform: Platform
-	@Field({ nullable: true }) difficulty: number
+	@Field(type => Difficulty, { nullable: true }) difficulty: Difficulty
 	@Field({ nullable: true }) year: number
 	@Field({ nullable: true }) month: number
 }
@@ -67,13 +79,22 @@ interface IFilterOptionObject {
 	}
 	'difficulty.average'?: {
 		$gte: number
-		$lt: number
+		$lte: number
 	}
 	'releaseDateSplit.year'?: {
 		$eq: number
 	}
 	'releaseDateSplit.month'?: {
 		$eq: number
+	},
+	genres?: {
+		$in: string[]
+	}
+	developers?: {
+		$in: string[]
+	}
+	publishers?: {
+		$in: string[]
 	}
 }
 /* #endregion */
@@ -123,7 +144,7 @@ export default class {
 			}
 
 			if (filterBy['difficulty'] !== undefined) {
-				filter['difficulty.average'] = { $gte: filterBy['difficulty'], $lt: filterBy['difficulty'] }
+				filter['difficulty.average'] = { $gte: filterBy['difficulty']['min'], $lte: filterBy['difficulty']['max'] }
 			}
 
 			if (filterBy['year'] !== undefined) {
@@ -132,6 +153,24 @@ export default class {
 
 			if (filterBy['month'] !== undefined) {
 				filter['releaseDateSplit.month'] = { $eq: filterBy['month'] }
+			}
+
+			if (filterBy['genres'] !== undefined) {
+				filter['genres'] = {
+					$in: filterBy['genres']
+				}
+			}
+
+			if (filterBy['developers'] !== undefined) {
+				filter['developers'] = {
+					$in: filterBy['developers']
+				}
+			}
+
+			if (filterBy['publishers'] !== undefined) {
+				filter['publishers'] = {
+					$in: filterBy['publishers']
+				}
 			}
 		}
 
@@ -149,6 +188,9 @@ export default class {
 				sort['releaseDate'] = sortBy['releaseDate']
 			}
 
+			if (sortBy['difficulty'] !== undefined) {
+				sort['difficulty.average'] = sortBy['difficulty']
+			}
 
 			if (sortBy['points'] !== undefined) {
 				sort['points'] = sortBy['points']
@@ -156,10 +198,6 @@ export default class {
 
 			if (sortBy['achievementCount'] !== undefined) {
 				sort['achievementCount'] = sortBy['achievementCount']
-			}
-
-			if (sortBy['difficulty'] !== undefined) {
-				sort['difficulty.average'] = sortBy['difficulty']
 			}
 
 			if (sortBy['name'] !== undefined) {
@@ -177,6 +215,8 @@ export default class {
 		}
 
 		console.log(sort)
+
+		// console.log(filter)
 
 		return await GameCollection.get()
 			.find(filter)

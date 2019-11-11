@@ -19,6 +19,22 @@ export function isWebpSupported() {
 	})
 }
 
+export function isJsonEmpty(inJson) {
+
+	let keyFound = false
+
+	for (let key in inJson) {
+		keyFound = true
+		break
+	}
+
+	if (keyFound === true) {
+		return false
+	} else {
+		return true
+	}
+}
+
 export function genNum(min, max) {
 	return Number(Math.floor(Math.random() * (max - min + 1) + min))
 }

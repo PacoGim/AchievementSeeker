@@ -61,6 +61,8 @@
   <title>{componentName}</title>
 </svelte:head>
 
+<a rel="prefetch" href='/game/list?developers=["Obsidian Entertainment"]&genres=["Adventure"]&publishers=["Paradox Interactive"]'>To List w/ Query</a>
+
 <register flex="align-center direction-column" shadow>
   <header>
     To
