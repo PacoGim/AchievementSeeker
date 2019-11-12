@@ -1,9 +1,7 @@
-import { writable } from 'svelte/store'
-
 import createRouter from 'store/modules/router.js'
+import createSort from 'store/modules/sorting.js'
+import createFilter from 'store/modules/filtering.js'
 
 export const router = createRouter()
-
-export const sortAchievementAmount = writable(0)
-export const sortDifficulty = writable(0)
-export const sortPoints = writable(0)
+export const sorting = createSort()
+export const filtering = createFilter()

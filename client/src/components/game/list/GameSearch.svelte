@@ -9,7 +9,7 @@
   let timeout;
 
   onMount(async () => {
-    gameList = await fetchServer("/allGames");
+    gameList = await fetchServer("/games/allGames");
     // searchGame();
   });
 
@@ -136,9 +136,12 @@
       <a href="game/{game['_id']}" flex="direction-row align-center">
         <GameHeader
           styleClass="game-search-header"
+          gameID={game['_id']} />
+        <!-- <GameHeader
+          styleClass="game-search-header"
           gameID={game['_id']}
           gameAppid={game['appid']}
-          gameName={game['name']} />
+          gameName={game['name']} /> -->
         <name>{game['name']}</name>
       </a>
     {/each}

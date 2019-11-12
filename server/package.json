@@ -33,12 +33,12 @@
 	"devDependencies": {
 		"@types/bcryptjs": "^2.4.2",
 		"@types/fs-extra": "^8.0.1",
-		"@types/koa": "^2.0.51",
+		"@types/koa": "^2.0.52",
 		"@types/koa-passport": "^4.0.2",
 		"@types/koa-router": "^7.0.42",
 		"@types/koa-send": "^4.1.2",
-		"@types/mongodb": "^3.3.8",
-		"@types/node": "^12.12.5",
+		"@types/mongodb": "^3.3.10",
+		"@types/node": "^12.12.7",
 		"@types/node-fetch": "^2.5.3",
 		"@types/sharp": "^0.23.0"
 	}

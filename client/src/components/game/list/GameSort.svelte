@@ -1,11 +1,11 @@
 <script>
-  import { sortAchievementAmount, sortDifficulty,sortPoints } from "store/store.js";
-
-  let sortTimeout;
-
+  import { sorting } from "store/store.js";
 </script>
 
 <style lang="scss">
+  game-sort {
+    width: 100vw;
+  }
   sort-options {
     sort-option {
       state {
@@ -13,13 +13,13 @@
         height: 16px;
         width: 16px;
       }
-      state[value="0"]::after {
+      state[value="-1"]::after {
         content: "🡇";
       }
       state[value="1"]::after {
         content: "🡅";
       }
-      state[value="2"]::after {
+      state[value="0"]::after {
         content: "";
       }
     }
@@ -31,33 +31,34 @@
   <sort-options user-select="none">
     <sort-option
       cursor="pointer"
-      on:click={() => sortAchievementAmount.update(n => (n + 1) % 3)}>
+      on:click={() => sorting.cycleValue('achievementCount')}>
       <span>Achievement Amount</span>
-      <state value={$sortAchievementAmount} />
+      <state value={$sorting.achievementCount} />
     </sort-option>
     <sort-option
       cursor="pointer"
-      on:click={() => sortDifficulty.update(n => (n + 1) % 3)}>
+      on:click={() => sorting.cycleValue('difficulty')}>
       <span>Difficulty</span>
-      <state value={$sortDifficulty} />
+      <state value={$sorting.difficulty} />
+    </sort-option>
+    <sort-option cursor="pointer" on:click={() => sorting.cycleValue('points')}>
+      <span>Points</span>
+      <state value={$sorting.points} />
     </sort-option>
     <sort-option
       cursor="pointer"
-      on:click={() => sortPoints.update(n => (n + 1) % 3)}>
-      <span>Points</span>
-      <state value={$sortPoints} />
-    </sort-option>
-    <sort-option>
+      on:click={() => sorting.cycleValue('releaseDate')}>
       <span>Release Date</span>
-      <state />
+      <state value={$sorting.releaseDate} />
     </sort-option>
-    <sort-option>
+    <sort-option cursor="pointer" on:click={() => sorting.cycleValue('score')}>
       <span>Score</span>
-      <state />
+      <state value={$sorting.score} />
     </sort-option>
-    <sort-option>
+    <sort-option cursor="pointer" on:click={() => sorting.cycleValue('trend')}>
       <span>Trend</span>
-      <state />
+      <state value={$sorting.trend} />
     </sort-option>
+
   </sort-options>
 </game-sort>

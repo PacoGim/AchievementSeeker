@@ -22,11 +22,7 @@
 
 <game-card flex="direction-col">
   <Link rel="prefetch" id="game-link-{game['_id']}" to="/game/{game['_id']}">
-    <GameHeader
-      styleClass="game-card-header"
-      gameID={game['_id']}
-      gameAppid={game['appid']}
-      gameName={game['name']} />
+    <GameHeader styleClass="game-card-header" gameID={game['_id']} />
     <p>{game['name']}</p>
     <p>{index + 1}</p>
   </Link>

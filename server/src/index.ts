@@ -76,16 +76,16 @@ async function main() {
 		ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
 		ctx.set('X-XSS-Protection', '1; mode=block')
 		await next()
-		// if (ctx['req']['url']) console.log(`${decodeURI(ctx['req']['url'])} served in ${Number(new Date()) - startDate} ms`)
+		// if (ctx['req']['url']) console.log(`${decodeURI(ctx['req']['url'])} served${ctx['cached']?' from cache':''} in ${Number(new Date()) - startDate} ms`)
 	})
 
 	app.use(async (ctx, next) => {
-		const reqUrl = ctx['req']['url'] || ''
-
-		if (getCacheUrl(reqUrl) !== undefined) {
+		if (getCacheUrl(ctx) !== undefined) {
+			ctx['cached'] = true
 			ctx.status = 200
-			ctx.body = getCacheUrl(reqUrl)
+			ctx.body = getCacheUrl(ctx)
 		} else {
+			ctx['cached'] = false
 			await next()
 		}
 	})

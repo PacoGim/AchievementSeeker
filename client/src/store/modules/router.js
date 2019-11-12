@@ -16,7 +16,7 @@ export default function() {
 			to: 'game/list',
 		},
 		{
-			name: 'Regsiter w/ user',
+			name: 'Register w/ user',
 			id: 'register-route',
 			to: 'user/register/NzY1NjExOTgwNTM3MjI0NDI',
 		},
@@ -25,6 +25,10 @@ export default function() {
 			id: 'register-route',
 			to: 'user/register',
 		},
+		{
+			name:'Store Test',
+			to:'/storetest'
+		}
 	]
 
 	const currentRoute = ''

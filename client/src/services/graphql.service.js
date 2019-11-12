@@ -1,5 +1,5 @@
 import { gqlFetch } from 'services/fetch.service.js'
-import { sortAchievementAmount, sortDifficulty,sortPoints } from "store/store.js";
+import { sorting, filtering } from "store/store.js";
 
 import { isJsonEmpty } from "services/helper.service.js"
 
@@ -34,16 +34,13 @@ let count = 0
 export function buildQuery(urlQuery = undefined) {
   return new Promise((resolve, reject) => {
 
-    console.log(`Running BuildQuery from ${process.browser === true ? 'Browser' : 'Server'} for the ${++count} time`)
+    // console.log(`Running BuildQuery from ${process.browser === true ? 'Browser' : 'Server'} for the ${++count} time`)
 
     let query = '_id appid name '
     let sort = '{'
     let filter = '{'
 
     if (!isJsonEmpty(urlQuery)) {
-
-      console.log(urlQuery)
-
       if (urlQuery['genres'] !== undefined) {
         filter += `genres:${urlQuery['genres']} `
         query += 'genres{type} '
@@ -60,33 +57,73 @@ export function buildQuery(urlQuery = undefined) {
       }
 
     } else {
-      let achievementCount
-      let difficulty
-      let points
-      sortAchievementAmount.subscribe(value => achievementCount = value)()
-      sortDifficulty.subscribe(value => difficulty = value)()
-      sortPoints.subscribe(value => points = value)()
+      let sortingOptions
+      let filterOptions
 
-      if (difficulty !== 2) {
+      sorting.subscribe(value => sortingOptions = value)()
+      filtering.subscribe(value => filterOptions = value)()
+
+      let { achievementCount, difficulty, points, score, trend, releaseDate } = sortingOptions
+      let { genre, developer, publisher } = filterOptions
+
+      // console.log(filterOptions)
+
+      /* #region  Sorting Options */
+      if (difficulty !== 0) {
         query += "difficulty{average} ";
-        sort += `difficulty:${difficulty === 0 ? "-1" : "1"} `;
+        sort += `difficulty:${difficulty} `;
       }
 
-      if (achievementCount !== 2) {
+      if (achievementCount !== 0) {
         query += "achievementCount ";
-        sort += `achievementCount:${achievementCount === 0 ? "-1" : "1"} `;
+        sort += `achievementCount:${achievementCount} `;
       }
 
-      if (points !== 2) {
+      if (points !== 0) {
         query += "points ";
-        sort += `points:${points === 0 ? "-1" : "1"} `;
+        sort += `points:${points} `;
       }
-    }
 
+      if (score !== 0) {
+        query += "score ";
+        sort += `score:${score} `;
+      }
+
+      if (trend !== 0) {
+        query += "trend ";
+        sort += `trend:${trend} `;
+      }
+
+      if (releaseDate !== 0) {
+        query += "releaseDate ";
+        sort += `year:${releaseDate} month:${releaseDate} `;
+      }
+      /* #endregion */
+
+      /* #region  Filter Options */
+      if (genre !== 'none' && genre !== undefined && genre !== '') {
+        filter += `genres:["${genre}"] `
+        query += 'genres{type} '
+      }
+
+      if (developer !== 'none' && developer !== undefined && developer !== '') {
+        filter += `developers:["${developer}"] `
+        query += 'developers{name} '
+      }
+
+      // console.log('GQL Service',publisher)
+
+      if (publisher !== 'none' && publisher !== undefined && publisher !== '') {
+        filter += `publishers:["${publisher}"] `
+        query += 'publishers{name} '
+      }
+      /* #endregion */
+    }
 
     sort += "}";
     filter += "}";
 
+    // console.log(filter)
 
     resolve({
       query,

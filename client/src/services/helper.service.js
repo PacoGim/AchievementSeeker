@@ -19,6 +19,30 @@ export function isWebpSupported() {
 	})
 }
 
+export function parseDate(date) {
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec"
+	];
+
+	date = new Date(date);
+	let day = date.getUTCDate();
+	let month = months[date.getUTCMonth()];
+	let year = date.getUTCFullYear();
+
+	return `${day} ${month}, ${year}`;
+}
+
 export function isJsonEmpty(inJson) {
 
 	let keyFound = false

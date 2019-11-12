@@ -1,5 +1,6 @@
 <script context="module">
   import { buildQuery } from "services/graphql.service.js";
+  import { fetchServer } from "services/fetch.service.js";
   export async function preload({ params, query: urlQuery }) {
     let { query, sort, filter } = await buildQuery(urlQuery);
 
@@ -17,12 +18,14 @@
   import { onMount } from "svelte";
 
   import GameSearch from "components/game/list/GameSearch.svelte";
-  import GameSortFilter from "components/game/list/GameSortFilter.svelte";
+  import GameSort from "components/game/list/GameSort.svelte";
+  import GameFilter from "components/game/list/GameFilter.svelte";
 
   import { setFancyBG } from "services/fancyBG.service.js";
+  import { parseDate } from "services/helper.service.js";
   import { getGameSearchGames } from "services/graphql.service.js";
 
-  import { sortAchievementAmount, sortDifficulty,sortPoints } from "store/store.js";
+  import { sorting, filtering } from "store/store.js";
 
   const componentName = "Game List";
 
@@ -35,9 +38,8 @@
     if (dirty === true) {
       console.log("Running reactive statements...");
 
-      $sortAchievementAmount;
-      $sortDifficulty;
-      $sortPoints;
+      $sorting;
+      $filtering;
 
       buildQuery().then(({ query, sort, filter }) => {
         // console.log("List.svelte Query", query);
@@ -69,25 +71,42 @@
 <game-list flex="direction-column align-center">
   <GameSearch />
   <h1>Or choose options below</h1>
-  <GameSortFilter />
+  <GameSort />
+  <GameFilter />
 
   {#if gameList !== undefined}
     {#each gameList as game (game['_id'])}
       <p>
         <span>{game['name']}</span>
+
         {#if game['difficulty']}
           <span>Difficulty:{game['difficulty']['average']}</span>
         {/if}
+
         {#if game['points']}
           <span>Points:{game['points']}</span>
         {/if}
+
         {#if game['achievementCount']}
           <span>Ach Count:{game['achievementCount']}</span>
         {/if}
+
+        {#if game['score']}
+          <span>Score:{game['score']}</span>
+        {/if}
+
+        {#if game['trend']}
+          <span>Trend:{game['trend']}</span>
+        {/if}
+
+        {#if game['releaseDate']}
+          <span>RD:{parseDate(game['releaseDate'])}</span>
+        {/if}
+
         {#if game['genres']}
           <span>
             Genres:
-            {#each game['genres'] as genre (game['genres']['type'])}
+            {#each game['genres'] as genre,index (index)}
               {genre['type']},
             {/each}
           </span>

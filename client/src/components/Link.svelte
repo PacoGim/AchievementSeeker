@@ -8,7 +8,7 @@
   export let name = undefined;
   export let isActive = undefined;
   export let useClass = undefined;
-  export let loadFancyBG = undefined;
+  // export let loadFancyBG = undefined;
 
   onMount(() => {
     if (name === document.title) {

@@ -5,7 +5,7 @@
   import { fetchImage } from "services/fetch.service.js";
 
   export let achievement;
-  export let gameName;
+  // export let gameName;
   export let gameId;
   export let appid;
   export let index;

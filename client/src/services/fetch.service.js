@@ -12,9 +12,9 @@ export function gqlFetch(query) {
 	})
 }
 
-export function fetchServer() {
+export function fetchServer(url) {
 	return new Promise((resolve, reject) => {
-		fetch(`${serverURL}/games/allgames`)
+		fetch(`${serverURL}${url}`)
 			.then(res => res.json())
 			.then(data => {
 				resolve(data)

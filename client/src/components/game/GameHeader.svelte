@@ -5,8 +5,8 @@
   import { isWebpSupported } from "services/helper.service.js";
 
   export let gameID;
-  export let gameAppid;
-  export let gameName;
+  // export let gameAppid;
+  // export let gameName;
   export let styleClass;
   let imageUrl;
 

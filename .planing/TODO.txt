@@ -1,1 +1,2 @@
 /game/lis gives back a 500 Error
+Game Sort add only one arrow and make it flip around.

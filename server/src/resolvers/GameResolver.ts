@@ -214,9 +214,9 @@ export default class {
 
 		}
 
-		console.log(sort)
+		console.log('Server Sort',sort)
 
-		// console.log(filter)
+		console.log('Server Filter',filter)
 
 		return await GameCollection.get()
 			.find(filter)
