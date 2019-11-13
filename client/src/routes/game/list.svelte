@@ -103,6 +103,10 @@
           <span>RD:{parseDate(game['releaseDate'])}</span>
         {/if}
 
+        {#if game['difficulty']}
+          <span>Difficulty:{game['difficulty']['average']}</span>
+        {/if}
+
         {#if game['genres']}
           <span>
             Genres:

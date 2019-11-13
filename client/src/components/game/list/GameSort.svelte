@@ -4,7 +4,7 @@
 
 <style lang="scss">
   game-sort {
-    width: 100vw;
+    width: 100%;
   }
   sort-options {
     sort-option {

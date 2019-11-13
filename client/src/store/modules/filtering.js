@@ -4,7 +4,8 @@ export default function () {
   let filterDefaultValues = {
     developer: '',
     publisher: '',
-    genre: ''
+    genre: '',
+    difficulty: undefined
   }
 
   const { subscribe, update } = writable(filterDefaultValues)
@@ -21,6 +22,10 @@ export default function () {
     }),
     setGenre: (genre) => update(filterDefaultValues => {
       filterDefaultValues['genre'] = genre
+      return filterDefaultValues
+    }),
+    setDifficulty: (difficulty) => update(filterDefaultValues => {
+      filterDefaultValues['difficulty'] = difficulty
       return filterDefaultValues
     })
   }
