@@ -8,7 +8,7 @@ export default function () {
     0: -1
   }
 
-  let sortDefaultValues = {
+  let sortValues = {
     achievementCount: 0,
     difficulty: 0,
     points: 0,
@@ -17,13 +17,13 @@ export default function () {
     releaseDate:-1
   }
 
-  const { subscribe, update } = writable(sortDefaultValues)
+  const { subscribe, update } = writable(sortValues)
 
   return {
     subscribe,
-    cycleValue: (type) => update(sortDefaultValues => {
-      sortDefaultValues[type] = cycleValues[sortDefaultValues[type]]
-      return sortDefaultValues
+    cycleValue: (type) => update(sortValues => {
+      sortValues[type] = cycleValues[sortValues[type]]
+      return sortValues
     })
   }
 }

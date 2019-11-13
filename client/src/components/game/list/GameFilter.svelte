@@ -120,7 +120,7 @@
   }
 
   function setDifficulty(difficulty) {
-    filtering.setDifficulty(difficulty)
+    filtering.setDifficulty(difficulty);
   }
 
   function genreSelected() {
@@ -196,10 +196,21 @@
 
 <game-filter flex="direction-row align-center">
   <h2>Filter</h2>
-  <filter-options>
+  <filter-options flex="direction-row align-center">
     <filter-option flex="direction-column align-center">
       <span>Developer</span>
       <selected>{$filtering.developer}</selected>
+    </filter-option>
+    <filter-option
+      cursor="pointer"
+      flex="direction-column align-center"
+      on:click={() => filtering.cycleIsFree()}>
+      <span>Free to play?</span>
+      <selected>
+        {#if $filtering.isFree !== undefined}
+          {$filtering.isFree === 'true' ? 'Yes' : 'No'}
+        {/if}
+      </selected>
     </filter-option>
   </filter-options>
 </game-filter>
@@ -251,39 +262,94 @@
   <difficulty-selector flex="direction-row align-center">
     <h2>Difficulty</h2>
     <difficulties>
-      <difficulty cursor="pointer" class="any" on:click={() => setDifficulty(undefined)}>
+      <difficulty
+        cursor="pointer"
+        class="any"
+        on:click={() => setDifficulty(undefined)}>
         Any
       </difficulty>
-      <difficulty cursor="pointer" class="_0-10" on:click={() => setDifficulty(0)}>
+      <difficulty
+        cursor="pointer"
+        class="_0-10"
+        on:click={() => setDifficulty(0)}>
         0-10
       </difficulty>
-      <difficulty cursor="pointer" class="_10-20" on:click={() => setDifficulty(10)}>
+      <difficulty
+        cursor="pointer"
+        class="_10-20"
+        on:click={() => setDifficulty(10)}>
         10-20
       </difficulty>
-      <difficulty cursor="pointer" class="_20-30" on:click={() => setDifficulty(20)}>
+      <difficulty
+        cursor="pointer"
+        class="_20-30"
+        on:click={() => setDifficulty(20)}>
         20-30
       </difficulty>
-      <difficulty cursor="pointer" class="_30-40" on:click={() => setDifficulty(30)}>
+      <difficulty
+        cursor="pointer"
+        class="_30-40"
+        on:click={() => setDifficulty(30)}>
         30-40
       </difficulty>
-      <difficulty cursor="pointer" class="_40-50" on:click={() => setDifficulty(40)}>
+      <difficulty
+        cursor="pointer"
+        class="_40-50"
+        on:click={() => setDifficulty(40)}>
         40-50
       </difficulty>
-      <difficulty cursor="pointer" class="_50-60" on:click={() => setDifficulty(50)}>
+      <difficulty
+        cursor="pointer"
+        class="_50-60"
+        on:click={() => setDifficulty(50)}>
         50-60
       </difficulty>
-      <difficulty cursor="pointer" class="_60-70" on:click={() => setDifficulty(60)}>
+      <difficulty
+        cursor="pointer"
+        class="_60-70"
+        on:click={() => setDifficulty(60)}>
         60-70
       </difficulty>
-      <difficulty cursor="pointer" class="_70-80" on:click={() => setDifficulty(70)}>
+      <difficulty
+        cursor="pointer"
+        class="_70-80"
+        on:click={() => setDifficulty(70)}>
         70-80
       </difficulty>
-      <difficulty cursor="pointer" class="_80-90" on:click={() => setDifficulty(80)}>
+      <difficulty
+        cursor="pointer"
+        class="_80-90"
+        on:click={() => setDifficulty(80)}>
         80-90
       </difficulty>
-      <difficulty cursor="pointer" class="_90-100" on:click={() => setDifficulty(90)}>
+      <difficulty
+        cursor="pointer"
+        class="_90-100"
+        on:click={() => setDifficulty(90)}>
         90-100
       </difficulty>
     </difficulties>
   </difficulty-selector>
+
+  <platform-selector>
+    <h2>Platforms</h2>
+    <platforms>
+      <platform cursor="pointer" on:click={() => filtering.setPlatform('ALL')}>
+        All
+      </platform>
+      <platform
+        cursor="pointer"
+        on:click={() => filtering.setPlatform('WINDOWS')}>
+        Windows
+      </platform>
+      <platform cursor="pointer" on:click={() => filtering.setPlatform('MAC')}>
+        Mac
+      </platform>
+      <platform
+        cursor="pointer"
+        on:click={() => filtering.setPlatform('LINUX')}>
+        Linux
+      </platform>
+    </platforms>
+  </platform-selector>
 </game-filter-selector>

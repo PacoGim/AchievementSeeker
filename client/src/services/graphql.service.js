@@ -64,7 +64,7 @@ export function buildQuery(urlQuery = undefined) {
       filtering.subscribe(value => filterOptions = value)()
 
       let { achievementCount, difficulty, points, score, trend, releaseDate } = sortingOptions
-      let { genre, developer, publisher, difficulty: difficultyFilter } = filterOptions
+      let { genre, developer, publisher, difficulty: difficultyFilter, platform, isFree } = filterOptions
 
       /* #region  Sorting Options */
       if (difficulty !== 0) {
@@ -119,6 +119,16 @@ export function buildQuery(urlQuery = undefined) {
       if (difficultyFilter !== undefined) {
         filter += `difficulty:{min:${difficultyFilter} max:${difficultyFilter + 10}} `
         query += 'difficulty{average} '
+      }
+
+      if (platform !== 'ANY') {
+        filter += `platform:${platform} `
+        query += 'platforms '
+      }
+
+      if (isFree !== undefined) {
+        filter += `isFree:${isFree} `
+        query += 'isFree '
       }
       /* #endregion */
     }

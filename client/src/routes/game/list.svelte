@@ -99,18 +99,27 @@
           <span>Trend:{game['trend']}</span>
         {/if}
 
-        {#if game['releaseDate']}
-          <span>RD:{parseDate(game['releaseDate'])}</span>
+        {#if game['isFree']!==undefined}
+          <span>Free to play:{game['isFree']}</span>
         {/if}
 
-        {#if game['difficulty']}
-          <span>Difficulty:{game['difficulty']['average']}</span>
+        {#if game['platforms']}
+          <span>
+            Platforms:
+            {#each game['platforms'] as platform, index (index)}
+              {platform},
+            {/each}
+          </span>
+        {/if}
+
+        {#if game['releaseDate']}
+          <span>RD:{parseDate(game['releaseDate'])}</span>
         {/if}
 
         {#if game['genres']}
           <span>
             Genres:
-            {#each game['genres'] as genre,index (index)}
+            {#each game['genres'] as genre, index (index)}
               {genre['type']},
             {/each}
           </span>
