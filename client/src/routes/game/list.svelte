@@ -8,18 +8,36 @@
       query: query,
       sort: sort,
       filter: filter
-    });
+    }).catch(error => console.log("GameList Error", error));
 
-    return { gameList };
+    if (gameList) {
+      gameList = gameList["data"]["games"];
+
+      return {
+        gameList,
+        genre: urlQuery["genres"],
+        developer: urlQuery["developers"],
+        publisher: urlQuery["publishers"]
+      };
+    } else {
+      //TODO: Redirect if error with server
+      return {
+        gameList: [],
+        genre: urlQuery["genres"],
+        developer: urlQuery["developers"],
+        publisher: urlQuery["publishers"]
+      };
+    }
   }
 </script>
 
 <script>
   import { onMount } from "svelte";
 
-  import GameSearch from "components/game/list/GameSearch.svelte";
-  import GameSort from "components/game/list/GameSort.svelte";
-  import GameFilter from "components/game/list/GameFilter.svelte";
+  import GameListSearch from "components/game/GameListSearch.svelte";
+  import GameListSort from "components/game/GameListSort.svelte";
+  import GameListFilter from "components/game/GameListFilter.svelte";
+  import BaseGameHeader from "components/base/BaseGameHeader.svelte";
 
   import { setFancyBG } from "services/fancyBG.service.js";
   import { parseDate } from "services/helper.service.js";
@@ -30,6 +48,9 @@
   const componentName = "Game List";
 
   export let gameList;
+  export let genre;
+  export let developer;
+  export let publisher;
 
   // Checks if the reactive statements were run already. Avoids running the reactive statements at component mount/launch.
   let dirty = false;
@@ -42,26 +63,35 @@
       $filtering;
 
       buildQuery().then(({ query, sort, filter }) => {
-        // console.log("List.svelte Query", query);
-        // console.log("List.svelte Sort", sort);
-        // console.log("List.svelte Filter", filter);
         getGameSearchGames({
           query: query,
           sort: sort,
           filter: filter
-        }).then(res => {
-          gameList = res;
+        }).then(games => {
+          gameList = games['data']['games'];
         });
       });
     } else {
       dirty = true;
+
+      if (genre !== undefined) {
+        filtering.setGenre(genre.replace(/"/g, ""));
+      }
+
+      if (developer !== undefined) {
+        filtering.setDeveloper(developer.replace(/"/g, ""));
+      }
+
+      if (publisher !== undefined) {
+        filtering.setPublisher(publisher.replace(/"/g, ""));
+      }
     }
   }
 
   onMount(() => {
     setFancyBG({
-      color1: "#41295a",
-      color2: "#2f0743",
+      color1: "#8a58bf",
+      color2: "#8613bf",
       transform1: "skewY(-10deg) translateY(0)",
       transform2: "skewY(10deg) translateY(0)"
     });
@@ -69,14 +99,17 @@
 </script>
 
 <game-list flex="direction-column align-center">
-  <GameSearch />
+  <GameListSearch />
   <h1>Or choose options below</h1>
-  <GameSort />
-  <GameFilter />
+  <GameListSort />
+  <GameListFilter />
 
   {#if gameList !== undefined}
     {#each gameList as game (game['_id'])}
-      <p>
+      <a href="/game/{game['_id']}">
+
+        <BaseGameHeader gameID={game['_id']} styleClass="game-card-header" />
+
         <span>{game['name']}</span>
 
         {#if game['difficulty']}
@@ -99,7 +132,7 @@
           <span>Trend:{game['trend']}</span>
         {/if}
 
-        {#if game['isFree']!==undefined}
+        {#if game['isFree'] !== undefined}
           <span>Free to play:{game['isFree']}</span>
         {/if}
 
@@ -140,7 +173,7 @@
             {/each}
           </span>
         {/if}
-      </p>
+      </a>
     {/each}
   {/if}
 </game-list>

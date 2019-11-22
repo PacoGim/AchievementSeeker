@@ -24,8 +24,10 @@ const defaultQuery = `_id appid name`
 export function getGameSearchGames({ query = defaultQuery, limit = 20, skip = 0, sort = {}, filter = {} }) {
   return new Promise((resolve, reject) => {
     gqlFetch(getGameSearchQuery(query, skip, limit, sort, filter))
-      .then(res => res.json())
-      .then(game => resolve(game["data"]["games"]))
+      .then(games => resolve(games))
+      .catch(error=>{
+        reject(error)
+      })
   })
 }
 
@@ -34,7 +36,9 @@ let count = 0
 export function buildQuery(urlQuery = undefined) {
   return new Promise((resolve, reject) => {
 
-    // console.log(`Running BuildQuery from ${process.browser === true ? 'Browser' : 'Server'} for the ${++count} time`)
+    console.log(`Running BuildQuery from ${process.browser === true ? 'Browser' : 'Server'} for the ${++count} time`)
+
+    // filtering.setDeveloper('Obsidian Entertainment')
 
     let query = '_id appid name '
     let sort = '{'

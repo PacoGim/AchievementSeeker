@@ -14,7 +14,7 @@ export default function () {
     points: 0,
     score: 0,
     trend: 0,
-    releaseDate:-1
+    releaseDate: -1
   }
 
   const { subscribe, update } = writable(sortValues)
@@ -22,6 +22,7 @@ export default function () {
   return {
     subscribe,
     cycleValue: (type) => update(sortValues => {
+      console.log('Updating Sorting', type)
       sortValues[type] = cycleValues[sortValues[type]]
       return sortValues
     })

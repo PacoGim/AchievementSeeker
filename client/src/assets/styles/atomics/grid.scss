@@ -6,3 +6,11 @@
 	grid-column: 1;
 	grid-row: 1;
 }
+
+[grid~='align-center'] {
+	align-items: center;
+}
+
+[grid~='justify-center'] {
+	justify-content: center;
+}

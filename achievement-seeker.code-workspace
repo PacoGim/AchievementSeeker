@@ -4,13 +4,16 @@
 			"path": "."
 		},
 		{
-			"path": "client"
+			"path": "client\\src",
+			"name": "svelte"
 		},
 		{
-			"path": "server\\src"
+			"path": "server\\src",
+			"name": "server"
 		},
 		{
-			"path": "server"
+			"path": "client\\static",
+			"name": "svelte static"
 		}
 	],
 	"settings": {

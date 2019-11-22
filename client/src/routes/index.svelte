@@ -10,7 +10,7 @@
 </script>
 
 <script>
-  import GameCard from "components/game/GameCard.svelte";
+  import BaseGameCard from "components/base/BaseGameCard.svelte";
 
   import { onMount } from "svelte";
 
@@ -129,7 +129,7 @@
       flex="direction-row"
       style="transform:translateX({gameListTranslate}px)">
       {#each games as game, index}
-        <GameCard {game} {index} />
+        <BaseGameCard {game} {index} />
       {/each}
     </container>
   </section>

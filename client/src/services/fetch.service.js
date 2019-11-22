@@ -1,14 +1,30 @@
 import { setCache, getCache } from 'services/cache.service.js'
+import { areObjectsEqual } from "services/helper.service.js"
 import fetch from "node-fetch";
 
 const serverURL = `http://localhost:4000`
 
+let previousQuery = {}
+let previousResponse = undefined
+
 export function gqlFetch(query) {
 	return new Promise(async (resolve, reject) => {
-		let response = await fetch(`${serverURL}/graphql?query=${query}`).catch(err => {
-			console.log(err)
-		})
-		resolve(response)
+
+		// If the current request is identical to the previous one, it simply gives back the saved response from the previous request.
+		if (areObjectsEqual(previousQuery, query)) {
+			resolve(previousResponse)
+		} else {
+			let response = await fetch(`${serverURL}/graphql?query=${query}`).then(res => res.json()).catch(err => {
+				reject(err)
+			})
+
+			if (response !== undefined) {
+				previousQuery = query
+				previousResponse = response
+
+				resolve(response)
+			}
+		}
 	})
 }
 

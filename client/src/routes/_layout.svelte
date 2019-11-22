@@ -5,8 +5,8 @@
 
   import { router } from "store/store.js";
 
-  import Navbar from "components/Navbar.svelte";
-  import FancyBG from "components/FancyBG.svelte";
+  import LayoutNavbar from "components/layout/LayoutNavbar.svelte"
+  import LayoutFancyBG from "components/layout/LayoutFancyBG.svelte"
 
   onMount(async () => {
     if (window.isWebpSupported === undefined) {
@@ -34,8 +34,8 @@
 </style>
 
 <app>
-  <Navbar />
-  <FancyBG />
+  <LayoutNavbar />
+  <LayoutFancyBG />
   <route-name flex="justify-center align-center">
     {$router['currentRoute']}
   </route-name>

@@ -11,7 +11,8 @@
 	font-weight: 300 1000;
 }
 
-:root {
+
+// :root {
 	// --fancy-bg-color-1: #333;
 	// --fancy-bg-color-2: #444;
 	// --fancy-bg-height: 50vh;
@@ -19,12 +20,16 @@
 	// --fancy-bg-transform-1: skewY(0deg) translateY(-50vh);
 	// --fancy-bg-transform-2: skewY(0deg) translateY(-50vh);
 	// --fancy-bg-opacity: 1;
-}
+// }
 
 * {
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+}
+
+html {
+	font-size: calc(12px + (16 - 12) * (100vw - 320px) / (1920 - 320));
 }
 
 body {

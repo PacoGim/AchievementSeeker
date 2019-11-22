@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { fetchServer } from "services/fetch.service.js";
-  import GameHeader from "components/game/GameHeader.svelte";
+  import BaseGameHeader from "components/base/BaseGameHeader.svelte";
 
   let searchGameInput = "";
   let gameList = [];
@@ -9,7 +9,7 @@
   let timeout;
 
   onMount(async () => {
-    gameList = await fetchServer("/games/allGames");
+    // gameList = await fetchServer("/games/allGames");
     // searchGame();
   });
 
@@ -23,9 +23,11 @@
     clearInterval(timeout);
     if (searchGameInput !== "" && searchGameInput !== undefined) {
       timeout = setTimeout(() => {
-        gameFiltered = gameList.filter(game =>
-          game["name"].toLowerCase().includes(searchGameInput.toLowerCase())
-        ).slice(0,20);
+        gameFiltered = gameList
+          .filter(game =>
+            game["name"].toLowerCase().includes(searchGameInput.toLowerCase())
+          )
+          .slice(0, 20);
       }, 500);
     } else {
       gameFiltered = [];
@@ -134,14 +136,7 @@
   <game-search-list flex="direction-column">
     {#each gameFiltered as game (game['_id'])}
       <a href="game/{game['_id']}" flex="direction-row align-center">
-        <GameHeader
-          styleClass="game-search-header"
-          gameID={game['_id']} />
-        <!-- <GameHeader
-          styleClass="game-search-header"
-          gameID={game['_id']}
-          gameAppid={game['appid']}
-          gameName={game['name']} /> -->
+        <BaseGameHeader styleClass="game-search-header" gameID={game['_id']} />
         <name>{game['name']}</name>
       </a>
     {/each}

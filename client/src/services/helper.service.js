@@ -19,6 +19,32 @@ export function isWebpSupported() {
 	})
 }
 
+export function areObjectsEqual(a, b) {
+	// Create arrays of property names
+	var aProps = Object.getOwnPropertyNames(a);
+	var bProps = Object.getOwnPropertyNames(b);
+
+	// If number of properties is different,
+	// objects are not equivalent
+	if (aProps.length != bProps.length) {
+		return false;
+	}
+
+	for (var i = 0; i < aProps.length; i++) {
+		var propName = aProps[i];
+
+		// If values of same property are not equal,
+		// objects are not equivalent
+		if (a[propName] !== b[propName]) {
+			return false;
+		}
+	}
+
+	// If we made it this far, objects
+	// are considered equivalent
+	return true;
+}
+
 export function parseDate(date) {
 	const months = [
 		"Jan",
@@ -108,4 +134,58 @@ export function imageArrayBufferToUrl(buffer) {
 		const imageUrl = urlCreator.createObjectURL(blob)
 		resolve(imageUrl)
 	})
+}
+
+export function genID(length = undefined) {
+	let options = {
+		'0': () => {
+			return ['b', 'n', 'z'][genNum(0, 2)]
+		},
+		'1': () => {
+			return ['c', 'p', '0'][genNum(0, 2)]
+		},
+		'2': () => {
+			return ['d', 'q', '1'][genNum(0, 2)]
+		},
+		'3': () => {
+			return ['f', 'r', '3'][genNum(0, 2)]
+		},
+		'4': () => {
+			return ['g', 's', '4'][genNum(0, 2)]
+		},
+		'5': () => {
+			return ['h', 't', '5'][genNum(0, 2)]
+		},
+		'6': () => {
+			return ['j', 'v', '6'][genNum(0, 2)]
+		},
+		'7': () => {
+			return ['k', 'w', '7'][genNum(0, 2)]
+		},
+		'8': () => {
+			return ['l', 'x', '8'][genNum(0, 2)]
+		},
+		'9': () => {
+			return ['m', 'y', '9'][genNum(0, 2)]
+		},
+	}
+
+	let value = new Date().getTime().toString(10)
+	let id = ''
+
+	for (let char of value) {
+		id += options[char]()
+	}
+
+	id = id
+		.split('')
+		.reverse()
+		.join('')
+		.toUpperCase()
+
+	if (length !== undefined) {
+		return id.substring(0,length)
+	}else{
+		return id
+	}
 }

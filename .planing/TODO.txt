@@ -1,2 +1,4 @@
 /game/lis gives back a 500 Error
+/game/list, deleting developer and/or publisher with keyboard and clicking away doesn't refresh reactive statements.
+/game/list, sending request a every letter entered in developer/publisher input.
 Game Sort add only one arrow and make it flip around.

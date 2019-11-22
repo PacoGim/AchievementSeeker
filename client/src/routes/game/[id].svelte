@@ -25,7 +25,7 @@
     getSafeFolderName
   } from "services/game.service.js";
 
-  import Achievement from "components/game/Achievement.svelte";
+  // import BaseAchievement from "components/Base/BaseAchievement.svelte";
 
   import { setFancyBG } from "services/fancyBG.service.js";
 
