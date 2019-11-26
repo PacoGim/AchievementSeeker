@@ -8,32 +8,76 @@
   let gameFiltered = [];
   let timeout;
 
-  onMount(async () => {
-    // gameList = await fetchServer("/games/allGames");
-    // searchGame();
-  });
-
-  //TODO: This down there is not possible, get's trigger at mounted ;_;
   $: {
-    searchGameInput;
-    searchGame();
+    if (searchGameInput !== "") {
+      clearTimeout(timeout);
+      timeout = setTimeout(async () => {
+        let response = await fetchServer(
+          `/games/search/${searchGameInput}?limit=20`
+        );
+
+        if (response["status"] === 200) {
+          gameList = await response.json();
+        }
+      }, 500);
+    } else {
+      gameList = [];
+    }
   }
 
   function searchGame() {
-    clearInterval(timeout);
-    if (searchGameInput !== "" && searchGameInput !== undefined) {
-      timeout = setTimeout(() => {
-        gameFiltered = gameList
-          .filter(game =>
-            game["name"].toLowerCase().includes(searchGameInput.toLowerCase())
-          )
-          .slice(0, 20);
-      }, 500);
-    } else {
-      gameFiltered = [];
-    }
+    // clearInterval(timeout);
+    // if (searchGameInput !== "" && searchGameInput !== undefined) {
+    //   timeout = setTimeout(() => {
+    //     gameFiltered = gameList
+    //       .filter(game =>
+    //         game["name"].toLowerCase().includes(searchGameInput.toLowerCase())
+    //       )
+    //       ;
+    //   }, 500);
+    // } else {
+    //   gameFiltered = [];
+    // }
   }
 </script>
+
+<game-search>
+  <search-box flex="direction-row align-center">
+    <search-input grid="overlap">
+      <input
+        list="gameSearchHistory"
+        font="white"
+        type="text"
+        oninput="this.value===''?this.removeAttribute('value'):this.setAttribute('value',this.value)"
+        bind:value={searchGameInput} />
+      <!-- <datalist id="gameSearchHistory">
+        {#each gameSearchHistory as game}
+          <option value={game} />
+        {/each}
+      </datalist> -->
+      <search-input-placeholder flex="align-center justify-center" font="white">
+        <span>
+          Type
+          <span id="here-now" />
+          to
+        </span>
+        <span font="casual-italic bold">&nbsp;Search for Games</span>
+      </search-input-placeholder>
+    </search-input>
+    <search-icon>
+      <img class="icon" icon="fit-height" src="icons/search.svg" alt="" />
+    </search-icon>
+  </search-box>
+  <game-search-list flex="direction-column">
+    {#each gameList as game (game['_id'])}
+      <a href="game/{game['_id']}" flex="direction-row align-center">
+        <BaseGameHeader styleClass="game-search-header" gameID={game['_id']} />
+        <name>{game['name']}</name>
+      </a>
+    {/each}
+  </game-search-list>
+</game-search>
+<!-- TODO: Glass to cross and Remove TM when searching -->
 
 <style lang="scss">
   game-search {
@@ -78,7 +122,7 @@
 
     input:focus ~ search-input-placeholder span #here-now::after,
     input[value] ~ search-input-placeholder span #here-now::after {
-      content: "now";
+      content: "down";
     }
   }
 
@@ -105,41 +149,3 @@
     }
   }
 </style>
-
-<game-search>
-  <search-box flex="direction-row align-center">
-    <search-input grid="overlap">
-      <input
-        list="gameSearchHistory"
-        font="white"
-        type="text"
-        oninput="this.value===''?this.removeAttribute('value'):this.setAttribute('value',this.value)"
-        bind:value={searchGameInput} />
-      <!-- <datalist id="gameSearchHistory">
-        {#each gameSearchHistory as game}
-          <option value={game} />
-        {/each}
-      </datalist> -->
-      <search-input-placeholder flex="align-center justify-center" font="white">
-        <span>
-          Type
-          <span id="here-now" />
-          to
-        </span>
-        <span font="casual-italic bold">&nbsp;Search for Games</span>
-      </search-input-placeholder>
-    </search-input>
-    <search-icon>
-      <img class="icon" icon="fit-height" src="icons/search.svg" alt="" />
-    </search-icon>
-  </search-box>
-  <game-search-list flex="direction-column">
-    {#each gameFiltered as game (game['_id'])}
-      <a href="game/{game['_id']}" flex="direction-row align-center">
-        <BaseGameHeader styleClass="game-search-header" gameID={game['_id']} />
-        <name>{game['name']}</name>
-      </a>
-    {/each}
-  </game-search-list>
-</game-search>
-<!-- TODO: Glass to cross and Remove TM when searching -->

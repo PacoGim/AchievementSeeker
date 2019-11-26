@@ -5,18 +5,14 @@
 	"main": "index.js",
 	"devDependencies": {
 		"concurrently": "^5.0.0",
-		"node-sass": "^4.13.0",
-		"nodemon": "^1.19.4",
-		"onchange": "^6.1.0",
-		"rimraf": "^3.0.0",
+		"nodemon": "^2.0.1",
 		"typescript": "^3.7.2"
 	},
 	"scripts": {
 		"server": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\"",
-		"client": "rimraf client/__sapper__/dev && cd client && pnpm run dev",
+		"client:bak": "rimraf client/__sapper__/dev && cd client && pnpm run dev",
+		"client": "cd client && pnpm run dev",
 		"transpile:typescript": "tsc --watch",
-		"watch:sass": "npm run compile:sass && onchange \"client/static/styles/**/*.scss\" -- npm run compile:sass",
-		"compile:sass": "node-sass ./client/static/styles/global.scss --output ./client/static --output-style expanded",
 		"dev": "concurrently \"pnpm run server\" \"pnpm run client\""
 	},
 	"nodemonConfig": {

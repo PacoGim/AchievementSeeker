@@ -1,183 +1,170 @@
 <script context="module">
-  import { buildQuery } from "services/graphql.service.js";
-  import { fetchServer } from "services/fetch.service.js";
-  export async function preload({ params, query: urlQuery }) {
-    let { query, sort, filter } = await buildQuery(urlQuery);
+	import { buildQuery } from 'services/graphql.service.js'
+	import { fetchServer } from 'services/fetch.service.js'
+	export async function preload({ params, query: urlQuery }) {
+		let { sort, filter, query } = await buildQuery()
 
-    let gameList = await getGameSearchGames({
-      query: query,
-      sort: sort,
-      filter: filter
-    }).catch(error => console.log("GameList Error", error));
+		let gameList = await getGameSearchGames({
+			query: query,
+			sort: sort,
+			filter: filter,
+		}).catch(error => console.log('GameList Error', error))
 
-    if (gameList) {
-      gameList = gameList["data"]["games"];
+		if (gameList) {
+			gameList = gameList['games']
 
-      return {
-        gameList,
-        genre: urlQuery["genres"],
-        developer: urlQuery["developers"],
-        publisher: urlQuery["publishers"]
-      };
-    } else {
-      //TODO: Redirect if error with server
-      return {
-        gameList: [],
-        genre: urlQuery["genres"],
-        developer: urlQuery["developers"],
-        publisher: urlQuery["publishers"]
-      };
-    }
-  }
+			return { gameList }
+		} else {
+			//TODO: Redirect if error with server
+			return { gameList: [] }
+		}
+	}
 </script>
 
 <script>
-  import { onMount } from "svelte";
+	import { onMount } from 'svelte'
 
-  import GameListSearch from "components/game/GameListSearch.svelte";
-  import GameListSort from "components/game/GameListSort.svelte";
-  import GameListFilter from "components/game/GameListFilter.svelte";
-  import BaseGameHeader from "components/base/BaseGameHeader.svelte";
+	import GameListSearch from 'components/game/GameListSearch.svelte'
+	import GameListSort from 'components/game/GameListSort.svelte'
+	import GameListFilter from 'components/game/GameListFilter.svelte'
+	import BaseGameHeader from 'components/base/BaseGameHeader.svelte'
 
-  import { setFancyBG } from "services/fancyBG.service.js";
-  import { parseDate } from "services/helper.service.js";
-  import { getGameSearchGames } from "services/graphql.service.js";
+	import { setFancyBG } from 'services/fancyBG.service.js'
+	import { parseDate } from 'services/helper.service.js'
+	import { getGameSearchGames } from 'services/graphql.service.js'
 
-  import { sorting, filtering } from "store/store.js";
+	import { sorting, filtering } from 'store/store.js'
 
-  const componentName = "Game List";
+	const componentName = 'Game List'
 
-  export let gameList;
-  export let genre;
-  export let developer;
-  export let publisher;
+	export let gameList
 
-  // Checks if the reactive statements were run already. Avoids running the reactive statements at component mount/launch.
-  let dirty = false;
+	// Checks if the reactive statements were run already. Avoids running the reactive statements at component mount/launch.
+	let dirty = false
 
-  $: {
-    if (dirty === true) {
-      console.log("Running reactive statements...");
+	$: {
+		if (dirty === true) {
+			console.log('Running reactive statements...')
 
-      $sorting;
-      $filtering;
+			$sorting
+			$filtering
 
-      buildQuery().then(({ query, sort, filter }) => {
-        getGameSearchGames({
-          query: query,
-          sort: sort,
-          filter: filter
-        }).then(games => {
-          gameList = games['data']['games'];
-        });
-      });
-    } else {
-      dirty = true;
+			buildQuery().then(({ query, sort, filter }) => {
+				getGameSearchGames({
+					query,
+					sort,
+					filter,
+				}).then(data => {
+					const games = data['games']
 
-      if (genre !== undefined) {
-        filtering.setGenre(genre.replace(/"/g, ""));
-      }
+					if (games.length > 0) {
+						gameList = games
+					} else {
+						//TODO: Alert that no games were found
+					}
+				})
+			})
+		} else {
+			dirty = true
+		}
+	}
 
-      if (developer !== undefined) {
-        filtering.setDeveloper(developer.replace(/"/g, ""));
-      }
-
-      if (publisher !== undefined) {
-        filtering.setPublisher(publisher.replace(/"/g, ""));
-      }
-    }
-  }
-
-  onMount(() => {
-    setFancyBG({
-      color1: "#8a58bf",
-      color2: "#8613bf",
-      transform1: "skewY(-10deg) translateY(0)",
-      transform2: "skewY(10deg) translateY(0)"
-    });
-  });
+	onMount(() => {
+		setFancyBG({
+			color1: '#8a58bf',
+			color2: '#8613bf',
+			transform1: 'skewY(-10deg) translateY(0)',
+			transform2: 'skewY(10deg) translateY(0)',
+			height1: '100%',
+			height2: '100%',
+		})
+	})
 </script>
 
 <game-list flex="direction-column align-center">
-  <GameListSearch />
-  <h1>Or choose options below</h1>
-  <GameListSort />
-  <GameListFilter />
+	<GameListSearch />
+	<h1>Or choose options below</h1>
+	<GameListSort />
+	<GameListFilter />
 
-  {#if gameList !== undefined}
-    {#each gameList as game (game['_id'])}
-      <a href="/game/{game['_id']}">
+	<games>
 
-        <BaseGameHeader gameID={game['_id']} styleClass="game-card-header" />
+		{#if gameList !== undefined}
+			{#each gameList as game (game['_id'])}
+				<a href="/game/{game['_id']}" flex="direction-column align-center">
 
-        <span>{game['name']}</span>
+					<BaseGameHeader gameID={game['_id']} styleClass="game-list-header" />
 
-        {#if game['difficulty']}
-          <span>Difficulty:{game['difficulty']['average']}</span>
-        {/if}
+					<span>{game['name']}</span>
 
-        {#if game['points']}
-          <span>Points:{game['points']}</span>
-        {/if}
+					{#if game['difficulty']}
+						<span>Difficulty:{game['difficulty']['average']}</span>
+					{/if}
 
-        {#if game['achievementCount']}
-          <span>Ach Count:{game['achievementCount']}</span>
-        {/if}
+					{#if game['points']}
+						<span>Points:{game['points']}</span>
+					{/if}
 
-        {#if game['score']}
-          <span>Score:{game['score']}</span>
-        {/if}
+					{#if game['achievementCount']}
+						<span>Ach Count:{game['achievementCount']}</span>
+					{/if}
 
-        {#if game['trend']}
-          <span>Trend:{game['trend']}</span>
-        {/if}
+					{#if game['score']}
+						<span>Score:{game['score']}</span>
+					{/if}
 
-        {#if game['isFree'] !== undefined}
-          <span>Free to play:{game['isFree']}</span>
-        {/if}
+					{#if game['trend']}
+						<span>Trend:{game['trend']}</span>
+					{/if}
 
-        {#if game['platforms']}
-          <span>
-            Platforms:
-            {#each game['platforms'] as platform, index (index)}
-              {platform},
-            {/each}
-          </span>
-        {/if}
+					{#if game['isFree'] !== undefined}
+						<span>Free to play:{game['isFree']}</span>
+					{/if}
 
-        {#if game['releaseDate']}
-          <span>RD:{parseDate(game['releaseDate'])}</span>
-        {/if}
+					{#if game['platforms']}
+						<span>
+							Platforms:
+							{#each game['platforms'] as platform, index (index)}{platform},{/each}
+						</span>
+					{/if}
 
-        {#if game['genres']}
-          <span>
-            Genres:
-            {#each game['genres'] as genre, index (index)}
-              {genre['type']},
-            {/each}
-          </span>
-        {/if}
-        {#if game['developers']}
-          <span>
-            Developers:
-            {#each game['developers'] as developer (game['developers']['name'])}
-              {developer['name']},
-            {/each}
-          </span>
-        {/if}
-        {#if game['publishers']}
-          <span>
-            Publishers:
-            {#each game['publishers'] as publisher (game['publishers']['name'])}
-              {publisher['name']},
-            {/each}
-          </span>
-        {/if}
-      </a>
-    {/each}
-  {/if}
+					{#if game['releaseDate']}
+						<span>RD:{parseDate(game['releaseDate'])}</span>
+					{/if}
+
+					{#if game['genres']}
+						<span>
+							Genres:
+							{#each game['genres'] as genre, index (index)}{genre['type']},{/each}
+						</span>
+					{/if}
+				</a>
+			{/each}
+		{/if}
+
+	</games>
 </game-list>
 
 <svelte:head>
-  <title>{componentName}</title>
+	<title>{componentName}</title>
 </svelte:head>
+
+<style lang="scss">
+	game-list {
+		--bg-color: rgba(255, 255, 255, 0.5);
+
+		games {
+			padding: 1rem;
+			width: 100%;
+			display: grid;
+			grid-gap: 1rem;
+			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+
+			a {
+				background-color: #fff;
+				padding: 0.5rem;
+				border: outset 2px dodgerblue;
+			}
+		}
+	}
+</style>

@@ -25,10 +25,6 @@ export default function() {
 			id: 'register-route',
 			to: 'user/register',
 		},
-		{
-			name:'Store Test',
-			to:'/storetest'
-		}
 	]
 
 	const currentRoute = ''

@@ -11,12 +11,12 @@ dependencies:
   koa-router: 7.4.0
   koa-send: 5.0.0
   koa-static: 5.0.0
-  mongodb: 3.3.3
+  mongodb: 3.3.4
   node-fetch: 2.6.0
   passport-openid: 0.4.0
-  passport-steam: 1.0.11
+  passport-steam: 1.0.12
   reflect-metadata: 0.1.13
-  sharp: 0.23.2
+  sharp: 0.23.3
   type-graphql: 0.17.5_graphql@14.5.8
 devDependencies:
   '@types/bcryptjs': 2.4.2
@@ -25,9 +25,9 @@ devDependencies:
   '@types/koa-passport': 4.0.2
   '@types/koa-router': 7.0.42
   '@types/koa-send': 4.1.2
-  '@types/mongodb': 3.3.10
-  '@types/node': 12.12.7
-  '@types/node-fetch': 2.5.3
+  '@types/mongodb': 3.3.11
+  '@types/node': 12.12.11
+  '@types/node-fetch': 2.5.4
   '@types/sharp': 0.23.0
 lockfileVersion: 5.1
 packages:
@@ -48,7 +48,7 @@ packages:
       integrity: sha512-2KhFjtPueJG6xVj2HnqXt9BlANOfYCVLyu+pXYjPGBDT8yk+vQwc/6tsceIj+mayKcoxMau2JimggXRPHgoc8w==
   /@types/accepts/1.3.5:
     dependencies:
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
       integrity: sha512-jOdnI/3qTpHABjM5cx1Hc0sKsPoYCp+DP/GJRGtDlPd7fiV9oXGGIcjW/ZOxLIvjGz8MA+uMZI9metHlgqbgwQ==
@@ -59,19 +59,19 @@ packages:
   /@types/body-parser/1.17.1:
     dependencies:
       '@types/connect': 3.4.32
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
       integrity: sha512-RoX2EZjMiFMjZh9lmYrwgoP9RTpAjSHiJxdp4oidAQVO02T7HER3xj9UKue5534ULWeqVEkujhWcyvUce+d68w==
-  /@types/bson/4.0.0:
+  /@types/bson/4.0.1:
     dependencies:
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
-      integrity: sha512-pq/rqJwJWkbS10crsG5bgnrisL8pML79KlMKQMoQwLUjlPAkrUHMvHJ3oGwE7WHR61Lv/nadMwXVAD2b+fpD8Q==
+      integrity: sha512-K6VAEdLVJFBxKp8m5cRTbUfeZpuSvOuLKJLrgw9ANIXo00RiyGzgH4BKWWR4F520gV4tWmxG7q9sKQRVDuzrBw==
   /@types/connect/3.4.32:
     dependencies:
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
       integrity: sha512-4r8qa0quOvh7lGD0pre62CAb1oni1OO6ecJLGCezTmhQ8Fz50Arx9RUszryR8KlgK6avuSXvviL6yWyViQABOg==
@@ -80,7 +80,7 @@ packages:
       '@types/connect': 3.4.32
       '@types/express': 4.17.2
       '@types/keygrip': 1.0.1
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
       integrity: sha512-oTGtMzZZAVuEjTwCjIh8T8FrC8n/uwy+PG0yTvQcdZ7etoel7C7/3MSd7qrukENTgQtotG7gvBlBojuVs7X5rw==
@@ -88,17 +88,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
-  /@types/express-serve-static-core/4.16.11:
+  /@types/express-serve-static-core/4.17.0:
     dependencies:
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
       '@types/range-parser': 1.2.3
     dev: true
     resolution:
-      integrity: sha512-K8d2M5t3tBQimkyaYTXxtHYyoJPUEhy2/omVRnTAKw5FEdT+Ft6lTaTOpoJdHeG+mIwQXXtqiTcYZ6IR8LTzjQ==
+      integrity: sha512-Xnub7w57uvcBqFdIGoRg1KhNOeEj0vB6ykUM7uFWyxvbdE89GFyqgmUcanAriMr4YOxNFZBAWkfcWIb4WBPt3g==
   /@types/express/4.17.2:
     dependencies:
       '@types/body-parser': 1.17.1
-      '@types/express-serve-static-core': 4.16.11
+      '@types/express-serve-static-core': 4.17.0
       '@types/serve-static': 1.13.3
     dev: true
     resolution:
@@ -106,13 +106,13 @@ packages:
   /@types/formidable/1.0.31:
     dependencies:
       '@types/events': 3.0.0
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: false
     resolution:
       integrity: sha512-dIhM5t8lRP0oWe2HF8MuPvdd1TpPTjhDMAqemcq6oIZQCBQTovhBAdTQ5L5veJB4pdQChadmHuxtB0YzqvfU3Q==
   /@types/fs-extra/8.0.1:
     dependencies:
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
       integrity: sha512-J00cVDALmi/hJOYsunyT52Hva5TnJeKP5yd1r+mH/ZU0mbYZflR0Z5kw5kITtKTRYMhm1JMClOFYdHnQszEvqw==
@@ -120,7 +120,7 @@ packages:
     dependencies:
       '@types/events': 3.0.0
       '@types/minimatch': 3.0.3
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: false
     resolution:
       integrity: sha512-1Bh06cbWJUHMC97acuD6UMG29nMt0Aqz1vF3guLfG+kHHJhy3AyohZFFxYk2f7Q1SQIrNwvncxAE0N/9s70F2w==
@@ -141,7 +141,7 @@ packages:
   /@types/koa-passport/4.0.2:
     dependencies:
       '@types/koa': 2.0.52
-      '@types/passport': 1.0.1
+      '@types/passport': 1.0.2
     dev: true
     resolution:
       integrity: sha512-WDQhhOW+coTCe//wTaPViim9oodEuAscXiwDUSRlcNH2j7MYa4bqlLq3UdkUp5rY/b0wE4blkBxI90jpwEc1Mg==
@@ -164,7 +164,7 @@ packages:
       '@types/http-assert': 1.5.1
       '@types/keygrip': 1.0.1
       '@types/koa-compose': 3.2.5
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
       integrity: sha512-cp/GTOhOYwomlSKqEoG0kaVEVJEzP4ojYmfa7EKaGkmkkRwJ4B/1VBLbQZ49Z+WJNvzXejQB/9GIKqMo9XLgFQ==
@@ -176,28 +176,28 @@ packages:
     dev: false
     resolution:
       integrity: sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
-  /@types/mongodb/3.3.10:
+  /@types/mongodb/3.3.11:
     dependencies:
-      '@types/bson': 4.0.0
-      '@types/node': 12.12.7
+      '@types/bson': 4.0.1
+      '@types/node': 12.12.11
     dev: true
     resolution:
-      integrity: sha512-0irlIjqs0UVcs+1ih7qdA9Rs4gkN9hBX7PI6IBWYu/kcMQ52L+oLW19gKT8wBJD2uMBkgT4mVKDmEo6ygObnHA==
-  /@types/node-fetch/2.5.3:
+      integrity: sha512-i8mUMYzFYzUpH4a7IBbdOD/87/kyQHvOVAL8J8hvX+E6SQbPd83d+xkpPtRZlRELtjZFqyQMlEcxW+zfMw32vQ==
+  /@types/node-fetch/2.5.4:
     dependencies:
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
-      integrity: sha512-X3TNlzZ7SuSwZsMkb5fV7GrPbVKvHc2iwHmslb8bIxRKWg2iqkfm3F/Wd79RhDpOXR7wCtKAwc5Y2JE6n/ibyw==
-  /@types/node/12.12.7:
+      integrity: sha512-Oz6id++2qAOFuOlE1j0ouk1dzl3mmI1+qINPNBhi9nt/gVOz0G+13Ao6qjhdF0Ys+eOkhu6JnFmt38bR3H0POQ==
+  /@types/node/12.12.11:
     resolution:
-      integrity: sha512-E6Zn0rffhgd130zbCbAr/JdXfXkoOUFAKNs/rF8qnafSJ8KYaA/j3oz7dcwal+lYjLA7xvdd5J4wdYpCTlP8+w==
-  /@types/passport/1.0.1:
+      integrity: sha512-O+x6uIpa6oMNTkPuHDa9MhMMehlxLAd5QcOvKRjAFsBVpeFWTOPnXbDvILvFgFFZfQ1xh1EZi1FbXxUix+zpsQ==
+  /@types/passport/1.0.2:
     dependencies:
       '@types/express': 4.17.2
     dev: true
     resolution:
-      integrity: sha512-oK87JjN8i8kmqb0RN0sCUB/ZjrWf3b8U45eAzZVy1ssYYgBrMOuALmvoqp7MglsilXAjxum+LS29VQqeQx6ddA==
+      integrity: sha512-Pf39AYKf8q+YoONym3150cEwfUD66dtwHJWvbeOzKxnA0GZZ/vAXhNWv9vMhKyRQBQZiQyWQnhYBEBlKW6G8wg==
   /@types/range-parser/1.2.3:
     dev: true
     resolution:
@@ -208,14 +208,14 @@ packages:
       integrity: sha512-1OzrNb4RuAzIT7wHSsgZRlMBlNsJl+do6UblR7JMW4oB7bbR+uBEYtUh7gEc/jM84GGilh68lSOokyM/zNUlBA==
   /@types/serve-static/1.13.3:
     dependencies:
-      '@types/express-serve-static-core': 4.16.11
+      '@types/express-serve-static-core': 4.17.0
       '@types/mime': 2.0.1
     dev: true
     resolution:
       integrity: sha512-oprSwp094zOglVrXdlo/4bAHtKTAxX6VT8FOZlBKrmyLbNvE1zxZyJ6yikMVtHIvwP45+ZQGJn+FdXGKTozq0g==
   /@types/sharp/0.23.0:
     dependencies:
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
     dev: true
     resolution:
       integrity: sha512-lZxg80QILInYfuh1RIqd4+s+zprqs8Z7w7Pd5fNDlQdlgND5wb9bM/S5TqElwCUxegL2rafuBstu89aPhcl4IQ==
@@ -225,7 +225,7 @@ packages:
       integrity: sha512-GKF2VnEkMmEeEGvoo03ocrP9ySMuX1ypKazIYMlsjfslfBMhOAtC5dmEWKdJioW4lJN7MZRS88kalTsVClyQ9w==
   /accepts/1.3.7:
     dependencies:
-      mime-types: 2.1.24
+      mime-types: 2.1.25
       negotiator: 0.6.2
     dev: false
     engines:
@@ -330,7 +330,7 @@ packages:
       integrity: sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==
   /cache-content-type/1.0.1:
     dependencies:
-      mime-types: 2.1.24
+      mime-types: 2.1.25
       ylru: 1.2.1
     dev: false
     engines:
@@ -443,6 +443,7 @@ packages:
     resolution:
       integrity: sha512-8aPsApQfebXnuI+537McwYsDtjVxGm8gTIzQI3FDW6t5t/DAhERxtnbEPN/8RX+uZthoz4eCOgloXaE5cYyNow==
   /core-js/2.6.10:
+    deprecated: 'core-js@<3.0 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.'
     dev: false
     requiresBuild: true
     resolution:
@@ -611,7 +612,7 @@ packages:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
-      mime-types: 2.1.24
+      mime-types: 2.1.25
     dev: false
     engines:
       node: '>= 0.12'
@@ -1040,20 +1041,20 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
-  /mime-db/1.40.0:
+  /mime-db/1.42.0:
     dev: false
     engines:
       node: '>= 0.6'
     resolution:
-      integrity: sha512-jYdeOMPy9vnxEqFRRo6ZvTZ8d9oPb+k18PKoYNYUe2stVEBPPwsln/qWzdbmaIvnhZ9v2P+CuecK+fpUfsV2mA==
-  /mime-types/2.1.24:
+      integrity: sha512-UbfJCR4UAVRNgMpfImz05smAXK7+c+ZntjaA26ANtkXLlOe947Aag5zdIcKQULAiF9Cq4WxBi9jUs5zkA84bYQ==
+  /mime-types/2.1.25:
     dependencies:
-      mime-db: 1.40.0
+      mime-db: 1.42.0
     dev: false
     engines:
       node: '>= 0.6'
     resolution:
-      integrity: sha512-WaFHS3MCl5fapm3oLxU4eYDw77IQM2ACcxQ9RIxfaC3ooc6PFuBMGZZsYpvoXS5D5QTWPieo1jjLdAm3TBP3cQ==
+      integrity: sha512-5KhStqB5xpTAeGqKBAMgwaYMnQik7teQN4IAzC7npDv6kzeU6prfkR67bc87J1kWMPGkoaZSq1npmexMgkmEVg==
   /mimic-response/2.0.0:
     dev: false
     engines:
@@ -1098,7 +1099,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
-  /mongodb/3.3.3:
+  /mongodb/3.3.4:
     dependencies:
       bson: 1.1.3
       require_optional: 1.0.1
@@ -1109,7 +1110,7 @@ packages:
     optionalDependencies:
       saslprep: 1.0.3
     resolution:
-      integrity: sha512-MdRnoOjstmnrKJsK8PY0PjP6fyF/SBS4R8coxmhsfEU7tQ46/J6j+aSHF2n4c2/H8B+Hc/Klbfp8vggZfI0mmA==
+      integrity: sha512-6fmHu3FJTpeZxacJcfjUGIP3BSteG0l2cxLkSrf1nnnS1OrlnVGiP9P/wAC4aB6dM6H4vQ2io8YDjkuPkje7AA==
   /ms/2.0.0:
     dev: false
     resolution:
@@ -1230,7 +1231,7 @@ packages:
       node: '>= 0.10.0'
     resolution:
       integrity: sha1-wrWPX/SijyhXACUHEtjqVndAXNY=
-  /passport-steam/1.0.11:
+  /passport-steam/1.0.12:
     dependencies:
       '@passport-next/passport-openid': 1.0.0
       steam-web: 0.4.0
@@ -1238,7 +1239,7 @@ packages:
     engines:
       node: '>= 0.4.0'
     resolution:
-      integrity: sha512-aFeBVqSQ9AC+aTmGpmdYvg/6d3qOwKQMIvWSwuZ1EhuvbiUXussao15u5OzGunz+1j5SYhqYAuTLwXjCPebDDA==
+      integrity: sha512-5HUyfhO8er6LU2zwXVhdpbZPEXwbhMiUjyd0GTdCJrHBA70R91ngZk1a3UPVVIkmNFCWDzw/jzsHTmdybCycvA==
   /passport-strategy/1.0.0:
     dev: false
     engines:
@@ -1399,7 +1400,7 @@ packages:
       is-typedarray: 1.0.0
       isstream: 0.1.2
       json-stringify-safe: 5.0.1
-      mime-types: 2.1.24
+      mime-types: 2.1.25
       oauth-sign: 0.9.0
       performance-now: 2.1.0
       qs: 6.5.2
@@ -1477,7 +1478,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-JvdAWfbXeIGaZ9cILp38HntZSFSo3mWg6xGcJJsd+d4aRMOqauag1C63dJfDw7OaMYwEbHMOxEZ1lqVRYP2OAw==
-  /sharp/0.23.2:
+  /sharp/0.23.3:
     dependencies:
       color: 3.1.2
       detect-libc: 1.0.3
@@ -1493,7 +1494,7 @@ packages:
       node: '>=8.5.0'
     requiresBuild: true
     resolution:
-      integrity: sha512-BSo0tq6Jtzwa6GDKvVMNNPCP/HLczrFLGVcorYv7OtxlKx4UPHy7x9DdfT8F+PK7FCFDemVRwtsjWpvaJI9v6w==
+      integrity: sha512-pjT4zyviQteXMC1Z8USIiSwQFQbZTlU5J59/UoygE25hh+sSb7PSYI/MZ2MCB1COtxWQuoUAaG3TYIOLon26Mg==
   /signal-exit/3.0.2:
     dev: false
     resolution:
@@ -1674,7 +1675,7 @@ packages:
   /type-graphql/0.17.5_graphql@14.5.8:
     dependencies:
       '@types/glob': 7.1.1
-      '@types/node': 12.12.7
+      '@types/node': 12.12.11
       '@types/semver': 6.2.0
       class-validator: 0.11.0
       glob: 7.1.6
@@ -1695,7 +1696,7 @@ packages:
   /type-is/1.6.18:
     dependencies:
       media-typer: 0.3.0
-      mime-types: 2.1.24
+      mime-types: 2.1.25
     dev: false
     engines:
       node: '>= 0.6'
@@ -1785,9 +1786,9 @@ specifiers:
   '@types/koa-passport': ^4.0.2
   '@types/koa-router': ^7.0.42
   '@types/koa-send': ^4.1.2
-  '@types/mongodb': ^3.3.10
-  '@types/node': ^12.12.7
-  '@types/node-fetch': ^2.5.3
+  '@types/mongodb': ^3.3.11
+  '@types/node': ^12.12.11
+  '@types/node-fetch': ^2.5.4
   '@types/sharp': ^0.23.0
   class-validator: ^0.11.0
   dotenv: ^8.2.0
@@ -1801,10 +1802,10 @@ specifiers:
   koa-router: ^7.4.0
   koa-send: ^5.0.0
   koa-static: ^5.0.0
-  mongodb: ^3.3.3
+  mongodb: ^3.3.4
   node-fetch: ^2.6.0
   passport-openid: ^0.4.0
-  passport-steam: ^1.0.11
+  passport-steam: ^1.0.12
   reflect-metadata: ^0.1.13
-  sharp: ^0.23.2
+  sharp: ^0.23.3
   type-graphql: ^0.17.5

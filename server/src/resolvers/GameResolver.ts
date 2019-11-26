@@ -86,9 +86,9 @@ interface IFilterOptionObject {
 	}
 	'releaseDateSplit.month'?: {
 		$eq: number
-	},
+	}
 	genres?: {
-		$in: string[]
+		$all: string[]
 	}
 	developers?: {
 		$in: string[]
@@ -117,7 +117,7 @@ interface ISortOptionObject {
 export default class {
 	/* #region  Query Games */
 	@Query(returns => [GraphQLGame], { nullable: true })
-	async games(@Args() { skip, limit, sortBy, filterBy }: GetGamesArgs): Promise<IGame[] | null> {
+	async games(@Args() { skip, limit, sortBy, filterBy }: GetGamesArgs): Promise<IGame[]> {
 		let filter: IFilterOptionObject = {}
 		let sort: ISortOptionObject = {}
 
@@ -157,25 +157,24 @@ export default class {
 
 			if (filterBy['genres'] !== undefined) {
 				filter['genres'] = {
-					$in: filterBy['genres']
+					$all: filterBy['genres'],
 				}
 			}
 
 			if (filterBy['developers'] !== undefined) {
 				filter['developers'] = {
-					$in: filterBy['developers']
+					$in: filterBy['developers'],
 				}
 			}
 
 			if (filterBy['publishers'] !== undefined) {
 				filter['publishers'] = {
-					$in: filterBy['publishers']
+					$in: filterBy['publishers'],
 				}
 			}
 		}
 
 		if (sortBy !== undefined) {
-
 			if (sortBy['year'] !== undefined) {
 				sort['releaseDateSplit.year'] = sortBy['year']
 			}
@@ -211,20 +210,21 @@ export default class {
 			if (sortBy['trend'] !== undefined) {
 				sort['trend'] = sortBy['trend']
 			}
-
 		}
 
 		// console.log('Server Sort', sort)
 
-		// console.log('Server Filter', filter)
+		console.log('Server Filter', filterBy)
 
-		return await GameCollection.get()
+		let games: IGame[] = await GameCollection.get()
 			.find(filter)
 			.skip(skip)
 			.limit(limit)
 			.sort(sort)
 			.collation({ locale: 'en' })
 			.toArray()
+
+		return games
 	}
 	/* #endregion */
 

@@ -10,7 +10,7 @@ setInterval(() => {
 /**
  * Gets cached URL data.
  *
- * @param {string} url
+ * @param {ParameterizedContext} ctx
  * @returns {string}
  */
 function getCacheUrl(ctx: ParameterizedContext): string | undefined {
@@ -26,8 +26,7 @@ function getCacheUrl(ctx: ParameterizedContext): string | undefined {
 /**
  * Sets data to cached by url {key}.
  *
- * @param {string} keyUrl
- * @param {string} urlData
+ * @param {ParameterizedContext} ctx
  */
 function setCacheUrl(ctx: ParameterizedContext) {
 	if (ctx['body'] !== undefined) urlCache[ctx['url'].toLowerCase()] = ctx['body']

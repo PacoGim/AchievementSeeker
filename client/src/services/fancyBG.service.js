@@ -1,4 +1,4 @@
-export function setFancyBG({ color1 = '#333', color2 = '#444', transform1 = '0', transform2 = '0', opacity = 1, height1 = '50vh', width1 = '100vw',height2 = '50vh', width2 = '100vw' }) {
+export function setFancyBG({ color1 = '#333', color2 = '#444', transform1 = '0', transform2 = '0', opacity = 1, height1 = '50vh', width1 = '100vw', height2 = '50vh', width2 = '100vw' }) {
 	document.documentElement.style.setProperty('--fancy-bg-opacity', opacity)
 	setTimeout(() => {
 		document.documentElement.style.setProperty('--fancy-bg-color-1', color1)

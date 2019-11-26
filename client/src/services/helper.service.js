@@ -5,7 +5,10 @@ export function isWebpSupported() {
 			if (!self.createImageBitmap) return false
 			const webpData = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA='
 			const blob = await fetch(webpData).then(r => r.blob())
-			let isWebpSupported = await createImageBitmap(blob).then(() => true, () => false)
+			let isWebpSupported = await createImageBitmap(blob).then(
+				() => true,
+				() => false
+			)
 
 			// window.isWebpSupported = false
 			window.isWebpSupported = isWebpSupported
@@ -21,56 +24,42 @@ export function isWebpSupported() {
 
 export function areObjectsEqual(a, b) {
 	// Create arrays of property names
-	var aProps = Object.getOwnPropertyNames(a);
-	var bProps = Object.getOwnPropertyNames(b);
+	var aProps = Object.getOwnPropertyNames(a)
+	var bProps = Object.getOwnPropertyNames(b)
 
 	// If number of properties is different,
 	// objects are not equivalent
 	if (aProps.length != bProps.length) {
-		return false;
+		return false
 	}
 
 	for (var i = 0; i < aProps.length; i++) {
-		var propName = aProps[i];
+		var propName = aProps[i]
 
 		// If values of same property are not equal,
 		// objects are not equivalent
 		if (a[propName] !== b[propName]) {
-			return false;
+			return false
 		}
 	}
 
 	// If we made it this far, objects
 	// are considered equivalent
-	return true;
+	return true
 }
 
 export function parseDate(date) {
-	const months = [
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
-		"May",
-		"Jun",
-		"Jul",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec"
-	];
+	const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-	date = new Date(date);
-	let day = date.getUTCDate();
-	let month = months[date.getUTCMonth()];
-	let year = date.getUTCFullYear();
+	date = new Date(date)
+	let day = date.getUTCDate()
+	let month = months[date.getUTCMonth()]
+	let year = date.getUTCFullYear()
 
-	return `${day} ${month}, ${year}`;
+	return `${day} ${month}, ${year}`
 }
 
 export function isJsonEmpty(inJson) {
-
 	let keyFound = false
 
 	for (let key in inJson) {
@@ -184,8 +173,8 @@ export function genID(length = undefined) {
 		.toUpperCase()
 
 	if (length !== undefined) {
-		return id.substring(0,length)
-	}else{
+		return id.substring(0, length)
+	} else {
 		return id
 	}
 }

@@ -16,7 +16,6 @@ const router = new Router({ prefix: '/images' })
 
 // GET - Params: type: string, id:string
 router.get('/:type/:id', async (ctx: ParameterizedContext) => {
-
 	// ctx.set('Cache-Control', 'public, max-age=604421')
 
 	let { type, id }: { type: string; id: string } = ctx['params']
@@ -25,14 +24,14 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 	let game = await GameCollection.get().findOne({ _id: id })
 
 	if (!game) {
-		ctx.status = 404
+		ctx.status = 204
 		ctx.set('Content-Type', 'application/json')
 		ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
 		return
 	}
 
 	// Directory where the file is going to be saved.
-	let dirPath: string = path.join(path.resolve(), '/server/public/images', `${getSafeFolderName(id,game['name'])}`)
+	let dirPath: string = path.join(path.resolve(), '/server/public/images', `${getSafeFolderName(id, game['name'])}`)
 
 	// Full path of the file. Directory + filename + extension.
 	let fullPath: string = ''
@@ -55,7 +54,7 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 		// let game = await GameCollection.get().findOne({ _id: id })
 
 		// if (!game) {
-		// 	ctx.status = 404
+		// 	ctx.status = 204
 		// 	ctx.set('Content-Type', 'application/json')
 		// 	ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
 		// 	return
@@ -97,7 +96,7 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 	} else {
 		ctx.set('Content-Type', 'image/webp')
 
-		ctx.set('Cache-Control','max-age=604800')
+		ctx.set('Cache-Control', 'max-age=604800')
 
 		// Sends back to the user the raw image.
 		await send(ctx, fullPath, { root: '/' })
@@ -114,7 +113,7 @@ router.get('/achievement/:id/:achievementId/:isGray*', async (ctx: Parameterized
 	let game = await GameCollection.get().findOne({ _id: id })
 
 	if (!game) {
-		ctx.status = 404
+		ctx.status = 204
 		ctx.set('Content-Type', 'application/json')
 		ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
 		return
@@ -129,7 +128,7 @@ router.get('/achievement/:id/:achievementId/:isGray*', async (ctx: Parameterized
 		// If an achievement was found.
 		if (achievement) {
 			// Sets the directory path.
-			let dirPath: string = path.join(path.resolve(), '/server/public/images', `${getSafeFolderName(id,game['name'])}`, '/achievements')
+			let dirPath: string = path.join(path.resolve(), '/server/public/images', `${getSafeFolderName(id, game['name'])}`, '/achievements')
 
 			// Sets the final image path.
 			let fullPath: string = isGray === undefined ? path.join(dirPath, `${achievement['_id']}.webp`) : path.join(dirPath, `${hashCode(achievement['imgGray'])}.gray.webp`)
@@ -151,7 +150,7 @@ router.get('/achievement/:id/:achievementId/:isGray*', async (ctx: Parameterized
 				await send(ctx, fullPath, { root: '/' })
 			}
 		} else {
-			ctx.status = 404
+			ctx.status = 204
 			ctx.set('Content-Type', 'application/json')
 			ctx.body = { status: ctx.status, msg: `Achievement ${achievementId} not found.` }
 		}
@@ -177,8 +176,8 @@ function fetchAndSaveImage(url: string, dirPath: string, savePath: string) {
 	})
 }
 
-function getSafeFolderName(id:string,name: string) {
-	return `${name.replace(/[^a-zA-Z0-9]+/g, "")}-${id}`
+function getSafeFolderName(id: string, name: string) {
+	return `${name.replace(/[^a-zA-Z0-9]+/g, '')}-${id}`
 }
 
 module.exports = {
