@@ -14,9 +14,13 @@
 	let isDifficultyContainerVisible = false
 	let isPlatformsContainerVisible = false
 
+	let isSelectedGenreDirty = false
+
 	$: {
-		if (selectedGenres.length > 0) {
+		if (isSelectedGenreDirty) {
 			filtering.setGenres(selectedGenres)
+		} else {
+			isSelectedGenreDirty = true
 		}
 	}
 
@@ -75,10 +79,9 @@
 
 <game-filter flex="direction-row align-center">
 	<h2>Filter:</h2>
-	<filter-options flex="direction-row align-center" user-select="none">
+	<filter-options flex="direction-row align-center wrap gapped" user-select="none">
 		<filter-option cursor="pointer" flex="direction-column align-center" on:click={() => toggleContainerVisibility('genres')}>
 			<span>Genre</span>
-			<selected>{$filtering.genre}</selected>
 		</filter-option>
 
 		<filter-option cursor="pointer" flex="direction-column align-center" on:click={() => toggleContainerVisibility('difficulty')}>
@@ -140,6 +143,7 @@
 		<BaseClose message="platformClose" on:platformClose={() => (isPlatformsContainerVisible = false)} />
 		<h2>Platforms:</h2>
 		<platforms>
+			<platform cursor="pointer" on:click={() => filtering.setPlatform('ANY')}>Any</platform>
 			<platform cursor="pointer" on:click={() => filtering.setPlatform('ALL')}>All</platform>
 			<platform cursor="pointer" on:click={() => filtering.setPlatform('WINDOWS')}>Windows</platform>
 			<platform cursor="pointer" on:click={() => filtering.setPlatform('MAC')}>Mac</platform>
@@ -153,6 +157,7 @@
 		width: 100%;
 		background-color: var(--bg-color);
 		padding: 1rem;
+		color: var(--font-color);
 
 		filter-options {
 			width: 100%;

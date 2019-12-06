@@ -1,0 +1,32 @@
+/********************** Text **********************/
+$min-font-size: 0.75;
+$max-font-size: 3;
+$step-font-size: ($max-font-size - $min-font-size) / 10;
+
+[text~='center'] {
+	text-align: center;
+}
+
+[text~='white'] {
+	color: #fff;
+}
+
+[text~='waikawa-grey'] {
+	color: #5d6d83;
+}
+
+[text~='biscay'] {
+	color: #313e52;
+}
+
+@for $i from 0 through 10 {
+	[text~='size-#{$i}'] {
+		font-size: #{$i * $step-font-size + 0.75} + rem;
+	}
+}
+
+@for $i from 0 through 9 {
+	[text~='weight-#{$i+1}'] {
+		font-weight: var(--font-weight-#{$i + 1});
+	}
+}

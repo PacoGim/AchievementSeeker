@@ -36,11 +36,12 @@ router.get('/search/:query', async ctx => {
 			foundGamesArray = foundGamesArray.slice(0, limit)
 		}
 
-		if (foundGamesArray.length > 1) {
+		if (foundGamesArray.length > 0) {
 			ctx.status = 200
 			ctx.body = foundGamesArray
 		} else {
 			ctx.status = 204
+			ctx.set('Response-Detail', `No game found.`)
 		}
 	}
 })

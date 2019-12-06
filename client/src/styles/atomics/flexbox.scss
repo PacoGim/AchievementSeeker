@@ -30,3 +30,7 @@
 [flex~='wrap'] {
 	flex-wrap: wrap;
 }
+
+[flex~='gapped'] > * {
+	margin: 0.5rem;
+}

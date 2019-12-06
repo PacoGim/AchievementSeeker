@@ -1,43 +1,37 @@
 <script>
-  import { onMount } from "svelte";
+	import { onMount } from 'svelte'
 
-  import { isWebpSupported } from "services/helper.service.js"
+	import { isWebpSupported } from 'services/helper.service.js'
 
-  import { router } from "store/store.js";
+	import { router } from 'store/store.js'
 
-  import LayoutNavbar from "components/layout/LayoutNavbar.svelte"
-  import LayoutFancyBG from "components/layout/LayoutFancyBG.svelte"
+	import LayoutNavbar from 'components/layout/LayoutNavbar.svelte'
+	import LayoutFancyBG from 'components/layout/LayoutFancyBG.svelte'
 
-  onMount(async () => {
-    if (window.isWebpSupported === undefined) {
-      await isWebpSupported();
-    }
-  });
+	onMount(async () => {
+		if (window.isWebpSupported === undefined) {
+			await isWebpSupported()
+		}
+	})
 </script>
 
+<LayoutNavbar />
+<LayoutFancyBG />
+<route-name text="weight-6" flex="justify-center align-center">{$router['currentRoute']}</route-name>
+<slot />
+
 <style lang="scss" global>
-  @import "assets/styles/global.scss";
+	@import 'styles/global.scss';
 
-  route-name {
-    height: 40vh;
-    font-size: 3rem;
-    font-weight: 600;
+	route-name {
+		height: 40vh;
+		font-size: 3rem;
 
-    transition: opacity, transform cubic-bezier(0, 0, 0, 2);
-    transition-duration: 0.5s;
-  }
+		transition: opacity, transform cubic-bezier(0, 0, 0, 2);
+		transition-duration: 0.5s;
+	}
 
-  app {
-    display: block;
-    min-height: 100vh;
-  }
+	body {
+		min-height: 100vh;
+	}
 </style>
-
-<app>
-  <LayoutNavbar />
-  <LayoutFancyBG />
-  <route-name flex="justify-center align-center">
-    {$router['currentRoute']}
-  </route-name>
-  <slot />
-</app>

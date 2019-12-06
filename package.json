@@ -12,7 +12,7 @@
 		"server": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\"",
 		"client:bak": "rimraf client/__sapper__/dev && cd client && pnpm run dev",
 		"client": "cd client && pnpm run dev",
-		"transpile:typescript": "tsc --watch",
+		"transpile:typescript": "tsc --p ./server/tsconfig.json --watch",
 		"dev": "concurrently \"pnpm run server\" \"pnpm run client\""
 	},
 	"nodemonConfig": {

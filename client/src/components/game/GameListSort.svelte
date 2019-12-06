@@ -4,7 +4,7 @@
 
 <game-sort flex="direction-row align-center">
 	<h2>Sort:</h2>
-	<sort-options flex="wrap" user-select="none">
+	<sort-options flex="wrap gapped" user-select="none">
 		<sort-option cursor="pointer" on:click={() => sorting.cycleValue('achievementCount')}>
 			<span>Achievement Amount</span>
 			<state value={$sorting.achievementCount}>🡇</state>
@@ -37,6 +37,7 @@
 	game-sort {
 		width: 100%;
 		background-color: var(--bg-color);
+		color: var(--font-color);
 		padding: 1rem;
 		sort-options {
 			width: 100%;
@@ -46,7 +47,6 @@
 				background-color: var(--bg-color);
 				padding: 0.5rem 1rem;
 				white-space: nowrap;
-				margin: 5px;
 
 				state {
 					display: inline-block;

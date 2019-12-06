@@ -1,0 +1,13 @@
+[hover] {
+	cursor: pointer;
+}
+
+[hover*='text-weight-'] {
+	transition: font-weight 0.3s;
+}
+
+@for $i from 0 through 9 {
+	[hover~='text-weight-#{$i+1}']:hover {
+		font-weight: var(--font-weight-#{$i + 1});
+	}
+}

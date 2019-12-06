@@ -1,0 +1,41 @@
+@import 'atomics/@imports.scss';
+
+@font-face {
+	font-family: 'Nunito';
+	src: url(../fonts/NunitoVFBeta.ttf);
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+html {
+	font-size: calc(12px + (16 - 12) * (100vw - 320px) / (1920 - 320));
+	box-sizing: border-box;
+	letter-spacing: 0.5px;
+}
+
+body {
+	overflow-x: hidden;
+	color: #fff;
+	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	// background-color: #141a24;
+	background-color: #f8f8f8;
+}
+
+@supports (font-variation-settings: normal) {
+	body {
+		font-family: 'Nunito';
+		font-weight: 54;
+	}
+}

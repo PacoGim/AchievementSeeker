@@ -668,7 +668,7 @@ packages:
   /normalize-package-data/2.5.0:
     dependencies:
       hosted-git-info: 2.8.5
-      resolve: 1.12.2
+      resolve: 1.13.1
       semver: 5.7.1
       validate-npm-package-license: 3.0.4
     dev: true
@@ -876,12 +876,12 @@ packages:
     dev: true
     resolution:
       integrity: sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
-  /resolve/1.12.2:
+  /resolve/1.13.1:
     dependencies:
       path-parse: 1.0.6
     dev: true
     resolution:
-      integrity: sha512-cAVTI2VLHWYsGOirfeYVVQ7ZDejtQ9fp4YhYckWDEkFfqbVjaT11iM8k6xSAfGFMM+gDpZjMnFssPu8we+mqFw==
+      integrity: sha512-CxqObCX8K8YtAhOBRg+lrcdn+LK+WYOS8tSjqSFbjtrI5PnS63QPhZl4+yKfrU9tdsbMu9Anr/amegT87M9Z6w==
   /rxjs/6.5.3:
     dependencies:
       tslib: 1.10.0

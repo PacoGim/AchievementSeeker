@@ -2,3 +2,6 @@
 /game/list, deleting developer and/or publisher with keyboard and clicking away doesn't refresh reactive statements.
 /game/list, sending request a every letter entered in developer/publisher input.
 Game Sort add only one arrow and make it flip around.
+Logo: https://steamcdn-a.akamaihd.net/steam/apps/220/logo.png
+Hero: https://steamcdn-a.akamaihd.net/steam/apps/220/library_hero.jpg
+Vetical Header: https://steamcdn-a.akamaihd.net/steam/apps/220/library_600x900.jpg

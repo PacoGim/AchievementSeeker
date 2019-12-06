@@ -1,0 +1,39 @@
+/********************** Margins **********************/
+
+$min-rem: 0.5;
+$max-rem: 3;
+$step-rem: ($max-rem - $min-rem) / 10;
+
+@for $i from 0 through 10 {
+	[margin~='t-#{$i}'] {
+		margin-top: #{$i * $step-rem + 0.5} + rem;
+	}
+
+	[margin~='r-#{$i}'] {
+		margin-right: #{$i * $step-rem + 0.5} + rem;
+	}
+
+	[margin~='b-#{$i}'] {
+		margin-bottom: #{$i * $step-rem + 0.5} + rem;
+	}
+
+	[margin~='l-#{$i}'] {
+		margin-left: #{$i * $step-rem + 0.5} + rem;
+	}
+
+	[margin~='b-#{$i}'] {
+		margin-bottom: #{$i * $step-rem + 0.5} + rem;
+	}
+
+	[margin~='y-#{$i}'] {
+		margin: #{$i * $step-rem + 0.5} + rem 0;
+	}
+
+	[margin~='x-#{$i}'] {
+		margin: 0 #{$i * $step-rem + 0.5} + rem;
+	}
+
+	[margin~='xy-#{$i}'] {
+		margin: #{$i * $step-rem + 0.5} + rem;
+	}
+}

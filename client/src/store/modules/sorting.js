@@ -14,7 +14,7 @@ export default function () {
     points: 0,
     score: 0,
     trend: 0,
-    releaseDate: -1
+    releaseDate: 0
   }
 
   const { subscribe, update } = writable(sortValues)

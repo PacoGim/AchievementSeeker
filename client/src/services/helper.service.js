@@ -55,8 +55,9 @@ export function parseDate(date) {
 	let day = date.getUTCDate()
 	let month = months[date.getUTCMonth()]
 	let year = date.getUTCFullYear()
+	let indicator = ['st', 'nd', 'rd', 'th'][day > 3 ? 3 : day - 1]
 
-	return `${day} ${month}, ${year}`
+	return `${day}${indicator} ${month}, ${year}`
 }
 
 export function isJsonEmpty(inJson) {
@@ -177,4 +178,59 @@ export function genID(length = undefined) {
 	} else {
 		return id
 	}
+}
+
+export function smoothScrollTo(query) {
+	if (window.smoothScrollInterval) clearInterval(window.smoothScrollInterval)
+
+	let element = document.querySelector(query)
+	console.log(query)
+	let globalScroll = window.scrollY
+
+	// Distance between current visible top left corner of document and element
+	let elY = element.getBoundingClientRect().y
+
+	// Lowest point where the speed has to start slowing down
+	let elYLow = Math.abs(Math.trunc((elY / 3) * 1))
+
+	// Midpoint where the speed has to be constant
+	let elYMid = Math.abs(Math.trunc((elY / 3) * 2))
+
+	// Distance between the current document scroll position and where the next element is
+	// If we have a global scroll of 0,0 we need to add the current scroll + the next element position
+	let distance = globalScroll + elY
+
+	// Tells if we need to go up or down. 0 is negative and 1 is positive
+	let sign = elY <= 0 ? 0 : 1
+
+	// Base starting speed
+	let scrollSpeed = 0
+
+	window.smoothScrollInterval = setInterval(() => {
+		let currentEly = Math.abs(element.getBoundingClientRect().y)
+
+		if (currentEly > elYMid) {
+			scrollSpeed += 1
+		} else if (currentEly <= elYLow) {
+			if (scrollSpeed > 5) {
+				scrollSpeed -= 1
+			}
+		}
+
+		if (sign === 1) {
+			window.scrollTo(0, (globalScroll += scrollSpeed))
+
+			if (globalScroll > distance) {
+				window.scrollTo(0, distance + 1)
+				clearInterval(window.smoothScrollInterval)
+			}
+		} else if (sign === 0) {
+			window.scrollTo(0, (globalScroll -= scrollSpeed))
+
+			if (globalScroll < distance) {
+				window.scrollTo(0, distance + 1)
+				clearInterval(window.smoothScrollInterval)
+			}
+		}
+	}, 10)
 }

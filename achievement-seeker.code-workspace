@@ -10,10 +10,6 @@
 		{
 			"path": "server\\src",
 			"name": "server"
-		},
-		{
-			"path": "client\\static",
-			"name": "svelte static"
 		}
 	],
 	"settings": {

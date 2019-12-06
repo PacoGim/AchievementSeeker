@@ -33,9 +33,13 @@ export function fetchServer(url) {
 	})
 }
 
-export function fetchGameHeaderImage(gameID) {
+/**
+ * @param {string} gameID
+ * @param {string} type header | capsule
+ */
+export function fetchGameImage(gameID, type = 'header') {
 	return new Promise((resolve, reject) => {
-		fetch(`${serverURL}/images/header/${gameID}`).then(res => {
+		fetch(`${serverURL}/images/${type}/${gameID}`).then(res => {
 			const contentType = res.headers.get('Content-Type')
 
 			if (contentType === 'image/webp') {

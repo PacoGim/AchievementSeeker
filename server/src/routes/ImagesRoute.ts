@@ -26,7 +26,7 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 	if (!game) {
 		ctx.status = 204
 		ctx.set('Content-Type', 'application/json')
-		ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
+		ctx.set('Response-Detail', `Game with id: ${id} does not exist.`)
 		return
 	}
 
@@ -49,17 +49,52 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 			//Sets the header fetching url.
 			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/header.jpg`
 		}
+	} else if (type === 'capsule') {
+		// Setting the full path of the capsule.
+		fullPath = path.join(dirPath, '/capsule.webp')
+
+		// If the capsule image doesn't exist then
+		if (!fs.existsSync(fullPath)) {
+			//Sets the capsule fetching url.
+			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/capsule_sm_120.jpg`
+		}
+	} else if (type === 'bigCapsule') {
+		// Setting the full path of the capsule.
+		fullPath = path.join(dirPath, '/big-capsule.webp')
+
+		// If the capsule image doesn't exist then
+		if (!fs.existsSync(fullPath)) {
+			//Sets the capsule fetching url.
+			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/capsule_616x353.jpg`
+		}
+	} else if (type === 'logo') {
+		// Setting the full path of the logo.
+		fullPath = path.join(dirPath, '/logo.webp')
+
+		// If the logo image doesn't exist then
+		if (!fs.existsSync(fullPath)) {
+			//Sets the logo fetching url.
+			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/logo.png`
+		}
+	} else if (type === 'hero') {
+		// Setting the full path of the hero.
+		fullPath = path.join(dirPath, '/hero.webp')
+
+		// If the hero image doesn't exist then
+		if (!fs.existsSync(fullPath)) {
+			//Sets the hero fetching url.
+			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/library_hero.jpg`
+		}
+	} else if (type === 'library') {
+		// Setting the full path of the library.
+		fullPath = path.join(dirPath, '/library.webp')
+
+		// If the library image doesn't exist then
+		if (!fs.existsSync(fullPath)) {
+			//Sets the library fetching url.
+			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${game['appid']}/library_600x900.jpg`
+		}
 	} else if (type === 'background') {
-		// Fetches the game by _id. Gets only the appid and backgrounds.
-		// let game = await GameCollection.get().findOne({ _id: id })
-
-		// if (!game) {
-		// 	ctx.status = 204
-		// 	ctx.set('Content-Type', 'application/json')
-		// 	ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
-		// 	return
-		// }
-
 		let { appid, backgrounds } = game
 
 		// Takes a random background from the background array of the game object.
@@ -92,7 +127,9 @@ router.get('/:type/:id', async (ctx: ParameterizedContext) => {
 		ctx.body = fetchUrl
 
 		// While the client gets an url, the backend Downloads, Converts and Saves the image for the next resquests.
-		fetchAndSaveImage(fetchUrl, dirPath, fullPath).catch()
+		fetchAndSaveImage(fetchUrl, dirPath, fullPath).catch(err => {
+			console.log(err)
+		})
 	} else {
 		ctx.set('Content-Type', 'image/webp')
 
@@ -113,7 +150,7 @@ router.get('/achievement/:id/:achievementId/:isGray*', async (ctx: Parameterized
 	let game = await GameCollection.get().findOne({ _id: id })
 
 	if (!game) {
-		ctx.status = 204
+		ctx.status = 404
 		ctx.set('Content-Type', 'application/json')
 		ctx.body = { status: ctx.status, msg: `Game with id: ${id} does not exist.` }
 		return
@@ -152,7 +189,7 @@ router.get('/achievement/:id/:achievementId/:isGray*', async (ctx: Parameterized
 		} else {
 			ctx.status = 204
 			ctx.set('Content-Type', 'application/json')
-			ctx.body = { status: ctx.status, msg: `Achievement ${achievementId} not found.` }
+			ctx.set('Response-Detail', `Achievement ${achievementId} not found.`)
 		}
 	}
 })

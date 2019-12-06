@@ -27,11 +27,11 @@
 	import GameListSearch from 'components/game/GameListSearch.svelte'
 	import GameListSort from 'components/game/GameListSort.svelte'
 	import GameListFilter from 'components/game/GameListFilter.svelte'
-	import BaseGameHeader from 'components/base/BaseGameHeader.svelte'
+	import BaseGameListCard from 'components/base/BaseGameListCard.svelte'
 
 	import { setFancyBG } from 'services/fancyBG.service.js'
-	import { parseDate } from 'services/helper.service.js'
 	import { getGameSearchGames } from 'services/graphql.service.js'
+	import { smoothScrollTo } from 'services/helper.service.js'
 
 	import { sorting, filtering } from 'store/store.js'
 
@@ -58,7 +58,7 @@
 					const games = data['games']
 
 					if (games.length > 0) {
-						gameList = games
+						fillGameList(games)
 					} else {
 						//TODO: Alert that no games were found
 					}
@@ -67,6 +67,14 @@
 		} else {
 			dirty = true
 		}
+	}
+
+	function fillGameList(games) {
+		games.forEach((game, index) => {
+			setTimeout(() => {
+				gameList[index] = game
+			}, index * 50)
+		})
 	}
 
 	onMount(() => {
@@ -83,65 +91,16 @@
 
 <game-list flex="direction-column align-center">
 	<GameListSearch />
-	<h1>Or choose options below</h1>
+	<h2 text="weight-5" margin="b-1">Or choose options below</h2>
 	<GameListSort />
 	<GameListFilter />
 
 	<games>
-
 		{#if gameList !== undefined}
-			{#each gameList as game (game['_id'])}
-				<a href="/game/{game['_id']}" flex="direction-column align-center">
-
-					<BaseGameHeader gameID={game['_id']} styleClass="game-list-header" />
-
-					<span>{game['name']}</span>
-
-					{#if game['difficulty']}
-						<span>Difficulty:{game['difficulty']['average']}</span>
-					{/if}
-
-					{#if game['points']}
-						<span>Points:{game['points']}</span>
-					{/if}
-
-					{#if game['achievementCount']}
-						<span>Ach Count:{game['achievementCount']}</span>
-					{/if}
-
-					{#if game['score']}
-						<span>Score:{game['score']}</span>
-					{/if}
-
-					{#if game['trend']}
-						<span>Trend:{game['trend']}</span>
-					{/if}
-
-					{#if game['isFree'] !== undefined}
-						<span>Free to play:{game['isFree']}</span>
-					{/if}
-
-					{#if game['platforms']}
-						<span>
-							Platforms:
-							{#each game['platforms'] as platform, index (index)}{platform},{/each}
-						</span>
-					{/if}
-
-					{#if game['releaseDate']}
-						<span>RD:{parseDate(game['releaseDate'])}</span>
-					{/if}
-
-					{#if game['genres']}
-						<span>
-							Genres:
-							{#each game['genres'] as genre, index (index)}{genre['type']},{/each}
-						</span>
-					{/if}
-				</a>
+			{#each gameList as game, index (index)}
+				<BaseGameListCard {game} />
 			{/each}
 		{/if}
-
 	</games>
 </game-list>
 
@@ -151,20 +110,20 @@
 
 <style lang="scss">
 	game-list {
-		--bg-color: rgba(255, 255, 255, 0.5);
+		--bg-color: rgba(255, 255, 255, 0.25);
+		--font-color: #111;
+
+		h1 {
+			margin-bottom: 2rem;
+		}
 
 		games {
-			padding: 1rem;
-			width: 100%;
-			display: grid;
-			grid-gap: 1rem;
-			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-
-			a {
-				background-color: #fff;
-				padding: 0.5rem;
-				border: outset 2px dodgerblue;
-			}
+			// padding: 1rem;
+			// width: 100%;
+			// display: grid;
+			// grid-gap: 1rem;
+			// grid-template-columns: repeat(3, 1fr);
+			// max-width: 1000px;
 		}
 	}
 </style>

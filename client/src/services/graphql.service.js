@@ -50,56 +50,56 @@ export function buildQuery() {
 
 		/* #region  Sorting Options */
 		if (difficulty !== 0) {
-			query += 'difficulty{average} '
 			sort += `difficulty:${difficulty} `
 		}
+		query += 'difficulty{average} '
 
 		if (achievementCount !== 0) {
-			query += 'achievementCount '
 			sort += `achievementCount:${achievementCount} `
 		}
+		query += 'achievementCount '
 
 		if (points !== 0) {
-			query += 'points '
 			sort += `points:${points} `
 		}
+		query += 'points '
 
 		if (score !== 0) {
-			query += 'score '
 			sort += `score:${score} `
 		}
+		query += 'score '
 
 		if (trend !== 0) {
-			query += 'trend '
 			sort += `trend:${trend} `
 		}
+		query += 'trend '
 
 		if (releaseDate !== 0) {
-			query += 'releaseDate '
 			sort += `year:${releaseDate} month:${releaseDate} `
 		}
+		query += 'releaseDate '
 		/* #endregion */
 
 		/* #region  Filter Options */
 		if (genres.length > 0 && genres !== undefined) {
 			filter += `genres:${JSON.stringify(genres)} `
-			query += 'genres{type} '
 		}
+		query += 'genres{type} '
 
 		if (difficultyFilter !== undefined) {
 			filter += `difficulty:{min:${difficultyFilter} max:${difficultyFilter + 10}} `
-			query += 'difficulty{average} '
 		}
+		query += 'difficulty{average} '
 
 		if (platform !== 'ANY') {
 			filter += `platform:${platform} `
-			query += 'platforms '
 		}
+		query += 'platforms '
 
 		if (isFree !== undefined) {
 			filter += `isFree:${isFree} `
-			query += 'isFree '
 		}
+		query += 'isFree '
 		/* #endregion */
 
 		sort += '}'

@@ -5,7 +5,7 @@
 			sort: '{year:-1,month:-1,trend:-1}',
 		})
 
-		console.log(data['games'])
+		// console.log(data['games'])
 
 		return { games: data['games'] }
 	}
@@ -88,7 +88,7 @@
 		padding: 0.5rem 1rem;
 		background-color: #000;
 		font-size: 1.5rem;
-		font-weight: 700;
+		font-weight: 100;
 		margin-left: 2rem;
 	}
 
