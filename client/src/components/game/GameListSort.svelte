@@ -13,10 +13,6 @@
 			<span>Difficulty</span>
 			<state value={$sorting.difficulty}>🡇</state>
 		</sort-option>
-		<sort-option cursor="pointer" on:click={() => sorting.cycleValue('points')}>
-			<span>Points</span>
-			<state value={$sorting.points}>🡇</state>
-		</sort-option>
 		<sort-option cursor="pointer" on:click={() => sorting.cycleValue('releaseDate')}>
 			<span>Release Date</span>
 			<state value={$sorting.releaseDate}>🡇</state>

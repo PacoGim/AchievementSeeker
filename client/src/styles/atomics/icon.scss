@@ -13,14 +13,28 @@
 	width: auto;
 }
 
+[icon~='waikawa-grey'] {
+	filter: $waikawa-grey-filter;
+}
+
+[icon~='biscay'] {
+	filter: $biscay-filter;
+}
+
 [icon~='blue'] {
-	filter: invert(65%) sepia(76%) saturate(5641%) hue-rotate(164deg) brightness(97%) contrast(101%);
+	filter: $blue-filter;
 }
 
 [icon~='white'] {
 	filter: invert(100%);
 }
 
-[icon~='small'] {
-	height: 40px;
+[icon~='size-base'] {
+	height: 1rem;
+}
+
+@for $i from 0 through 10 {
+	[icon~='size-#{$i}'] {
+		height: #{$i * $step-font-size + 0.75} + rem;
+	}
 }

@@ -10,7 +10,7 @@ export function getGameBackground(id, appid, backgrounds) {
 		let fetchUrl = ''
 
 		if (window.isWebpSupported) {
-			fetchUrl = `http://localhost:443/images/background/${id}`
+			fetchUrl = `http://192.168.1.109:443/images/background/${id}`
 		} else {
 			fetchUrl = `https://steamcdn-a.akamaihd.net/steam/apps/${appid}/${backgrounds[genNum(0, backgrounds.length - 1)]}`
 		}
@@ -37,7 +37,7 @@ export function getGameBackground(id, appid, backgrounds) {
 }
 
 export function getGameLogo(id) {
-	// http://localhost:443/games/logo/pt6Sr89j06gkS/false
+	// http://192.168.1.109:443/games/logo/pt6Sr89j06gkS/false
 	// image/webp Status: 200
 	// image/png Status: 200
 	// application/json {"err": "No logo available"} Status: 404
@@ -47,7 +47,7 @@ export function getGameLogo(id) {
 			await isWebpSupported()
 		}
 
-		fetch(`http://localhost:443/games/logo/${id}/${window.isWebpSupported}`).then(async res => {
+		fetch(`http://192.168.1.109:443/games/logo/${id}/${window.isWebpSupported}`).then(async res => {
 			// const contentType = res['headers'].get('Content-Type')
 			const status = res['status']
 

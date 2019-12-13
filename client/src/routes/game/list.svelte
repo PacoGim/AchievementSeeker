@@ -35,7 +35,7 @@
 
 	import { sorting, filtering } from 'store/store.js'
 
-	const componentName = 'Game List'
+	const pageName = 'Game List'
 
 	export let gameList
 
@@ -58,7 +58,7 @@
 					const games = data['games']
 
 					if (games.length > 0) {
-						fillGameList(games)
+						gameList = games
 					} else {
 						//TODO: Alert that no games were found
 					}
@@ -67,14 +67,6 @@
 		} else {
 			dirty = true
 		}
-	}
-
-	function fillGameList(games) {
-		games.forEach((game, index) => {
-			setTimeout(() => {
-				gameList[index] = game
-			}, index * 50)
-		})
 	}
 
 	onMount(() => {
@@ -95,7 +87,7 @@
 	<GameListSort />
 	<GameListFilter />
 
-	<games>
+	<games padding="xy-4">
 		{#if gameList !== undefined}
 			{#each gameList as game, index (index)}
 				<BaseGameListCard {game} />
@@ -105,7 +97,7 @@
 </game-list>
 
 <svelte:head>
-	<title>{componentName}</title>
+	<title>{pageName}</title>
 </svelte:head>
 
 <style lang="scss">
@@ -118,6 +110,11 @@
 		}
 
 		games {
+			// background: linear-gradient(to bottom , transparent 25% , rgba(0,0,0, 0.25));
+			background: linear-gradient(to bottom, transparent 25%, rgba(142, 182, 241, 0.25));
+			// background-color: rgba(255,255,255,.75);
+
+			// display: block;
 			// padding: 1rem;
 			// width: 100%;
 			// display: grid;

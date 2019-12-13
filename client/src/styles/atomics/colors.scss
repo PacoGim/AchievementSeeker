@@ -1,0 +1,14 @@
+$waikawa-grey: #5d6d83;
+$waikawa-grey-filter: invert(43%) sepia(27%) saturate(390%) hue-rotate(175deg) brightness(89%) contrast(87%);
+
+$biscay: #313e52;
+$biscay-filter: invert(20%) sepia(24%) saturate(783%) hue-rotate(177deg) brightness(95%) contrast(87%);
+
+$blue: #009fd3;
+$blue-filter: invert(54%) sepia(89%) saturate(4130%) hue-rotate(165deg) brightness(97%) contrast(101%);
+
+:root {
+	--waikawa-grey: #{$waikawa-grey};
+	--biscay: #{$biscay};
+	--blue: #{$blue};
+}

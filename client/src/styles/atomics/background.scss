@@ -1,0 +1,12 @@
+[bg~='blue'] {
+	// background-color: $blue;
+	background:linear-gradient(to right bottom, $blue,rgb(105, 200, 255));
+}
+
+[bg~='biscay'] {
+	background-color: $biscay;
+}
+
+[bg~='waikawa-grey'] {
+	background-color: $waikawa-grey;
+}

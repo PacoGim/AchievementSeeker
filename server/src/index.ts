@@ -73,7 +73,7 @@ async function main() {
 		ctx.set('Strict-Transport-Security', 'max-age=3600')
 		ctx.set('X-Content-Type-Options', 'nosniff')
 		ctx.set('X-Frame-Options', 'deny')
-		ctx.set('Access-Control-Allow-Origin', 'http://localhost:8080')
+		ctx.set('Access-Control-Allow-Origin', 'http://192.168.1.109:8080')
 		ctx.set('X-XSS-Protection', '1; mode=block')
 		await next()
 
@@ -96,7 +96,7 @@ async function main() {
 	// Loads routes dynamically
 	routesLoader(app)
 
-	app.use(mount('/graphql', graphqlHTTP({ schema, graphiql: true })))
+	app.use(mount('/', graphqlHTTP({ schema, graphiql: true })))
 
 	process.on('uncaughtException', err => console.log(err))
 

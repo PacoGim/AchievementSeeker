@@ -1,15 +1,24 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": ".",
+			"name": "Project Root"
 		},
 		{
 			"path": "client\\src",
-			"name": "svelte"
+			"name": "Client"
 		},
 		{
 			"path": "server\\src",
-			"name": "server"
+			"name": "Server"
+		},
+		{
+			"path": "client\\static",
+			"name": "Svelte Statics"
+		},
+		{
+			"path": "server\\dist",
+			"name": "Server Dist"
 		}
 	],
 	"settings": {

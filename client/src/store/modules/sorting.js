@@ -11,10 +11,9 @@ export default function () {
   let sortValues = {
     achievementCount: 0,
     difficulty: 0,
-    points: 0,
     score: 0,
-    trend: 0,
-    releaseDate: 0
+    trend: -1,
+    releaseDate: -1
   }
 
   const { subscribe, update } = writable(sortValues)

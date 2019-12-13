@@ -1,7 +1,9 @@
 import { MongoClient } from 'mongodb'
 import { EventEmitter } from 'events'
 
-const uri = 'mongodb://localhost:27017'
+const user = 'readOnlyUser'
+const pwd = 'readOnlyUserPWD'
+const uri = `mongodb://${user}:${pwd}@localhost:27017`
 const dbName = 'AchievementSeeker'
 
 import GameCollection from './collections/GameCollection'

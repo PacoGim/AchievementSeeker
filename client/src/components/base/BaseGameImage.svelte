@@ -9,9 +9,13 @@
 	export let styleClass
 	export let imageType = 'header'
 	export let imageFallback = 'header'
+	export let padding = undefined
+	export let margin = undefined
+	let isImageLoaded = false
 	let imageUrl
 
 	$: {
+		isImageLoaded = false
 		gameId
 		loadImage()
 	}
@@ -45,14 +49,14 @@
 	}
 </script>
 
-<img class={styleClass} on:error={() => imageLoadingError()} onload="this.setAttribute('loaded','true')" loaded="false" src={imageUrl} alt="" />
+<img {padding} {margin} class={styleClass} on:error={() => imageLoadingError()} on:load={() => (isImageLoaded = true)} loaded={isImageLoaded} src={imageUrl} alt="" />
 
 <style lang="scss">
 	img {
 		display: block;
 
 		&[loaded] {
-			transition: opacity 0.3s;
+			transition: opacity .3s ease-in-out;
 		}
 
 		&[loaded='false'] {
@@ -84,10 +88,13 @@
 	}
 
 	img.game-list-image {
-		height: auto;
-		width: 100%;
-		border-radius: 5px;
+		// height: 60px;
+		// min-height: 60px;
+		max-height: 4rem;
+		width: auto;
+		border-top-left-radius: 5px;
+		border-bottom-right-radius: 5px;
 		grid-column: 1;
-		grid-row: 1 / span 2;
+		grid-row: 1 / span 3;
 	}
 </style>

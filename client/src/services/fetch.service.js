@@ -1,7 +1,7 @@
 import { areObjectsEqual } from 'services/helper.service.js'
 import fetch from 'node-fetch'
 
-const serverURL = `http://localhost:3000`
+const serverURL = `http://192.168.1.109:3000`
 
 let previousQuery = {}
 let previousResponse = undefined

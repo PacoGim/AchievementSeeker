@@ -45,7 +45,7 @@ export function buildQuery() {
 		sorting.subscribe(value => (sortingOptions = value))()
 		filtering.subscribe(value => (filterOptions = value))()
 
-		let { achievementCount, difficulty, points, score, trend, releaseDate } = sortingOptions
+		let { achievementCount, difficulty, score, trend, releaseDate } = sortingOptions
 		let { genres, difficulty: difficultyFilter, platform, isFree } = filterOptions
 
 		/* #region  Sorting Options */
@@ -58,11 +58,6 @@ export function buildQuery() {
 			sort += `achievementCount:${achievementCount} `
 		}
 		query += 'achievementCount '
-
-		if (points !== 0) {
-			sort += `points:${points} `
-		}
-		query += 'points '
 
 		if (score !== 0) {
 			sort += `score:${score} `
@@ -158,7 +153,6 @@ function getGameListQuery(limit, skip, sort, filter) {
           releaseDate
           appid
           score
-          points
           achievementCount
           _id
         }

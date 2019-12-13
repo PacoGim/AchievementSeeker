@@ -1,8 +1,4 @@
 /********************** Text **********************/
-$min-font-size: 0.75;
-$max-font-size: 3;
-$step-font-size: ($max-font-size - $min-font-size) / 10;
-
 [text~='center'] {
 	text-align: center;
 }
@@ -12,16 +8,16 @@ $step-font-size: ($max-font-size - $min-font-size) / 10;
 }
 
 [text~='waikawa-grey'] {
-	color: #5d6d83;
+	color: $waikawa-grey;
 }
 
 [text~='biscay'] {
-	color: #313e52;
+	color: $biscay;
 }
 
 @for $i from 0 through 10 {
 	[text~='size-#{$i}'] {
-		font-size: #{$i * $step-font-size + 0.75} + rem;
+		font-size: #{$i * $step-font-size + $min-font-size} + rem;
 	}
 }
 
