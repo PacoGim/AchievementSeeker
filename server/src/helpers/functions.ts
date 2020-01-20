@@ -1,3 +1,8 @@
+import { IRoute } from '../entities/RouteEntity'
+import path from 'path'
+import { ParameterizedContext } from 'koa'
+import Koa from 'koa'
+
 export function genNum(min: number, max: number): number {
 	return Number(Math.floor(Math.random() * (max - min + 1) + min))
 }
@@ -129,4 +134,30 @@ export function getDifficulty(easy: number, medium: number, hard: number) {
 	if (average > 70 && average <= 80) return { value: average, text: `Hard (${average})` }
 	if (average > 80 && average <= 90) return { value: average, text: `Very Hard (${average})` }
 	if (average > 90 && average <= 100) return { value: average, text: `Insane (${average})` }
+}
+
+export function loadRoutes(app: Koa, rootPath: string, routeList: string[]): void {
+	routeList.forEach(routeName => {
+		let route: IRoute = require(path.join(path.resolve(), rootPath, routeName + '.js'))
+		app.use(route.routes)
+		console.log(`${routeName} Loaded`)
+	})
+}
+
+export function getSafeString(name: string, limit: number) {
+	return name.replace(/[^a-zA-Z0-9]+/g, '').substring(0, limit)
+}
+
+export function errorHandler(error: Error, ctx: ParameterizedContext) {
+	let errorMessage: string = ''
+
+	if (error.message === 'urls[type] is not a function') {
+		errorMessage = 'Image type not valid'
+	} else if (error.message === 'Game does not exist') {
+		errorMessage = 'Game id or appid not found'
+	} else {
+		errorMessage = error.message
+	}
+	ctx.status = 204
+	ctx.set('Response-Detail', errorMessage)
 }

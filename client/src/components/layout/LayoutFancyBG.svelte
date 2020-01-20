@@ -4,9 +4,9 @@
     position: absolute;
     top: 0;
     box-shadow: 0 0 5px 2.5px rgba(0, 0, 0, 0.25);
-    transition-property: background-color, transform, opacity,min-height;
-    transition-duration: 1s;
-    transition-timing-function: cubic-bezier(0, 0, 0, 1.75);
+    /* transition-property: background-color, transform, opacity,min-height; */
+    /* transition-duration: 1s; */
+    /* transition-timing-function: cubic-bezier(0, 0, 0, 1.75); */
   }
 
   bg[num="1"] {

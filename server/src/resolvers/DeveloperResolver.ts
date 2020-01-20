@@ -1,6 +1,6 @@
 import { Resolver, FieldResolver, Root, Query } from 'type-graphql'
-import gameCollection from '../db/collections/GameCollection'
-import { GraphQLDeveloper } from '../entities/schemas/DeveloperSchema'
+import gameCollection from '../database/collections/GameCollection'
+import { GraphQLDeveloper } from '../schemas/DeveloperSchema'
 import { IDeveloper } from '../entities/DeveloperEntity'
 
 @Resolver(of => GraphQLDeveloper)

@@ -13,7 +13,7 @@
 		setFancyBG('#C81949', '#1A1408', 'skewY(15deg) translateY(-10px)', 'skewY(-15deg) translateY(-60px)')
 		id = atob(location['pathname'].split('/')[3])
 
-		fetch(`http://192.168.1.109:443/user/GetUserDataBySteamID/${id}`)
+		fetch(`http://localhost:443/user/GetUserDataBySteamID/${id}`)
 			.then(res => res.json())
 			.then(data => {
 				// console.log(data);

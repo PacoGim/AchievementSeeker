@@ -35,6 +35,6 @@
 
 @for $i from 0 through 10 {
 	[icon~='size-#{$i}'] {
-		height: #{$i * $step-font-size + 0.75} + rem;
+		height: #{$i * $step-font-size + 0.75}rem;
 	}
 }

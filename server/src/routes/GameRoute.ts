@@ -1,9 +1,11 @@
 import Router from 'koa-router'
 
-import GameCollection from '../db/collections/GameCollection'
+import GameCollection from '../database/collections/GameCollection'
 
-import { setCacheUrl } from '../url-cache'
+import { setCacheUrl } from '../helpers/url-cache'
 import { IGame } from '../entities/GameEntity'
+
+import HeaderService, { statuses } from '../helpers/header'
 
 const router = new Router({ prefix: '/games' })
 
@@ -37,11 +39,13 @@ router.get('/search/:query', async ctx => {
 		}
 
 		if (foundGamesArray.length > 0) {
-			ctx.status = 200
-			ctx.body = foundGamesArray
+			HeaderService.setCtx(ctx)
+				.setStatus(statuses['200'])
+				.setBody(foundGamesArray)
 		} else {
-			ctx.status = 204
-			ctx.set('Response-Detail', `No game found.`)
+			HeaderService.setCtx(ctx)
+				.setStatus(statuses['204'])
+				.setHeader('Response-Detail', 'No Game found')
 		}
 	}
 })
@@ -84,11 +88,8 @@ function aliasFromName(name: string): string[] {
 	alias = alias
 		.split(' ')
 		.map(x => {
-			if (RegExp('^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$').test(x)) {
-				return x
-			} else {
-				return x.substring(0, 1)
-			}
+			if (RegExp('^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$').test(x)) return x
+			else return x.substring(0, 1)
 		})
 		.join('')
 		.toLowerCase()

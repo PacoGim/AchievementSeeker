@@ -3,11 +3,13 @@
 }
 
 [hover*='text-weight-'] {
-	transition: font-weight 0.3s;
+	// transition: font-weight 0.3s;
+	transition: font-variation-settings 0.3s;
 }
 
 @for $i from 0 through 9 {
 	[hover~='text-weight-#{$i+1}']:hover {
-		font-weight: var(--font-weight-#{$i + 1});
+		// font-weight: var(--font-weight-#{$i + 1});
+		font-variation-settings: 'wght' var(--font-weight-#{$i + 1});
 	}
 }

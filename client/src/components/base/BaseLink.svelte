@@ -30,15 +30,15 @@
 		user-select: none;
 		display: inline;
 		font-size: 1.1rem;
-		color: #fff;
+		color: inherit;
 		text-decoration: none;
-		font-weight: var(--font-weight-4);
+		font-variation-settings: 'wght' var(--font-weight-4);
 		padding: 0.5rem;
 		padding-bottom: 0.2rem;
 		margin: 0 0.5rem;
 		border-bottom: 2px solid transparent;
 
-		transition: font-weight 0.3s, border-bottom 1s;
+		transition: font-variation-settings 0.3s, border-bottom 1s;
 	}
 
 	a.navbar-link[isActive='true'] {
@@ -48,6 +48,6 @@
 
 	a.navbar-link:hover,
 	a.navbar-link[isActive='true'] {
-		font-weight: var(--font-weight-9);
+		font-variation-settings: 'wght' var(--font-weight-9);
 	}
 </style>

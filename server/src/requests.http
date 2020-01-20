@@ -1,0 +1,9 @@
+GET http://localhost:3000/image/logo/620
+###
+GET http://localhost:3000/image/achievement/620/1
+###
+GET http://localhost:3000/image/achievement/620/1/true
+###
+GET http://localhost:3000/image/background/620
+###
+GET http://localhost:3000/games/search/ds

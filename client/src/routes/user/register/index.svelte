@@ -22,7 +22,7 @@
 		<strong>clicking the button below</strong>
 		, we'll handle the rest.
 	</header>
-	<a id="steam-auth-button" href="http://192.168.1.109:443/steam/login" flex="direction-column" shadow>
+	<a id="steam-auth-button" href="http://localhost:443/steam/login" flex="direction-column" shadow>
 		<steam-auth-text-1>Login through Steam</steam-auth-text-1>
 		<steam-auth-text-2>Achievement Seeker is not affiliated with Steam</steam-auth-text-2>
 	</a>

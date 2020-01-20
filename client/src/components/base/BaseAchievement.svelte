@@ -16,7 +16,7 @@
 		//   isWebpSupported().then(async isSupported => {
 		//     if (isSupported) {
 		//       imgUrl = await fetchImage(
-		//         `http://192.168.1.109:4000/images/achievement/${gameId}/${achievement["_id"]}`
+		//         `http://localhost:4000/image/achievement/${gameId}/${achievement["_id"]}`
 		//       );
 		//     } else {
 		//       imgUrl = `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievement["img"]}`;

@@ -1,7 +1,7 @@
 <script context="module">
 	import { getGame } from 'services/graphql.service.js'
 	export async function preload({ params, query }) {
-		// const res = await this.fetch(`http://192.168.1.109:443/games/${params["id"]}`);
+		// const res = await this.fetch(`http://localhost:443/games/${params["id"]}`);
 
 		// let data = await res.json();
 
@@ -65,8 +65,8 @@
 		<background>
 			<logo flex="justify-center align-center" {logoLoaded}>
 				<picture>
-					<source srcset="http://192.168.1.109:4000/images/{getSafeFolderName(game._id, game.name)}/logos/logo.webp" type="image/webp" />
-					<source srcset="http://192.168.1.109:4000/images/{getSafeFolderName(game._id, game.name)}/logos/logo.png" type="image/png" />
+					<source srcset="http://localhost:4000/image/{getSafeFolderName(game._id, game.name)}/logos/logo.webp" type="image/webp" />
+					<source srcset="http://localhost:4000/image/{getSafeFolderName(game._id, game.name)}/logos/logo.png" type="image/png" />
 					<img src="" onload={(logoLoaded = true)} alt={game.name} />
 				</picture>
 			</logo>
@@ -79,10 +79,10 @@
   <logo flex="justify-center align-center">
     <picture>
       <source
-        srcset="http://192.168.1.109:443/server/public/images/{game._id}/logos/logo.webp"
+        srcset="http://localhost:443/server/public/images/{game._id}/logos/logo.webp"
         type="image/webp" />
       <source
-        srcset="http://192.168.1.109:443/server/public/images/{game._id}/logos/logo.png"
+        srcset="http://localhost:443/server/public/images/{game._id}/logos/logo.png"
         type="image/png" />
       <img src="" alt={game.name} />
     </picture>

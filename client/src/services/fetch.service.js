@@ -1,7 +1,7 @@
 import { areObjectsEqual } from 'services/helper.service.js'
 import fetch from 'node-fetch'
 
-const serverURL = `http://192.168.1.109:3000`
+const serverURL = `http://localhost:3000`
 
 let previousQuery = {}
 let previousResponse = undefined
@@ -12,7 +12,7 @@ export function gqlFetch(query) {
 		if (areObjectsEqual(previousQuery, query)) {
 			resolve(previousResponse)
 		} else {
-			let response = await fetch(`${serverURL}/graphql?query=${query}`)
+			let response = await fetch(`${serverURL}/api?query=${query}`)
 				.then(res => res.json())
 				.then(res => res['data'])
 				.catch(err => {
@@ -39,7 +39,7 @@ export function fetchServer(url) {
  */
 export function fetchGameImage(gameID, type = 'header') {
 	return new Promise((resolve, reject) => {
-		fetch(`${serverURL}/images/${type}/${gameID}`).then(res => {
+		fetch(`${serverURL}/image/${type}/${gameID}`).then(res => {
 			const contentType = res.headers.get('Content-Type')
 
 			if (contentType === 'image/webp') {

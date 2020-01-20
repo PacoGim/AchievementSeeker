@@ -36,6 +36,6 @@ body {
 @supports (font-variation-settings: normal) {
 	body {
 		font-family: 'Nunito';
-		font-weight: 54;
+		font-variation-settings: 'wght' var(--font-weight-4);
 	}
 }

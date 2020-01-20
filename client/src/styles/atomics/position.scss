@@ -6,69 +6,69 @@ $step-rem: ($max-rem - $min-rem) / 10;
 
 @for $i from 0 through 10 {
 	[margin~='t-#{$i}'] {
-		margin-top: #{$i * $step-rem + $min-rem} + rem;
+		margin-top: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='r-#{$i}'] {
-		margin-right: #{$i * $step-rem + $min-rem} + rem;
+		margin-right: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='b-#{$i}'] {
-		margin-bottom: #{$i * $step-rem + $min-rem} + rem;
+		margin-bottom: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='l-#{$i}'] {
-		margin-left: #{$i * $step-rem + $min-rem} + rem;
+		margin-left: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='b-#{$i}'] {
-		margin-bottom: #{$i * $step-rem + $min-rem} + rem;
+		margin-bottom: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='y-#{$i}'] {
-		margin: #{$i * $step-rem + $min-rem} + rem 0;
+		margin: #{$i * $step-rem + $min-rem}rem 0;
 	}
 
 	[margin~='x-#{$i}'] {
-		margin: 0 #{$i * $step-rem + $min-rem} + rem;
+		margin: 0 #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='xy-#{$i}'] {
-		margin: #{$i * $step-rem + $min-rem} + rem;
+		margin: #{$i * $step-rem + $min-rem}rem;
 	}
 }
 
 /********************** Paddings **********************/
 @for $i from 0 through 10 {
 	[padding~='t-#{$i}'] {
-		padding-top: #{$i * $step-rem + $min-rem} + rem;
+		padding-top: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='r-#{$i}'] {
-		padding-right: #{$i * $step-rem + $min-rem} + rem;
+		padding-right: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='b-#{$i}'] {
-		padding-bottom: #{$i * $step-rem + $min-rem} + rem;
+		padding-bottom: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='l-#{$i}'] {
-		padding-left: #{$i * $step-rem + $min-rem} + rem;
+		padding-left: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='b-#{$i}'] {
-		padding-bottom: #{$i * $step-rem + $min-rem} + rem;
+		padding-bottom: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='y-#{$i}'] {
-		padding: #{$i * $step-rem + $min-rem} + rem 0;
+		padding: #{$i * $step-rem + $min-rem}rem 0;
 	}
 
 	[padding~='x-#{$i}'] {
-		padding: 0 #{$i * $step-rem + $min-rem} + rem;
+		padding: 0 #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='xy-#{$i}'] {
-		padding: #{$i * $step-rem + $min-rem} + rem;
+		padding: #{$i * $step-rem + $min-rem}rem;
 	}
 }

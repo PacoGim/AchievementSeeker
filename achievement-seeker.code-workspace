@@ -5,19 +5,19 @@
 			"name": "Project Root"
 		},
 		{
-			"path": "client\\src",
+			"path": "client/src",
 			"name": "Client"
 		},
 		{
-			"path": "server\\src",
+			"path": "server/src",
 			"name": "Server"
 		},
 		{
-			"path": "client\\static",
+			"path": "client/static",
 			"name": "Svelte Statics"
 		},
 		{
-			"path": "server\\dist",
+			"path": "server/dist",
 			"name": "Server Dist"
 		}
 	],
