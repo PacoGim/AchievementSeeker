@@ -1,12 +1,11 @@
-import resolve from 'rollup-plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
-import commonjs from 'rollup-plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
 import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 import pkg from './package.json'
-import includePaths from 'rollup-plugin-includepaths';
 import sveltePreprocess from 'svelte-preprocess'
 
 const mode = process.env.NODE_ENV
@@ -17,13 +16,13 @@ const onwarn = (warning, onwarn) => (warning.code === 'CIRCULAR_DEPENDENCY' && /
 const dedupe = importee => importee === 'svelte' || importee.startsWith('svelte/')
 
 const preprocess = sveltePreprocess({
-  scss: {
-    includePaths: ['src'],
-  },
-  postcss: {
-    plugins: [require('autoprefixer')],
-  },
-});
+	scss: {
+		includePaths: ['src'],
+	},
+	postcss: {
+		plugins: [require('autoprefixer')],
+	},
+})
 
 export default {
 	client: {
@@ -47,34 +46,33 @@ export default {
 			commonjs(),
 
 			legacy &&
-			babel({
-				extensions: ['.js', '.mjs', '.html', '.svelte'],
-				runtimeHelpers: true,
-				exclude: ['node_modules/@babel/**'],
-				presets: [
-					[
-						'@babel/preset-env',
-						{
-							targets: '> 0.25%, not dead',
-						},
+				babel({
+					extensions: ['.js', '.mjs', '.html', '.svelte'],
+					runtimeHelpers: true,
+					exclude: ['node_modules/@babel/**'],
+					presets: [
+						[
+							'@babel/preset-env',
+							{
+								targets: '> 0.25%, not dead',
+							},
+						],
 					],
-				],
-				plugins: [
-					'@babel/plugin-syntax-dynamic-import',
-					[
-						'@babel/plugin-transform-runtime',
-						{
-							useESModules: true,
-						},
+					plugins: [
+						'@babel/plugin-syntax-dynamic-import',
+						[
+							'@babel/plugin-transform-runtime',
+							{
+								useESModules: true,
+							},
+						],
 					],
-				],
-			}),
+				}),
 
 			!dev &&
-			terser({
-				module: true,
-			}),
-			includePaths({ paths: ["./src"] }),
+				terser({
+					module: true,
+				}),
 		],
 
 		onwarn,
@@ -97,7 +95,6 @@ export default {
 				dedupe,
 			}),
 			commonjs(),
-			includePaths({ paths: ["./src"] }),
 		],
 		external: Object.keys(pkg.dependencies).concat(require('module').builtinModules || Object.keys(process.binding('natives'))),
 
