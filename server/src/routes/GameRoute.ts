@@ -9,10 +9,18 @@ import HeaderService, { statuses } from '../helpers/header'
 
 const router = new Router({ prefix: '/games' })
 
-router.get('/search/:query', async ctx => {
-	let limit: number | undefined = ctx['query']['limit']
+router.get('/search/:query/:limit', async ctx => {
+	let limit: number | undefined = Number(ctx['params']['limit'])
+	let query: string | undefined = ctx['params']['query']
 
-	let query: string = ctx['params']['query']
+	interface IResponseObject {
+		details?: any
+		data: IGame[] | undefined
+	}
+
+	let responseObject: IResponseObject = {
+		data: undefined,
+	}
 
 	if (query) {
 		let foundGamesArray: IGame[] = []
@@ -35,17 +43,20 @@ router.get('/search/:query', async ctx => {
 		foundGamesArray = gamesSearchAlias.concat(gamesSearchName)
 
 		if (limit !== undefined) {
-			foundGamesArray = foundGamesArray.slice(0, limit)
+			responseObject['details'] = { totalFound: foundGamesArray.length }
+			responseObject['data'] = foundGamesArray.slice(0, limit)
+		} else {
+			responseObject['data'] = foundGamesArray
 		}
 
 		if (foundGamesArray.length > 0) {
 			HeaderService.setCtx(ctx)
 				.setStatus(statuses['200'])
-				.setBody(foundGamesArray)
+				.setBody(responseObject)
 		} else {
 			HeaderService.setCtx(ctx)
 				.setStatus(statuses['204'])
-				.setHeader('Response-Detail', 'No Game found')
+				.setHeader('Response-Details', '{ "msg": "No Games found" }')
 		}
 	}
 })

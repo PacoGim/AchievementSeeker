@@ -1,10 +1,8 @@
 <script>
-	import Nav from '../components/Nav.svelte'
-
-	export let segment
+	import Navigation from '../components/Navigation.svelte'
 </script>
 
-<Nav {segment} />
+<Navigation />
 
 <main>
 	<slot />

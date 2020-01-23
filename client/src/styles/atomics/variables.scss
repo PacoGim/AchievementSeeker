@@ -4,11 +4,15 @@ $diff-font-weight: ($max-font-weight) - ($min-font-weight);
 $step-font-weight: $diff-font-weight / 9;
 
 $min-font-size: 0.75;
-$max-font-size: 2;
-$step-font-size: ($max-font-size - $min-font-size) / 10;
+$max-font-size: 4;
+$step-font-size: ($max-font-size - $min-font-size) / 19;
 
 :root {
 	@for $i from 0 through 9 {
-		--font-weight-#{$i+1}: #{round(($step-font-weight * $i) + $min-font-weight)};
+		--font-weight-#{$i+1}: #{round($step-font-weight * $i + $min-font-weight)};
+	}
+
+	@for $i from 0 through 19 {
+		--font-size-#{$i+1}: #{$step-font-size * $i + $min-font-size}rem;
 	}
 }

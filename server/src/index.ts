@@ -89,6 +89,7 @@ async function preRouting(ctx: ParameterizedContext, next: Next): Promise<void> 
 
 function setHeaders(ctx: ParameterizedContext) {
 	HeaderService.setCtx(ctx)
+		.setHeader('Access-Control-Expose-Headers', 'Response-Details')
 		.setHeader('Strict-Transport-Security', 'max-age=3600')
 		.setHeader('X-Content-Type-Options', 'nosniff')
 		.setHeader('X-Frame-Options', 'deny')

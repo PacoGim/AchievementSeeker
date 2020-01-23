@@ -1,5 +1,7 @@
 <script>
-	let title = 'Game List'
+	import SearchGame from './SearchGame.svelte'
+
+	let title = 'Game Search'
 </script>
 
 <svelte:head>
@@ -7,5 +9,5 @@
 </svelte:head>
 
 <game-list>
-	<h1>Game List</h1>
+	<SearchGame />
 </game-list>

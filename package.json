@@ -11,12 +11,12 @@
 		"@types/passport-steam": "^1.0.1",
 		"concurrently": "^5.0.2",
 		"nodemon": "^2.0.2",
-		"typescript": "^3.7.4"
+		"typescript": "^3.7.5"
 	},
 	"scripts": {
 		"tests": "nodemon ./tests/index.js",
 		"server": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\" \"pnpm run mongodb\"",
-		"mongodb":"mongod --dbpath='/Users/fran/MongoDB Databases' --directoryperdb --quiet",
+		"mongodb": "mongod --dbpath='/Users/fran/MongoDB Databases' --directoryperdb --quiet",
 		"client:bak": "rimraf client/__sapper__/dev && cd client && pnpm run dev",
 		"client": "cd client && pnpm run dev",
 		"transpile:typescript": "tsc --p ./server/tsconfig.json --watch",

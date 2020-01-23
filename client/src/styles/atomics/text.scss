@@ -15,15 +15,18 @@
 	color: $biscay;
 }
 
-@for $i from 0 through 10 {
-	[text~='size-#{$i}'] {
+[text~='blue'] {
+	color: $blue;
+}
+
+@for $i from 0 through 19 {
+	[text~='size-#{$i+1}'] {
 		font-size: #{$i * $step-font-size + $min-font-size}rem;
 	}
 }
 
 @for $i from 0 through 9 {
 	[text~='weight-#{$i+1}'] {
-		// font-weight: var(--font-weight-#{$i + 1});
 		font-variation-settings: 'wght' var(--font-weight-#{$i + 1});
 	}
 }
