@@ -4,11 +4,31 @@ $waikawa-grey-filter: invert(43%) sepia(27%) saturate(390%) hue-rotate(175deg) b
 $biscay: #313e52;
 $biscay-filter: invert(20%) sepia(24%) saturate(783%) hue-rotate(177deg) brightness(95%) contrast(87%);
 
-$blue: #2796E8;
+$blue: #2796e8;
 $blue-filter: invert(48%) sepia(80%) saturate(560%) hue-rotate(166deg) brightness(93%) contrast(95%);
 
 :root {
 	--waikawa-grey: #{$waikawa-grey};
 	--biscay: #{$biscay};
 	--blue: #{$blue};
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--background-color-separator: #fafafa;
+	}
+
+	body {
+		color: #090f15;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background-color-separator: #080808;
+	}
+
+	body {
+		color: #e1e8f7;
+	}
 }

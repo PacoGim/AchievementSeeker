@@ -5,7 +5,6 @@ import fetch from 'node-fetch'
 import sharp from 'sharp'
 import { getSafeString } from './functions'
 
-
 /**
  * @description Sends to the client
  *
@@ -58,7 +57,10 @@ export function fetchAndSaveImage(fetchUrl: string, dirPath: string, filePath: s
 	fs.mkdirpSync(dirPath)
 
 	fetch(fetchUrl)
-		.then(res => res.arrayBuffer())
+		.then(res => {
+			if (res['status'] === 404) throw new Error('Appid has not the requested image.')
+			else return res.arrayBuffer()
+		})
 		.then(arrayBuffer => {
 			sharp(Buffer.from(arrayBuffer))
 				.webp()
@@ -66,5 +68,5 @@ export function fetchAndSaveImage(fetchUrl: string, dirPath: string, filePath: s
 					if (err) console.log(err)
 				})
 		})
+		.catch(error => console.log(error))
 }
-

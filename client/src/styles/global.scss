@@ -1,9 +1,10 @@
 @import 'atomics/@imports.scss';
 @import 'reset.scss';
+@import 'specific.scss';
 
 @font-face {
-	font-family: 'Nunito';
-	src: url(../fonts/NunitoVFBeta.ttf);
+	font-family: Manrope;
+	src: url(../fonts/ManropeGX.ttf);
 }
 
 * {
@@ -26,18 +27,18 @@ html {
 body {
 	overflow-x: hidden;
 	// color: #fff;
-	color: #111;
+	// color: #111;
 	text-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
 	// background-color: #141a24;
-	background-color: #fff;
+	// background-color: #fff;
 }
 
 @supports (font-variation-settings: normal) {
 	body {
-		font-family: 'Nunito';
+		font-family: Manrope;
 		font-variation-settings: 'wght' var(--font-weight-4);
 	}
 }

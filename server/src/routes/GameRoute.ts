@@ -25,7 +25,7 @@ router.get('/search/:query/:limit', async ctx => {
 	if (query) {
 		let foundGamesArray: IGame[] = []
 
-		let regAlias: RegExp = RegExp(`${query}`)
+		let regAlias: RegExp = RegExp(`${query}`, 'i')
 		let regName: RegExp = RegExp(`${query}`, 'i')
 
 		let gamesSearchName: IGame[] = await GameCollection.get()

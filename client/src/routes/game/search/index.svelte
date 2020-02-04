@@ -1,5 +1,6 @@
 <script>
 	import SearchGame from './SearchGame.svelte'
+	import ListGame from './ListGame.svelte'
 
 	let title = 'Game Search'
 </script>
@@ -10,4 +11,5 @@
 
 <game-list>
 	<SearchGame />
+	<ListGame/>
 </game-list>

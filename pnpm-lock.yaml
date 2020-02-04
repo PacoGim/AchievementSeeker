@@ -4,7 +4,7 @@ devDependencies:
   '@types/koa-static': 4.0.1
   '@types/koa__router': 8.0.2
   '@types/passport-steam': 1.0.1
-  concurrently: 5.0.2
+  concurrently: 5.1.0
   nodemon: 2.0.2
   typescript: 3.7.5
 lockfileVersion: 5.1
@@ -303,13 +303,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
-  /concurrently/5.0.2:
+  /concurrently/5.1.0:
     dependencies:
       chalk: 2.4.2
-      date-fns: 2.8.1
+      date-fns: 2.9.0
       lodash: 4.17.15
       read-pkg: 4.0.1
-      rxjs: 6.5.3
+      rxjs: 6.5.4
       spawn-command: 0.0.2-1
       supports-color: 6.1.0
       tree-kill: 1.2.2
@@ -319,7 +319,7 @@ packages:
       node: '>=6.0.0'
     hasBin: true
     resolution:
-      integrity: sha512-iUNVI6PzKO0RVXV9pHWM0khvEbELxf3XLIoChaV6hHyoIaJuxQWZiOwlNysnJX5khsfvIK66+OJqRdbYrdsR1g==
+      integrity: sha512-9ViZMu3OOCID3rBgU31mjBftro2chOop0G2u1olq1OuwRBVRw/GxHTg80TVJBUTJfoswMmEUeuOg1g1yu1X2dA==
   /configstore/3.1.2:
     dependencies:
       dot-prop: 4.2.0
@@ -361,10 +361,10 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha1-ojD2T1aDEOFJgAmUB5DsmVRbyn4=
-  /date-fns/2.8.1:
+  /date-fns/2.9.0:
     dev: true
     resolution:
-      integrity: sha512-EL/C8IHvYRwAHYgFRse4MGAPSqlJVlOrhVYZ75iQBKrnv+ZedmYsgwH3t+BCDuZDXpoo07+q9j4qgSSOa7irJg==
+      integrity: sha512-khbFLu/MlzLjEzy9Gh8oY1hNt/Dvxw3J6Rbc28cVoYWQaC1S3YI4xwkF9ZWcjDLscbZlY9hISMr66RFzZagLsA==
   /debug/2.6.9:
     dependencies:
       ms: 2.0.0
@@ -799,7 +799,7 @@ packages:
   /normalize-package-data/2.5.0:
     dependencies:
       hosted-git-info: 2.8.5
-      resolve: 1.13.1
+      resolve: 1.15.0
       semver: 5.7.1
       validate-npm-package-license: 3.0.4
     dev: true
@@ -825,17 +825,17 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha1-P7z7FbiZpEEjs0ttzBi3JDNqLK4=
-  /p-limit/2.2.1:
+  /p-limit/2.2.2:
     dependencies:
       p-try: 2.2.0
     dev: true
     engines:
       node: '>=6'
     resolution:
-      integrity: sha512-85Tk+90UCVWvbDavCLKPOLC9vvY8OwEX/RtKF+/1OADJMVlFfEHOiMTPVyxg7mk/dKa+ipdHm0OUkTvCpMTuwg==
+      integrity: sha512-WGR+xHecKTr7EbUEhyLSh5Dube9JtdiG78ufaeLxTgpudf/20KqyMioIUZJAezlTIi6evxuoUs9YXc11cU+yzQ==
   /p-locate/3.0.0:
     dependencies:
-      p-limit: 2.2.1
+      p-limit: 2.2.2
     dev: true
     engines:
       node: '>=6'
@@ -977,20 +977,20 @@ packages:
     dev: true
     resolution:
       integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
-  /resolve/1.13.1:
+  /resolve/1.15.0:
     dependencies:
       path-parse: 1.0.6
     dev: true
     resolution:
-      integrity: sha512-CxqObCX8K8YtAhOBRg+lrcdn+LK+WYOS8tSjqSFbjtrI5PnS63QPhZl4+yKfrU9tdsbMu9Anr/amegT87M9Z6w==
-  /rxjs/6.5.3:
+      integrity: sha512-+hTmAldEGE80U2wJJDC1lebb5jWqvTYAfm3YZ1ckk1gBr0MnCqUKlwK1e+anaFljIl+F5tR5IoZcm4ZDA1zMQw==
+  /rxjs/6.5.4:
     dependencies:
       tslib: 1.10.0
     dev: true
     engines:
       npm: '>=2.0.0'
     resolution:
-      integrity: sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
+      integrity: sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
   /safe-buffer/5.2.0:
     dev: true
     resolution:
@@ -1321,6 +1321,6 @@ specifiers:
   '@types/koa-static': ^4.0.1
   '@types/koa__router': ^8.0.2
   '@types/passport-steam': ^1.0.1
-  concurrently: ^5.0.2
+  concurrently: ^5.1.0
   nodemon: ^2.0.2
   typescript: ^3.7.5
