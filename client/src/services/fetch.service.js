@@ -1,5 +1,5 @@
 const protocol = 'http://'
-const domain = 'localhost'
+const domain = '192.168.1.104'
 const port = '3000'
 const fullUrl = `${protocol}${domain}:${port}`
 

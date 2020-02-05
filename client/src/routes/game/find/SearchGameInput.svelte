@@ -57,15 +57,22 @@
 	}
 </script>
 
-<game-search display="block dynawidth" padding="t-18 b-18">
-	<search-input flex="direction-column">
-		<input-box grid="overlap">
+<game-search display="block dynawidth" padding="t-10 b-10">
+	<search-input>
+
+		<input-container grid="overlap">
 			<input type="text" hook={inputHook} text="blue size-5" padding="xy-2" bind:value={searchInputValue} />
-			<input-placeholder margin="xy-2" text="blue size-5" flex="align-center">Type Here to search a Game</input-placeholder>
-			<icon cursor="pointer" flex="justify-center align-center" on:click={() => (searchInputValue = '')}>
-				<img icon="white" margin="xy-1" src="icons/{iconName}.svg" alt="" />
-			</icon>
-		</input-box>
+			<input-placeholder margin="xy-2" text="blue size-5" flex="align-center">
+				Type
+				<span text="weight-9" margin="x-1" />
+				to search for a Game
+			</input-placeholder>
+		</input-container>
+
+		<icon cursor="pointer" flex="justify-center align-center" on:click={() => (searchInputValue = '')}>
+			<img icon="white" margin="xy-1" src="icons/{iconName}.svg" alt="" />
+		</icon>
+
 		<input-info text="blue size-2" margin="xy-2" style={searchInputValue !== '' ? 'opacity:1' : 'opacity:0'}>{inputInfoText}</input-info>
 	</search-input>
 	<search-results flex="direction-column">
@@ -86,21 +93,37 @@
 		background-color: var(--background-color-separator);
 
 		search-input {
-			input-box {
-				height: 4rem;
+			--common-height: 4rem;
+			display: grid;
+			grid-template-columns: auto min-content;
+			input-container {
+				grid-column: 1;
+				grid-row: 1;
+				height: var(--common-height);
 				input {
+					height: var(--common-height);
+					text-align: center;
 					font-family: inherit;
 					background-color: var(--background-color-separator);
-					border: 3px solid var(--blue);
+					border: 2px solid var(--blue);
 				}
 
 				input[value] ~ input-placeholder,
 				input:focus ~ input-placeholder {
 					transform: translateY(-2rem);
-					font-size: var(--font-size-3);
+					font-size: var(--font-size-2);
+
+					span::after {
+						content: 'now';
+					}
+				}
+
+				span::after {
+					content: 'here';
 				}
 
 				input-placeholder {
+					justify-self: center;
 					padding: 0 0.5rem;
 
 					pointer-events: none;
@@ -113,21 +136,23 @@
 					transition-duration: 0.3s;
 					transition-timing-function: ease;
 				}
-
-				icon {
-					justify-self: flex-end;
-					background-color: var(--blue);
-					height: 4rem;
-					width: 4rem;
-
-					img {
-						height: 2.5rem;
-					}
-				}
 			}
 
+			icon {
+				grid-column: 2;
+				grid-row: 1;
+				background-color: var(--blue);
+				height: var(--common-height);
+				width: var(--common-height);
+
+				img {
+					height: 2.5rem;
+				}
+			}
 			input-info {
-				align-self: center;
+				grid-row: 2;
+				grid-column: 1 / span 2;
+				justify-self: flex-end;
 
 				transition: opacity 0.3s;
 			}
@@ -137,10 +162,19 @@
 			position: relative;
 
 			a {
+				background-color: #fff;
 				position: absolute;
 				width: 100%;
 				border: 1px solid var(--blue);
+				padding: .5rem 0;
 			}
+		}
+	}
+
+
+	@media (max-width: 360px) {
+		game-search search-input input-container input-placeholder {
+			font-size: var(--font-size-4);
 		}
 	}
 </style>

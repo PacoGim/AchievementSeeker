@@ -93,7 +93,7 @@ function setHeaders(ctx: ParameterizedContext) {
 		.setHeader('Strict-Transport-Security', 'max-age=3600')
 		.setHeader('X-Content-Type-Options', 'nosniff')
 		.setHeader('X-Frame-Options', 'deny')
-		.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
+		.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.104:8080')
 		.setHeader('X-XSS-Protection', '1; mode=block')
 }
 

@@ -29,3 +29,12 @@
 </script>
 
 <img {src} on:error={() => imageLoadingError()} alt="" />
+
+<style lang="scss">
+
+	img{
+		width:7rem;
+		height: auto;
+	}
+
+</style>

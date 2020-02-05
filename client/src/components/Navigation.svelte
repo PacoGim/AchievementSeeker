@@ -12,8 +12,8 @@
 			path: '/',
 		},
 		{
-			name: 'Game Search',
-			path: '/game/search',
+			name: 'Find Game',
+			path: '/game/find',
 		},
 	]
 
@@ -48,7 +48,7 @@
 		<titles>
 			<app-name>Steam Achievement Hunter</app-name>
 			<separator text="weight-10">-</separator>
-			<page-title text="weight-7" hook={pageNameHook}>{pageName}</page-title>
+			<page-title text="weight-8" hook={pageNameHook}>{pageName}</page-title>
 		</titles>
 		<links>
 			{#each routes as route, index (index)}
@@ -61,7 +61,7 @@
 <style lang="scss">
 	nav {
 		padding: 2rem;
-		background-image: linear-gradient(to bottom right, #b0d2f0, #3ca7e9);
+		background-image: linear-gradient(to bottom right, #4476fd, #3ca7e9);
 	}
 
 	main {
