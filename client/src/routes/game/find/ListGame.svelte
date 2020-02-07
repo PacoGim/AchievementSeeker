@@ -6,12 +6,13 @@
 	import { parseDate, parseDateReduced } from '../../../services/helper.service.js'
 
 	let games = []
+	// score:1
 
 	let isSmallViewPort = true
 
 	let query = `{
       games(sortBy:{
-				releaseDate:-1
+					releaseDate:-1
 			}){
         _id
         appid
@@ -33,7 +34,7 @@
 			isSmallViewPort = false
 		}
 
-		fetch(`http://192.168.1.104:3000/api?query=${query}`)
+		fetch(`http://192.168.1.199:3000/api?query=${query}`)
 			.then(response => {
 				return response.json()
 			})
@@ -52,79 +53,139 @@
 </script>
 
 <game-grid-table>
-	<image-field class="header" />
-	<name-field class="header" text="weight-7">Game</name-field>
-
-	<release-date-field class="header" text="weight-7">
-		{#if isSmallViewPort}
-			<img class="icon" icon="size-6" src="icons/calendar.svg" alt="" />
-		{:else}Release Date{/if}
-	</release-date-field>
-
-	<score-field class="header" text="weight-7">Score</score-field>
-	<points-field class="header" text="weight-7">Points</points-field>
-
-	<achievement-count-field class="header" text="weight-7">
-		{#if isSmallViewPort}
-			<img class="icon" icon="size-6" src="icons/trophy.svg" alt="" />
-		{:else}Achievements{/if}
-	</achievement-count-field>
-
-	<difficulty-field class="header" text="weight-7">Difficulty</difficulty-field>
-
+	<grid-header text="weight-8">
+		<field class="image" />
+		<field>Game</field>
+		<field>
+			{#if isSmallViewPort}
+				<img class="icon" icon="size-6 white" src="icons/calendar.svg" alt="" />
+			{:else}Release Date{/if}
+		</field>
+		<field>Score</field>
+		<field>Points</field>
+		<field>
+			{#if isSmallViewPort}
+				<img class="icon" icon="size-6 white" src="icons/trophy.svg" alt="" />
+			{:else}Achievements{/if}
+		</field>
+		<field>Difficulty</field>
+	</grid-header>
 	{#each games as game, index (index)}
-		<image-field class="body">
-			<GameImage appid={game['appid']} imageType="smallCapsule" />
-		</image-field>
-		<name-field class="body">{game['name']}</name-field>
-		<release-date-field class="body">
-			{#if isSmallViewPort}{parseDateReduced(game['releaseDate'])}{:else}{parseDate(game['releaseDate'])}{/if}
-
-		</release-date-field>
-		<score-field class="body">{game['score']}</score-field>
-		<points-field class="body">{reduceNumber(game['points'])}</points-field>
-		<achievement-count-field class="body">{game['achievementCount']}</achievement-count-field>
-		<difficulty-field class="body">{game['difficulty']['average']}</difficulty-field>
+		<a class="grid-body" href="/game/{game['_id']}">
+			<field flex="align-center">
+				{#if isSmallViewPort}
+					<GameImage appid={game['appid']} imageType="smallCapsule" />
+				{:else}
+					<GameImage appid={game['appid']} imageType="header" />
+				{/if}
+			</field>
+			<field class="name">{game['name']}</field>
+			<field>
+				{#if isSmallViewPort}{parseDateReduced(game['releaseDate'])}{:else}{parseDate(game['releaseDate'])}{/if}
+			</field>
+			<field class="score" text="weight-7" flex="align-center justify-center">
+				<circle-shape style="filter:hue-rotate({360 - (game['score'] - 40) * 4.5}deg)" />
+				<score>{Math.round(game['score'])}</score>
+			</field>
+			<field>{reduceNumber(game['points'])}</field>
+			<field>{game['achievementCount']}</field>
+			<field>{game['difficulty']['average']}</field>
+		</a>
 	{/each}
 </game-grid-table>
 
 <style lang="scss">
 	game-grid-table {
-		display: grid;
-		text-align: center;
-		grid-template-columns: max-content repeat(6, auto);
-		align-items: center;
-	}
+		--chocolate-dark: #100b00;
 
-	.header{
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: #9dd9ff;
-		padding: .5rem 0;
-		height: 2.5rem;
-	}
+		@media (prefers-color-scheme: light) {
+			--odd-table-bg-color: #fff;
+			--even-table-bg-color: #f7f7f7;
+			--text-color: var(--chocolate-dark);
+		}
 
-	.body{
-		vertical-align: middle;
-	}
+		@media (prefers-color-scheme: dark) {
+			--odd-table-bg-color: #000;
+			--even-table-bg-color: #070707;
+			--text-color: #fff;
+			font-variation-settings: 'wght' var(--font-weight-6);
+		}
+		grid-header {
+			color: #fff;
+			top: 0;
+			position: sticky;
+			display: grid;
+			text-align: center;
+			grid-template-columns: 10vw 40vw repeat(5, 10vw);
+			padding: 10px 0;
+			background-color: var(--chocolate-dark);
+			z-index: 1;
+		}
 
-	name-field.body {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
+		.grid-body {
+			display: grid;
+			text-align: center;
+			grid-template-columns: 10vw 40vw repeat(5, 10vw);
+			align-items: center;
 
-	@media (max-width: 460px) {
-		game-grid-table {
-			grid-template-columns: repeat(6, auto);
+			transition-property: background-color color font-variation-settings;
+			transition-duration: 0.3s;
+			transition-timing-function: ease-in-out;
 
-			image-field.header {
-				display: none;
+			&:hover {
+				background-color: var(--chocolate-dark) !important;
+				color: #fff;
+				font-variation-settings: 'wght' var(--font-weight-9);
 			}
 
-			name-field.body {
-				display: none;
+			field.name {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			field.score {
+				color: #fff;
+				width: 100%;
+				height: 100%;
+				position: relative;
+
+				score {
+					position: absolute;
+				}
+
+				circle-shape {
+					padding: 1rem;
+					position: absolute;
+					border-radius: 50px;
+					background-color: #ff4949;
+				}
+			}
+		}
+
+		.grid-body:nth-child(odd) {
+			background-color: var(--odd-table-bg-color);
+		}
+
+		.grid-body:nth-child(even) {
+			background-color: var(--even-table-bg-color);
+		}
+	}
+
+	@media (max-width: 768px) {
+		game-grid-table {
+			grid-header {
+				grid-template-columns: 25vw 20vw 12vw 15vw 8vw 20vw;
+				field.image {
+					display: none;
+				}
+			}
+
+			a.grid-body {
+				grid-template-columns: 25vw 20vw 12vw 15vw 8vw 20vw;
+				field.name {
+					display: none;
+				}
 			}
 		}
 	}
