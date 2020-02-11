@@ -4,28 +4,24 @@
 	import GameImage from '../../../components/Base/GameImage.svelte'
 
 	import { parseDate, parseDateReduced } from '../../../services/helper.service.js'
+	import FetchService from '../../../services/fetch.service.js'
+	import GraphqlService from '../../../services/graphql.service.js'
+
+	import { sortReleaseDate } from '../../../store/index.store.js'
 
 	let games = []
-	// score:1
 
 	let isSmallViewPort = true
 
-	let query = `{
-      games(sortBy:{
-					releaseDate:-1
-			}){
-        _id
-        appid
-        name
-        releaseDate
-        score
-        points
-        achievementCount
-        difficulty{
-          average
-        }
-      }
-    }`
+	$: {
+		if (process.browser === true) {
+			FetchService.get(`api?query=${GraphqlService.buildQuery('games', ['_id', 'appid', 'name', 'releaseDate', 'score', 'points', 'achievementCount', 'difficulty{average}'], { releaseDate: $sortReleaseDate })}`)
+				.then(response => {
+					games = response['data']['games']
+				})
+				.catch(error => console.log('Oopsie', error))
+		}
+	}
 
 	onMount(() => {
 		if (window.innerWidth <= 620) {
@@ -33,14 +29,6 @@
 		} else {
 			isSmallViewPort = false
 		}
-
-		fetch(`http://192.168.1.199:3000/api?query=${query}`)
-			.then(response => {
-				return response.json()
-			})
-			.then(data => {
-				games = data['data']['games']
-			})
 	})
 
 	function reduceNumber(value) {
@@ -53,13 +41,21 @@
 </script>
 
 <game-grid-table>
-	<grid-header text="weight-8">
+	<grid-header text="weight-8" select="none">
 		<field class="image" />
 		<field>Game</field>
-		<field>
+		<field cursor="pointer" flex="direction-row align-center justify-center" on:click={() => sortReleaseDate.set()}>
 			{#if isSmallViewPort}
 				<img class="icon" icon="size-6 white" src="icons/calendar.svg" alt="" />
 			{:else}Release Date{/if}
+
+			{#if $sortReleaseDate === 1}
+				<img class="icon" margin="l-1" icon="size-6 white" src="icons/angle-down.svg" alt="" />
+			{:else if $sortReleaseDate === -1}
+				<img class="icon" margin="l-1" icon="size-6 white" src="icons/angle-up.svg" alt="" />
+			{:else}
+				<img class="icon" margin="l-1" icon="size-6 white" style="opacity:0" src="icons/angle-down.svg" alt="" />
+			{/if}
 		</field>
 		<field>Score</field>
 		<field>Points</field>
@@ -70,28 +66,30 @@
 		</field>
 		<field>Difficulty</field>
 	</grid-header>
-	{#each games as game, index (index)}
-		<a class="grid-body" href="/game/{game['_id']}">
-			<field flex="align-center">
-				{#if isSmallViewPort}
-					<GameImage appid={game['appid']} imageType="smallCapsule" />
-				{:else}
-					<GameImage appid={game['appid']} imageType="header" />
-				{/if}
-			</field>
-			<field class="name">{game['name']}</field>
-			<field>
-				{#if isSmallViewPort}{parseDateReduced(game['releaseDate'])}{:else}{parseDate(game['releaseDate'])}{/if}
-			</field>
-			<field class="score" text="weight-7" flex="align-center justify-center">
-				<circle-shape style="filter:hue-rotate({360 - (game['score'] - 40) * 4.5}deg)" />
-				<score>{Math.round(game['score'])}</score>
-			</field>
-			<field>{reduceNumber(game['points'])}</field>
-			<field>{game['achievementCount']}</field>
-			<field>{game['difficulty']['average']}</field>
-		</a>
-	{/each}
+	{#if games !== null && games.length > 0}
+		{#each games as game, index (index)}
+			<a class="grid-body" href="/game/{game['_id']}">
+				<field flex="align-center">
+					{#if isSmallViewPort}
+						<GameImage appid={game['appid']} imageType="smallCapsule" />
+					{:else}
+						<GameImage appid={game['appid']} imageType="header" />
+					{/if}
+				</field>
+				<field class="name">{game['name']}</field>
+				<field>
+					{#if isSmallViewPort}{parseDateReduced(game['releaseDate'])}{:else}{parseDate(game['releaseDate'])}{/if}
+				</field>
+				<field class="score" text="weight-7" flex="align-center justify-center">
+					<circle-shape style="filter:hue-rotate({360 - (game['score'] - 40) * 4.25}deg)" />
+					<score>{Math.round(game['score'])}</score>
+				</field>
+				<field>{reduceNumber(game['points'])}</field>
+				<field>{game['achievementCount']}</field>
+				<field>{game['difficulty']['average']}</field>
+			</a>
+		{/each}
+	{/if}
 </game-grid-table>
 
 <style lang="scss">
@@ -158,7 +156,7 @@
 					padding: 1rem;
 					position: absolute;
 					border-radius: 50px;
-					background-color: #ff4949;
+					background-color: #ffaaaa;
 				}
 			}
 		}
