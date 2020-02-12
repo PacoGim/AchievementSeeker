@@ -33,8 +33,8 @@
 <style lang="scss">
 
 	img{
-		width:7rem;
-		height: auto;
+		height: 3.5rem;
+		width:auto;
 	}
 
 </style>

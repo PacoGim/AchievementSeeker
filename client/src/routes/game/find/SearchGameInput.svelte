@@ -166,11 +166,10 @@
 				position: absolute;
 				width: 100%;
 				border: 1px solid var(--blue);
-				padding: .5rem 0;
+				padding: 0.5rem 0;
 			}
 		}
 	}
-
 
 	@media (max-width: 360px) {
 		game-search search-input input-container input-placeholder {
