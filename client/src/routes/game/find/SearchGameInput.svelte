@@ -4,7 +4,7 @@
 	import nanoid from 'nanoid'
 
 	const inputHook = nanoid(6)
-	let searchInputValue = ''
+	let searchInputValue = 'hyperdimension'
 	let searchTimeout = undefined
 	let searchedGameList = undefined
 	let inputInfoText = ''
@@ -24,7 +24,7 @@
 			iconName = 'delete'
 			inputInfoText = 'Searching for Games...'
 			searchTimeout = setTimeout(() => {
-				FetchService.get(`/games/search/${searchInputValue}/20`).then(response => {
+				FetchService.get(`games/search/${searchInputValue}/20`).then(response => {
 					if (response['status'] === 200) {
 						searchedGameList = response['data']
 						let totalFound = response['details']['totalFound']
@@ -57,8 +57,8 @@
 	}
 </script>
 
-<game-search display="block dynawidth" padding="t-10 b-10">
-	<search-input>
+<game-search>
+	<search-input display="block dynawidth" padding="t-10 b-10">
 
 		<input-container grid="overlap">
 			<input type="text" hook={inputHook} text="blue size-5" padding="xy-2" bind:value={searchInputValue} />
@@ -75,16 +75,19 @@
 
 		<input-info text="blue size-2" margin="xy-2" style={searchInputValue !== '' ? 'opacity:1' : 'opacity:0'}>{inputInfoText}</input-info>
 	</search-input>
-	<search-results flex="direction-column">
-		{#if searchedGameList !== undefined && searchedGameList.length > 0}
-			{#each searchedGameList as game, index (index)}
-				<a href="/game/{game['_id']}" flex="align-center justify-between" padding="r-3" text="blue" hover="text-weight-9" style="margin-top:{index * 4}rem">
-					<GameImage appid={game['appid']} imageType="smallCapsule" />
-					<name>{game['name']}</name>
-					<alias>{game['alias']}</alias>
-				</a>
-			{/each}
-		{/if}
+
+	<search-results>
+		<results flex="direction-column" text="white">
+			{#if searchedGameList !== undefined && searchedGameList.length > 0}
+				{#each searchedGameList as game, index (index)}
+					<a href="/game/{game['_id']}" flex="align-center">
+						<GameImage appid={game['appid']} klass="searchGame" imageType="smallCapsule" />
+						<name>{game['name']}</name>
+						<alias>{game['alias']}</alias>
+					</a>
+				{/each}
+			{/if}
+		</results>
 	</search-results>
 </game-search>
 
@@ -159,21 +162,89 @@
 		}
 
 		search-results {
-			position: relative;
+			transform: translateY(-4.8rem);
+			position: absolute;
+			z-index: 2;
+			display: block;
+			background-color: rgba(0, 0, 0, 0.95);
+			width: 100%;
 
-			a {
-				background-color: #fff;
-				position: absolute;
-				width: 100%;
-				border: 1px solid var(--blue);
-				padding: 0.5rem 0;
+			results {
+				// width: 50%;
+				// margin: 0 auto;
+				margin: 0 calc(500 * (100vw - 320px) / (1920 - 320));
+
+				@media (max-width: 768px) {
+					margin: 0;
+				}
+
+				a {
+					// border: solid 1px red;
+					margin: 0.5rem 0;
+					border: 2px solid #fff;
+
+					&:first-of-type {
+						margin-top: 2rem;
+					}
+
+					&:last-of-type {
+						margin-bottom: 2rem;
+					}
+
+					name {
+						overflow: hidden;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						padding: 0 0.5rem;
+					}
+
+					alias {
+						padding: 0 0.5rem;
+					}
+				}
 			}
 		}
+
+		// search-results {
+		//   position: relative;
+		//   z-index: 2;
+
+		//   a {
+		//     background-color: #fff;
+		//     position: absolute;
+		//     width: 100%;
+		//     // border: 1px solid var(--blue);
+		//     border-width: 0px 1px 0 1px;
+		//     border-style: solid;
+		//     border-color: var(--blue);
+		//   }
+
+		//   a:first-child {
+		//     border-width: 1px 1px 0 1px;
+		//   }
+
+		//   a:last-child {
+		//     border-width: 0px 1px 1px 1px;
+		//   }
+
+		//   a:nth-child(odd) {
+		//     background-color: var(--odd-table-bg-color);
+		//   }
+
+		//   a:nth-child(even) {
+		//     background-color: var(--even-table-bg-color);
+		//   }
+		// }
 	}
 
-	@media (max-width: 360px) {
-		game-search search-input input-container input-placeholder {
-			font-size: var(--font-size-4);
-		}
-	}
+	// @media (max-width: 360px) {
+	// 	game-search search-input input-container input-placeholder {
+	// 		font-size: var(--font-size-4);
+	// 	}
+	// }
+	// @media (max-width: 600px) {
+	//   game-search search-result {
+	//     padding: 0;
+	//   }
+	// }
 </style>

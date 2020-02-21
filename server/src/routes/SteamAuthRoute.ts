@@ -1,4 +1,3 @@
-import { ParameterizedContext } from 'koa'
 import Router from 'koa-router'
 import passport from 'koa-passport'
 
@@ -6,7 +5,7 @@ const router = new Router({ prefix: '/steam' })
 
 router.get('/login', passport.authenticate('steam', { failureRedirect: '/' }))
 
-router.get('/return', async (ctx: ParameterizedContext) => {
+router.get('/return', async ctx => {
 	const userSteamId = ctx['query']['openid.identity'].replace('https://steamcommunity.com/openid/id/', '')
 
 	console.log(userSteamId)

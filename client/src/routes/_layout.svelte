@@ -10,4 +10,8 @@
 
 <style lang="scss" global>
 	@import 'styles/global.scss';
+
+	body{
+		// overflow: hidden;
+	}
 </style>

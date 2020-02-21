@@ -1,11 +1,12 @@
 import Router from 'koa-router'
 
+import { ParameterizedContext } from 'koa'
+import { IRouterParamContext } from 'koa-router'
+
 import GameCollection from '../database/collections/GameCollection'
 
 import { setCacheUrl } from '../helpers/url-cache'
 import { IGame } from '../entities/GameEntity'
-
-import HeaderService, { statuses } from '../helpers/header'
 
 const router = new Router({ prefix: '/games' })
 
@@ -50,13 +51,11 @@ router.get('/search/:query/:limit', async ctx => {
 		}
 
 		if (foundGamesArray.length > 0) {
-			HeaderService.setCtx(ctx)
-				.setStatus(statuses['200'])
-				.setBody(responseObject)
+			ctx['body'] = responseObject
+			ctx['status'] = 200
 		} else {
-			HeaderService.setCtx(ctx)
-				.setStatus(statuses['204'])
-				.setHeader('Response-Details', '{ "msg": "No Games found" }')
+			ctx['status'] = 204
+			ctx.set('Response-Details', '{ "msg": "No Games found" }')
 		}
 	}
 })
@@ -108,7 +107,7 @@ function aliasFromName(name: string): string[] {
 	return [alias]
 }
 
-router.get('/genres', async ctx => {
+router.get('/genres', async (ctx) => {
 	const genres = await GameCollection.get().distinct('genres')
 	if (genres !== undefined && genres.length > 0) {
 		ctx['status'] = 200

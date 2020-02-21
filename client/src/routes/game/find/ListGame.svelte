@@ -16,6 +16,7 @@
 	let skip = 0
 	let isLoading = false
 
+	let isMediumViewport = true
 	let isSmallViewport = true
 
 	$: {
@@ -47,7 +48,21 @@
 
 	function fetchGames(skip = 0) {
 		return new Promise((resolve, reject) => {
-			FetchService.get(`api?query=${GraphqlService.buildQuery('games', ['_id', 'appid', 'name', 'releaseDate', 'score', 'points', 'achievementCount', 'difficulty{average}'], { releaseDate: $sortReleaseDate, score: $sortScore, points: $sortPoints, achievementCount: $sortAchievements, difficulty: $sortDifficulty }, {}, skip)}`)
+			FetchService.get(
+				`api?query=${GraphqlService.buildQuery(
+					'games',
+					['_id', 'appid', 'platforms', 'name', 'releaseDate', 'score', 'points', 'achievementCount', 'difficulty{average}'],
+					{
+						releaseDate: $sortReleaseDate,
+						score: $sortScore,
+						points: $sortPoints,
+						achievementCount: $sortAchievements,
+						difficulty: $sortDifficulty,
+					},
+					{},
+					skip
+				)}`
+			)
 				.then(response => {
 					resolve(response['data']['games'])
 				})
@@ -56,7 +71,13 @@
 	}
 
 	onMount(() => {
-		if (window.innerWidth <= 620) {
+		if (window.innerWidth <= 1024) {
+			isMediumViewport = true
+		} else {
+			isMediumViewport = false
+		}
+
+		if (window.innerWidth <= 768) {
 			isSmallViewport = true
 		} else {
 			isSmallViewport = false
@@ -84,63 +105,82 @@
 
 <game-grid-table>
 	<grid-header text="weight-8" select="none">
-		<field class="image" />
-		<field flex="align-center justify-center">Game</field>
 
-		<field cursor="pointer" flex="direction-{isSmallViewport ? 'column' : 'row'} align-center justify-center" on:click={() => sortReleaseDate.set()}>
-			{#if isSmallViewport}
-				<img class="icon" icon="size-6 white" src="icons/calendar.svg" alt="" />
-			{:else}
-				<span>Release Date</span>
-			{/if}
-			<img class="icon" margin={isSmallViewport ? '' : 'l-1'} icon="size-6 white" src="icons/angle-{$sortReleaseDate === 1 ? 'up' : $sortReleaseDate === -1 ? 'down' : 'neutral'}.svg" alt="" />
-		</field>
+		<image-header />
 
-		<field cursor="pointer" flex="direction-{isSmallViewport ? 'column' : 'row'} align-center justify-center" on:click={() => sortScore.set()}>
+		<game-header flex="align-center justify-center">Game</game-header>
+
+		<platforms-header class="header">Platforms</platforms-header>
+
+		<score-header cursor="pointer" class="header" on:click={() => sortScore.set()}>
 			<span>Score</span>
-			<img class="icon" margin={isSmallViewport ? '' : 'l-1'} icon="size-6 white" src="icons/angle-{$sortScore === 1 ? 'up' : $sortScore === -1 ? 'down' : 'neutral'}.svg" alt="" />
-		</field>
-		<field cursor="pointer" flex="direction-{isSmallViewport ? 'column' : 'row'} align-center justify-center" on:click={() => sortPoints.set()}>
-			<span>Points</span>
-			<img class="icon" margin={isSmallViewport ? '' : 'l-1'} icon="size-6 white" src="icons/angle-{$sortPoints === 1 ? 'up' : $sortPoints === -1 ? 'down' : 'neutral'}.svg" alt="" />
-		</field>
+			<img class="icon" icon="size-6 white" src="icons/angle-{$sortScore === 1 ? 'up' : $sortScore === -1 ? 'down' : 'neutral'}.svg" alt="" />
+		</score-header>
 
-		<field cursor="pointer" flex="direction-{isSmallViewport ? 'column' : 'row'} align-center justify-center" on:click={() => sortAchievements.set()}>
-			{#if isSmallViewport}
+		<achievements-count-header cursor="pointer" class="header" on:click={() => sortAchievements.set()}>
+			{#if isMediumViewport}
 				<img class="icon" icon="size-6 white" src="icons/trophy.svg" alt="" />
 			{:else}
 				<span>Achievements</span>
 			{/if}
-			<img class="icon" margin={isSmallViewport ? '' : 'l-1'} icon="size-6 white" src="icons/angle-{$sortAchievements === 1 ? 'up' : $sortAchievements === -1 ? 'down' : 'neutral'}.svg" alt="" />
-		</field>
+			<img class="icon" icon="size-6 white" src="icons/angle-{$sortAchievements === 1 ? 'up' : $sortAchievements === -1 ? 'down' : 'neutral'}.svg" alt="" />
+		</achievements-count-header>
 
-		<field cursor="pointer" flex="direction-{isSmallViewport ? 'column' : 'row'} align-center justify-center" on:click={() => sortDifficulty.set()}>
+		<difficulty-header cursor="pointer" class="header" on:click={() => sortDifficulty.set()}>
 			<span>Difficulty</span>
-			<img class="icon" margin={isSmallViewport ? '' : 'l-1'} icon="size-6 white" src="icons/angle-{$sortDifficulty === 1 ? 'up' : $sortDifficulty === -1 ? 'down' : 'neutral'}.svg" alt="" />
-		</field>
+			<img class="icon" icon="size-6 white" src="icons/angle-{$sortDifficulty === 1 ? 'up' : $sortDifficulty === -1 ? 'down' : 'neutral'}.svg" alt="" />
+		</difficulty-header>
+
+		<points-header cursor="pointer" class="header" on:click={() => sortPoints.set()}>
+			<span>Points</span>
+			<img class="icon" icon="size-6 white" src="icons/angle-{$sortPoints === 1 ? 'up' : $sortPoints === -1 ? 'down' : 'neutral'}.svg" alt="" />
+		</points-header>
+
+		<release-date-header cursor="pointer" class="header" on:click={() => sortReleaseDate.set()}>
+			{#if isMediumViewport}
+				<img class="icon" icon="size-6 white" src="icons/calendar.svg" alt="" />
+			{:else}
+				<span>Release Date</span>
+			{/if}
+			<img class="icon" icon="size-6 white" src="icons/angle-{$sortReleaseDate === 1 ? 'up' : $sortReleaseDate === -1 ? 'down' : 'neutral'}.svg" alt="" />
+		</release-date-header>
 
 	</grid-header>
 	{#if games !== null && games.length > 0}
 		{#each games as game, index (index)}
 			<a class="grid-body" href="/game/{game['_id']}">
-				<field flex="align-center">
-					{#if isSmallViewport}
-						<GameImage appid={game['appid']} imageType="smallCapsule" />
+
+				<image-field class="field" flex="align-center">
+					{#if window.innerWidth <= 768}
+						<GameImage appid={game['appid']} klass="listGame" imageType="smallCapsule" />
 					{:else}
-						<GameImage appid={game['appid']} imageType="header" />
+						<GameImage appid={game['appid']} klass="listGame" imageType="header" />
 					{/if}
-				</field>
-				<field class="name">{game['name']}</field>
-				<field>
-					{#if isSmallViewport}{parseDateReduced(game['releaseDate'])}{:else}{parseDate(game['releaseDate'])}{/if}
-				</field>
-				<field class="score" text="weight-7" flex="align-center justify-center">
+				</image-field>
+
+				<name-field>{game['name']}</name-field>
+
+				<platforms-field flex="justify-center">
+					{#each game['platforms'] as platform, index (index)}
+						<img class="icon" icon={isSmallViewport ? 'size-1 white' : 'size-5 dark-chocolate'} margin="x-1" src="icons/{platform}.svg" alt="" />
+					{/each}
+				</platforms-field>
+
+				<score-field text="weight-7" flex="align-center justify-center">
 					<circle-shape style="filter:hue-rotate({360 - (game['score'] - 40) * 4.25}deg)" />
 					<score>{Math.round(game['score'])}</score>
-				</field>
-				<field>{reduceNumber(game['points'])}</field>
-				<field>{game['achievementCount']}</field>
-				<field>{game['difficulty']['average']}</field>
+				</score-field>
+
+				<achievement-count-field>{game['achievementCount']}</achievement-count-field>
+
+				<difficulty-field>{game['difficulty']['average']}</difficulty-field>
+
+				<points-field>{reduceNumber(game['points'])}</points-field>
+
+				<release-date-field padding="r-2">
+					{#if isMediumViewport}{parseDateReduced(game['releaseDate'])}{:else}{parseDate(game['releaseDate'])}{/if}
+				</release-date-field>
+
 			</a>
 		{/each}
 	{/if}
@@ -155,7 +195,7 @@
 	loading-info {
 		position: fixed;
 		bottom: 0;
-		background-color: var(--chocolate-dark);
+		background-color: var(--dark-chocolate);
 		padding: 0.5rem 1rem;
 		width: 100%;
 		opacity: 0;
@@ -163,36 +203,62 @@
 		transition: opacity 0.3s;
 	}
 	game-grid-table {
-		--chocolate-dark: #100b00;
+		color: var(--dark-chocolate);
 
 		@media (prefers-color-scheme: light) {
-			--odd-table-bg-color: #fff;
-			--even-table-bg-color: #f7f7f7;
-			--text-color: var(--chocolate-dark);
+			--text-color: var(--dark-chocolate);
 		}
 
 		@media (prefers-color-scheme: dark) {
-			--odd-table-bg-color: #000;
-			--even-table-bg-color: #070707;
 			--text-color: #fff;
 			font-variation-settings: 'wght' var(--font-weight-6);
 		}
+
+		--image-field-width: 10vw;
+		--name-field-width: 30vw;
+		--platforms-field-width: 10vw;
+		--score-field-width: 10vw;
+		--achievements-field-width: 10vw;
+		--difficulty-field-width: 10vw;
+		--points-field-width: 5vw;
+		--release-date-field-width: 15vw;
+
 		grid-header {
+			grid-template-columns:
+				var(--image-field-width) var(--name-field-width) var(--platforms-field-width)
+				var(--score-field-width) var(--achievements-field-width) var(--difficulty-field-width)
+				var(--points-field-width) var(--release-date-field-width);
+
 			color: #fff;
 			top: 0;
 			position: sticky;
 			display: grid;
 			text-align: center;
-			grid-template-columns: 10vw 40vw repeat(5, 10vw);
 			padding: 10px 0;
-			background-color: var(--chocolate-dark);
+			background-color: var(--dark-chocolate);
 			z-index: 1;
+
+			.header {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+
+				.icon {
+					margin-left: 0.25rem;
+				}
+			}
 		}
 
 		.grid-body {
 			display: grid;
+
+			grid-template-columns:
+				var(--image-field-width) var(--name-field-width) var(--platforms-field-width)
+				var(--score-field-width) var(--achievements-field-width) var(--difficulty-field-width)
+				var(--points-field-width) var(--release-date-field-width);
+
 			text-align: center;
-			grid-template-columns: 10vw 40vw repeat(5, 10vw);
 			align-items: center;
 
 			transition-property: background-color color font-variation-settings;
@@ -200,21 +266,31 @@
 			transition-timing-function: ease-in-out;
 
 			&:hover {
-				background-color: var(--chocolate-dark) !important;
+				background-color: var(--dark-chocolate) !important;
 				color: #fff;
 				font-variation-settings: 'wght' var(--font-weight-9);
 			}
 
-			field.name {
+			image-field {
+				grid-area: 1 / 1 / 1 / 1;
+			}
+
+			name-field {
+				grid-area: 1 / 2 / 1 / 2;
+
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
+			platforms-field {
+				grid-area: 1 / 3 / 1 / 3;
+			}
 
-			field.score {
+			score-field {
+				grid-area: 1 / 4 / 1 /4;
+
 				color: #fff;
-				width: 100%;
-				height: 100%;
+
 				position: relative;
 
 				score {
@@ -223,10 +299,40 @@
 
 				circle-shape {
 					padding: 1rem;
-					position: absolute;
+					position: relative;
 					border-radius: 50px;
-					background-color: #ffaaaa;
+					background: linear-gradient(to bottom, #ff8b8b 31%, #ff7070 100%);
+
+					&:before {
+						content: '';
+						width: 90%;
+						height: 20px;
+
+						border-radius: 50px;
+
+						display: block;
+						position: absolute;
+						left: 0.09rem;
+						top: 0;
+						background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.5) 8%, rgba(255, 255, 255, 0) 100%);
+					}
 				}
+			} //Score Field
+
+			achievement-count-field {
+				grid-area: 1 / 5 / 1 / 5;
+			}
+
+			difficulty-field {
+				grid-area: 1 / 6 / 1 / 6;
+			}
+
+			points-field {
+				grid-area: 1 / 7 / 1 / 7;
+			}
+
+			release-date-field {
+				grid-area: 1 / 8 / 1 / 8;
 			}
 		}
 
@@ -239,19 +345,80 @@
 		}
 	}
 
-	@media (max-width: 1023px) {
+	@media (max-width: 1024px) {
+		game-grid-table {
+			--points-field-width: 10vw;
+			--release-date-field-width: 10vw;
+		}
+	}
+
+	@media (max-width: 768px) {
 		game-grid-table {
 			grid-header {
-				grid-template-columns: 25vw 20vw 12vw 15vw 8vw 20vw;
-				field.image {
-					display: none;
+				grid-template-columns: 10rem 10vw 7vw 17vw 12vw 20vw;
+				image-header,
+				platforms-header {
+					display: none !important;
+				}
+
+				.header {
+					flex-direction: column;
+
+					.icon {
+						margin-left: 0;
+					}
 				}
 			}
 
-			a.grid-body {
-				grid-template-columns: 25vw 20vw 12vw 15vw 8vw 20vw;
-				field.name {
-					display: none;
+			.grid-body {
+				grid-template-columns: 10rem 10vw 7vw 17vw 12vw 20vw;
+				image-field {
+					grid-area: 1 / 1 / 1 / 1;
+				}
+
+				name-field {
+					grid-area: 1 / 1 / 1 / 1;
+
+					color: #fff;
+					align-self: flex-end;
+					font-variation-settings: 'wght' var(--font-weight-7);
+					background-color: rgba(0, 0, 0, 0.75);
+					padding: 0 0.5rem;
+				}
+
+				platforms-field {
+					grid-area: 1 / 1 / 1 / 1;
+					background-color: rgba(0, 0, 0, 0.75);
+					align-self: flex-start;
+					justify-self: flex-end;
+					width: max-content;
+
+					padding: 0.2rem;
+					margin-top: 4px;
+
+					.icon {
+						margin: 0 0.2rem;
+					}
+				}
+
+				score-field {
+					grid-area: 1 / 2 / 1 / 2;
+				}
+
+				achievement-count-field {
+					grid-area: 1 / 3 / 1 / 3;
+				}
+
+				difficulty-field {
+					grid-area: 1 / 4 / 1 / 4;
+				}
+
+				points-field {
+					grid-area: 1 / 5 / 1 / 5;
+				}
+
+				release-date-field {
+					grid-area: 1 / 6 / 1 / 6;
 				}
 			}
 		}

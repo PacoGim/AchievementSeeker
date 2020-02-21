@@ -13,7 +13,6 @@ import { connectToDB } from './database/index'
 import { loadRoutes } from './helpers/functions'
 import { getGraphQLHTTP } from './helpers/graphql'
 import { getCacheUrl } from './helpers/url-cache'
-import HeaderService from './helpers/header'
 
 // DotEnv Initialization
 require('dotenv').config()
@@ -88,13 +87,12 @@ async function preRouting(ctx: ParameterizedContext, next: Next): Promise<void> 
 }
 
 function setHeaders(ctx: ParameterizedContext) {
-	HeaderService.setCtx(ctx)
-		.setHeader('Access-Control-Expose-Headers', 'Response-Details')
-		.setHeader('Strict-Transport-Security', 'max-age=3600')
-		.setHeader('X-Content-Type-Options', 'nosniff')
-		.setHeader('X-Frame-Options', 'deny')
-		.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.199:8080')
-		.setHeader('X-XSS-Protection', '1; mode=block')
+	ctx.set('Access-Control-Expose-Headers', 'Response-Details')
+	ctx.set('Strict-Transport-Security', 'max-age=3600')
+	ctx.set('X-Content-Type-Options', 'nosniff')
+	ctx.set('X-Frame-Options', 'deny')
+	ctx.set('Access-Control-Allow-Origin', 'http://192.168.1.199:8080')
+	ctx.set('X-XSS-Protection', '1; mode=block')
 }
 
 function startServer(app: Koa, port: number): void {

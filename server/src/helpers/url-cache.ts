@@ -1,4 +1,5 @@
 import { ParameterizedContext } from 'koa'
+import { IRouterParamContext } from 'koa-router'
 
 let urlCache: { [index: string]: string } = {}
 
@@ -26,9 +27,9 @@ function getCacheUrl(ctx: ParameterizedContext): string | undefined {
 /**
  * Sets data to cached by url {key}.
  *
- * @param {ParameterizedContext} ctx
+ * @param {ParameterizedContext|any} ctx
  */
-function setCacheUrl(ctx: ParameterizedContext) {
+function setCacheUrl(ctx: ParameterizedContext | any) {
 	if (ctx['body'] !== undefined) urlCache[ctx['url'].toLowerCase()] = ctx['body']
 }
 

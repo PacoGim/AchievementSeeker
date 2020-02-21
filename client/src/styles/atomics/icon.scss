@@ -25,6 +25,10 @@
 	filter: $blue-filter;
 }
 
+[icon~='dark-chocolate'] {
+	filter: $dark-chocolate-filter;
+}
+
 [icon~='white'] {
 	filter: invert(100%);
 }

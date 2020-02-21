@@ -148,7 +148,7 @@ export function getSafeString(name: string, limit: number) {
 	return name.replace(/[^a-zA-Z0-9]+/g, '').substring(0, limit)
 }
 
-export function errorHandler(error: Error, ctx: ParameterizedContext) {
+export function errorHandler(error: Error, ctx: ParameterizedContext | any) {
 	let errorMessage: string = ''
 
 	if (error.message === 'urls[type] is not a function') {

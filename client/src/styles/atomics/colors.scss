@@ -1,21 +1,27 @@
 $waikawa-grey: #5d6d83;
-$waikawa-grey-filter: invert(43%) sepia(27%) saturate(390%) hue-rotate(175deg) brightness(89%) contrast(87%);
+$waikawa-grey-filter: invert(43%) sepia(32%) saturate(332%) hue-rotate(175deg) brightness(89%) contrast(87%);
 
 $biscay: #313e52;
-$biscay-filter: invert(20%) sepia(24%) saturate(783%) hue-rotate(177deg) brightness(95%) contrast(87%);
+$biscay-filter: invert(22%) sepia(14%) saturate(1162%) hue-rotate(177deg) brightness(96%) contrast(92%);
 
 $blue: #2796e8;
-$blue-filter: invert(48%) sepia(80%) saturate(560%) hue-rotate(166deg) brightness(93%) contrast(95%);
+$blue-filter: invert(59%) sepia(40%) saturate(7076%) hue-rotate(162deg) brightness(96%) contrast(101%);
+
+$dark-chocolate: #271403;
+$dark-chocolate-filter: invert(10%) sepia(23%) saturate(1449%) hue-rotate(347deg) brightness(93%) contrast(102%);
 
 :root {
 	--waikawa-grey: #{$waikawa-grey};
 	--biscay: #{$biscay};
 	--blue: #{$blue};
+	--dark-chocolate: #{$dark-chocolate};
 }
 
 @media (prefers-color-scheme: light) {
 	:root {
 		--background-color-separator: #fafafa;
+		--odd-table-bg-color: #fff;
+		--even-table-bg-color: #f7f7f7;
 	}
 
 	body {
@@ -26,6 +32,8 @@ $blue-filter: invert(48%) sepia(80%) saturate(560%) hue-rotate(166deg) brightnes
 @media (prefers-color-scheme: dark) {
 	:root {
 		--background-color-separator: #080808;
+		--odd-table-bg-color: #000;
+		--even-table-bg-color: #070707;
 	}
 
 	body {

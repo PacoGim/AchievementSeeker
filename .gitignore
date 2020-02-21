@@ -4,3 +4,4 @@ dist
 fonts
 .env
 server/public/images
+__sapper__

@@ -5,6 +5,7 @@
 
 	export let appid
 	export let imageType
+	export let klass = undefined
 	let src
 
 	$: {
@@ -28,13 +29,16 @@
 	}
 </script>
 
-<img {src} on:error={() => imageLoadingError()} alt="" />
+<img {src} class={klass} on:error={() => imageLoadingError()} alt="" />
 
 <style lang="scss">
-
-	img{
-		height: 3.5rem;
-		width:auto;
+	img.listGame {
+		height: auto;
+		width: 100%;
+		min-width: 10rem;
+		max-width: 10rem;
 	}
 
+	img.searchGame {
+	}
 </style>
