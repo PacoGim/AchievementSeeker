@@ -6,9 +6,10 @@
 
 	import { parseDate, parseDateReduced } from '../../../services/helper.service.js'
 	import FetchService from '../../../services/fetch.service.js'
-	import GraphqlService from '../../../services/graphql.service.js'
+	import GraphQLService from '../../../services/graphql.service.js'
 
-	import { sortReleaseDate, sortScore, sortPoints, sortAchievements, sortDifficulty } from '../../../store/index.store.js'
+	import { sortReleaseDate, sortScore, sortPoints, sortAchievements, sortDifficulty } from '../../../store/sort.store.js'
+	import { searchInputValue } from '../../../store/main.store.js'
 
 	let loadingGamesHook = nanoid(6)
 
@@ -33,7 +34,7 @@
 	function scrollEventHandler() {
 		let scrollMaxY = document.documentElement.scrollHeight - document.documentElement.clientHeight
 
-		if (isLoading === false && window.scrollY + 100 > scrollMaxY) {
+		if (isLoading === false && $searchInputValue === '' && window.scrollY + 100 > scrollMaxY) {
 			let hook = document.querySelector(`[hook='${loadingGamesHook}']`)
 			hook.style.opacity = 1
 			isLoading = true
@@ -49,7 +50,7 @@
 	function fetchGames(skip = 0) {
 		return new Promise((resolve, reject) => {
 			FetchService.get(
-				`api?query=${GraphqlService.buildQuery(
+				`api?query=${GraphQLService.buildQuery(
 					'games',
 					['_id', 'appid', 'platforms', 'name', 'releaseDate', 'score', 'points', 'achievementCount', 'difficulty{average}'],
 					{
@@ -185,9 +186,16 @@
 		{/each}
 	{/if}
 
+	{#if $searchInputValue !== ''}
+		<scroll-locked-message flex="align-center justify-center" text="size-3 weight-6 white" padding="xy-2">
+			<img class="icon" icon="white size-5" margin="r-1" src="icons/info.svg" alt="" />
+			The infinite scroll is locked while searching. Clear search to continue.
+		</scroll-locked-message>
+	{/if}
+
 	<loading-info hook={loadingGamesHook} flex="align-center justify-center" text="weight-7 white">
 		Loading more games
-		<img class="icon" margin="l-1" icon="size-6 white" src="icons/oval.svg" alt="" />
+		<img class="icon" margin="l-1" icon="fit-height white" src="icons/oval.svg" alt="" />
 	</loading-info>
 </game-grid-table>
 
@@ -251,6 +259,9 @@
 		}
 
 		.grid-body {
+
+			min-height: 48px;
+
 			display: grid;
 
 			grid-template-columns:
@@ -343,6 +354,11 @@
 		.grid-body:nth-child(even) {
 			background-color: var(--even-table-bg-color);
 		}
+	}
+
+	scroll-locked-message {
+		background-color: var(--dark-chocolate);
+		text-align: center;
 	}
 
 	@media (max-width: 1024px) {

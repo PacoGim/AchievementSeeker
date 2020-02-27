@@ -5,3 +5,4 @@ fonts
 .env
 server/public/images
 __sapper__
+.DS_Store

@@ -7,7 +7,7 @@
  * @param {object} filter
  * @returns string
  */
-export function buildQuery(queryType, fields, sort, filter, skip = 0) {
+export function buildQuery(queryType, fields, sort, filter, skip, limit) {
 	let joinedFields = fields.join(' ')
 
 	for (let key in sort) {
@@ -25,19 +25,31 @@ export function buildQuery(queryType, fields, sort, filter, skip = 0) {
 
 	let parsedSort = sort !== undefined ? JSON.stringify(sort).replace(/"/g, '') : undefined
 
-	return `
+	if (sort === undefined && filter === undefined && skip === undefined) {
+		return `
+			{
+				${queryType}
+			{
+					${joinedFields}
+			}
+		}
+		`
+	} else {
+		return `
     {
       ${queryType}
       (
         ${sort !== undefined ? `sortBy:${parsedSort}` : ''}
         ${filter !== undefined ? `filterBy:${parsedFilter}` : ''}
-				skip:${skip}
+				skip:${skip === undefined ? 0 : skip}
+				limit:${limit === undefined || limit > 20 ? 20 : limit}
 			)
     {
         ${joinedFields}
     }
   }
-  `
+	`
+	}
 }
 
 export default {

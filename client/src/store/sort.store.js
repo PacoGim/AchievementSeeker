@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
 
+// Sorting Data
 const baseValues = [0, 1, -1]
 
 let sortReleaseDateIndex = 2

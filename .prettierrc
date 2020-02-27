@@ -1,8 +1,0 @@
-{
-  "svelteSortOrder": "scripts-markup-styles",
-  "trailingComma": "es5",
-  "printWidth": 10000,
-  "semi": false,
-  "singleQuote": true,
-  "useTabs": true
-}

@@ -2,16 +2,16 @@
 	import FetchService from '../../../services/fetch.service.js'
 	import GameImage from '../../../components/Base/GameImage.svelte'
 	import nanoid from 'nanoid'
+	import { searchInputValue } from '../../../store/main.store.js'
 
 	const inputHook = nanoid(6)
-	let searchInputValue = 'hyperdimension'
 	let searchTimeout = undefined
 	let searchedGameList = undefined
-	let inputInfoText = ''
+	let resultsInfoText = ''
 	let iconName = 'search'
 
 	$: {
-		searchInputValue
+		$searchInputValue
 		if (process.browser === true) {
 			setInputValue()
 			fetchGamesFromInput()
@@ -20,18 +20,18 @@
 
 	function fetchGamesFromInput() {
 		clearTimeout(searchTimeout)
-		if (searchInputValue !== '') {
+		if ($searchInputValue !== '') {
 			iconName = 'delete'
-			inputInfoText = 'Searching for Games...'
+			resultsInfoText = 'Searching for Games...'
 			searchTimeout = setTimeout(() => {
-				FetchService.get(`games/search/${searchInputValue}/20`).then(response => {
+				FetchService.get(`games/search/${$searchInputValue}/20`).then(response => {
 					if (response['status'] === 200) {
 						searchedGameList = response['data']
 						let totalFound = response['details']['totalFound']
-						inputInfoText = `Showing ${searchedGameList.length} Game${searchedGameList.length !== 1 ? 's' : ''}${totalFound <= 20 ? '.' : ` of ${totalFound}. Please, type more or use alias.`}`
+						resultsInfoText = `Showing ${searchedGameList.length} Game${searchedGameList.length !== 1 ? 's' : ''}${totalFound <= 20 ? '.' : ` of ${totalFound}. Please, type more or use alias.`}`
 					} else if (response['status'] === 204) {
 						searchedGameList = []
-						inputInfoText = 'No Games found.'
+						resultsInfoText = 'No Games found.'
 					}
 				})
 			}, 1000)
@@ -44,8 +44,8 @@
 	function setInputValue() {
 		let element = document.querySelector(`[hook='${inputHook}']`)
 		if (element !== null) {
-			if (searchInputValue !== '') {
-				element.setAttribute('value', searchInputValue)
+			if ($searchInputValue !== '') {
+				element.setAttribute('value', $searchInputValue)
 			} else {
 				element.removeAttribute('value')
 			}
@@ -61,7 +61,7 @@
 	<search-input display="block dynawidth" padding="t-10 b-10">
 
 		<input-container grid="overlap">
-			<input type="text" hook={inputHook} text="blue size-5" padding="xy-2" bind:value={searchInputValue} />
+			<input type="text" hook={inputHook} text="blue size-5" padding="xy-2" bind:value={$searchInputValue} />
 			<input-placeholder margin="xy-2" text="blue size-5" flex="align-center">
 				Type
 				<span text="weight-9" margin="x-1" />
@@ -69,21 +69,21 @@
 			</input-placeholder>
 		</input-container>
 
-		<icon cursor="pointer" flex="justify-center align-center" on:click={() => (searchInputValue = '')}>
+		<icon cursor="pointer" flex="justify-center align-center" on:click={() => ($searchInputValue = '')}>
 			<img icon="white" margin="xy-1" src="icons/{iconName}.svg" alt="" />
 		</icon>
 
-		<input-info text="blue size-2" margin="xy-2" style={searchInputValue !== '' ? 'opacity:1' : 'opacity:0'}>{inputInfoText}</input-info>
 	</search-input>
 
 	<search-results>
+		<results-info text="white size-3 weight-6" padding="xy-2" style={$searchInputValue !== '' ? 'display:block' : 'display:none'}>{resultsInfoText}</results-info>
 		<results flex="direction-column" text="white">
 			{#if searchedGameList !== undefined && searchedGameList.length > 0}
 				{#each searchedGameList as game, index (index)}
-					<a href="/game/{game['_id']}" flex="align-center">
+					<a href="/game/{game['_id']}" flex="align-center justify-between" text="weight-6">
 						<GameImage appid={game['appid']} klass="searchGame" imageType="smallCapsule" />
 						<name>{game['name']}</name>
-						<alias>{game['alias']}</alias>
+						<alias flex="direction-column align-center">{game['alias']}</alias>
 					</a>
 				{/each}
 			{/if}
@@ -117,7 +117,7 @@
 					font-size: var(--font-size-2);
 
 					span::after {
-						content: 'now';
+						content: 'down';
 					}
 				}
 
@@ -152,26 +152,21 @@
 					height: 2.5rem;
 				}
 			}
-			input-info {
-				grid-row: 2;
-				grid-column: 1 / span 2;
-				justify-self: flex-end;
-
-				transition: opacity 0.3s;
-			}
 		}
 
 		search-results {
-			transform: translateY(-4.8rem);
+			transform: translateY(-4.9rem);
 			position: absolute;
 			z-index: 2;
 			display: block;
 			background-color: rgba(0, 0, 0, 0.95);
 			width: 100%;
 
+			results-info {
+				text-align: center;
+			}
+
 			results {
-				// width: 50%;
-				// margin: 0 auto;
 				margin: 0 calc(500 * (100vw - 320px) / (1920 - 320));
 
 				@media (max-width: 768px) {
@@ -179,16 +174,26 @@
 				}
 
 				a {
-					// border: solid 1px red;
-					margin: 0.5rem 0;
-					border: 2px solid #fff;
+					color: #525858;
+					background-color: #fefefe;
+					margin: 0.2rem 0;
+					border-radius: 0 3px 3px 0;
+					min-height: 42px;
+
+					@media (max-width: 768px) {
+						// border-radius: 0;
+						// border-width: 2px 0 2px 0;
+					}
 
 					&:first-of-type {
-						margin-top: 2rem;
+						alias::before {
+							content: 'Alias';
+							font-variation-settings: 'wght' var(--font-weight-9);
+						}
 					}
 
 					&:last-of-type {
-						margin-bottom: 2rem;
+						margin-bottom: 0.5rem;
 					}
 
 					name {
@@ -200,51 +205,13 @@
 
 					alias {
 						padding: 0 0.5rem;
+						white-space: nowrap;
 					}
+				}
+
+				a:hover {
 				}
 			}
 		}
-
-		// search-results {
-		//   position: relative;
-		//   z-index: 2;
-
-		//   a {
-		//     background-color: #fff;
-		//     position: absolute;
-		//     width: 100%;
-		//     // border: 1px solid var(--blue);
-		//     border-width: 0px 1px 0 1px;
-		//     border-style: solid;
-		//     border-color: var(--blue);
-		//   }
-
-		//   a:first-child {
-		//     border-width: 1px 1px 0 1px;
-		//   }
-
-		//   a:last-child {
-		//     border-width: 0px 1px 1px 1px;
-		//   }
-
-		//   a:nth-child(odd) {
-		//     background-color: var(--odd-table-bg-color);
-		//   }
-
-		//   a:nth-child(even) {
-		//     background-color: var(--even-table-bg-color);
-		//   }
-		// }
 	}
-
-	// @media (max-width: 360px) {
-	// 	game-search search-input input-container input-placeholder {
-	// 		font-size: var(--font-size-4);
-	// 	}
-	// }
-	// @media (max-width: 600px) {
-	//   game-search search-result {
-	//     padding: 0;
-	//   }
-	// }
 </style>

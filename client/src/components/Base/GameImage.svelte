@@ -29,7 +29,7 @@
 	}
 </script>
 
-<img {src} class={klass} on:error={() => imageLoadingError()} alt="" />
+<img {src} class={klass} on:error={() => imageLoadingError()} loading="lazy" alt="" />
 
 <style lang="scss">
 	img.listGame {
@@ -40,5 +40,7 @@
 	}
 
 	img.searchGame {
+		height: 100%;
+		width: auto;
 	}
 </style>
