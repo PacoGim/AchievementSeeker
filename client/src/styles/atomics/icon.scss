@@ -25,8 +25,32 @@
 	filter: $blue-filter;
 }
 
+[icon~='bluetiful'] {
+	filter: $bluetiful-filter;
+}
+
 [icon~='dark-chocolate'] {
 	filter: $dark-chocolate-filter;
+}
+
+[icon~='copper'] {
+	filter: $copper-filter;
+}
+
+[icon~='silver'] {
+	filter: $silver-filter;
+}
+
+[icon~='gold'] {
+	filter: $gold-filter;
+}
+
+[icon~='blood'] {
+	filter: $blood-filter;
+}
+
+[icon~='celestial'] {
+	filter: $celestial-filter;
 }
 
 [icon~='white'] {
@@ -39,6 +63,6 @@
 
 @for $i from 0 through 19 {
 	[icon~='size-#{$i+1}'] {
-		height: #{$i * $step-font-size + 0.75}rem;
+		height: #{$i * $step-font-size + $min-font-size}rem;
 	}
 }

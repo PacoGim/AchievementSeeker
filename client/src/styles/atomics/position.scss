@@ -14,8 +14,8 @@
 
 /********************** Margins **********************/
 
-$min-rem: 0.25;
-$max-rem: 10;
+$min-rem: 0.1;
+$max-rem: 5;
 $step-rem: ($max-rem - $min-rem) / 19;
 
 @for $i from 0 through 19 {
@@ -40,11 +40,13 @@ $step-rem: ($max-rem - $min-rem) / 19;
 	}
 
 	[margin~='y-#{$i+1}'] {
-		margin: #{$i * $step-rem + $min-rem}rem 0;
+		margin-top: #{$i * $step-rem + $min-rem}rem;
+		margin-bottom: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='x-#{$i+1}'] {
-		margin: 0 #{$i * $step-rem + $min-rem}rem;
+		margin-right: #{$i * $step-rem + $min-rem}rem;
+		margin-left: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[margin~='xy-#{$i+1}'] {
@@ -75,11 +77,13 @@ $step-rem: ($max-rem - $min-rem) / 19;
 	}
 
 	[padding~='y-#{$i+1}'] {
-		padding: #{$i * $step-rem + $min-rem}rem 0;
+		padding-top: #{$i * $step-rem + $min-rem}rem;
+		padding-bottom: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='x-#{$i+1}'] {
-		padding: 0 #{$i * $step-rem + $min-rem}rem;
+		padding-right: #{$i * $step-rem + $min-rem}rem;
+		padding-left: #{$i * $step-rem + $min-rem}rem;
 	}
 
 	[padding~='xy-#{$i+1}'] {

@@ -17,21 +17,21 @@ http://store.steampowered.com/api/appdetails?appids=275200
 
 
 Recently played games:
-http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442&format=json
+http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=2FB93869D6AB876A2008AFD26D9946AC&steamid=76561198053722442&format=json
 
 Gets user data:
-http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=D86C0558453E2B587942EB24D4379D08&steamids=76561198053722442
+http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=2FB93869D6AB876A2008AFD26D9946AC&steamids=76561198053722442
     response.players.0.avatar
 
 Gets player games
-http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442&format=json
+http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=2FB93869D6AB876A2008AFD26D9946AC&steamid=76561198053722442&format=json
     response.game_count
     response.games = all user games
     response.games.loop.appid
 
 
 Get Game Achievements:
-http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=D86C0558453E2B587942EB24D4379D08&appid=413150
+http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=2FB93869D6AB876A2008AFD26D9946AC&appid=413150
     game.availableGameStats.achievements.loop
         .displayName
         .hidden
@@ -39,7 +39,7 @@ http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=D86C0558453
         .icon
 
 Get Achievement Unlock Time:
-http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=413150&key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442
+http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=413150&key=2FB93869D6AB876A2008AFD26D9946AC&steamid=76561198053722442
     playerstats.achievements.loop
         .apiname
         .achieved
@@ -52,4 +52,4 @@ http://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForAp
         .percent
 
 Get User Gotten Achievement for game
-http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=413150&key=D86C0558453E2B587942EB24D4379D08&steamid=76561198053722442
+http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid=413150&key=2FB93869D6AB876A2008AFD26D9946AC&steamid=76561198053722442

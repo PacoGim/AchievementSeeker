@@ -35,7 +35,7 @@ export interface IGame {
 	trend?: number
 	updatedAt: Date
 	version: number
-	visitCount: number
+	visitCount?: number
 }
 
 export class Game {

@@ -60,6 +60,36 @@ router.get('/search/:query/:limit', async ctx => {
 	}
 })
 
+router.get('/check', async ctx => {
+	let games = await GameCollection.get()
+		.find({})
+		.toArray()
+
+	let gameFoo
+	let counter = 0
+
+	games.forEach(game => {
+		if (game['developers'] !== undefined && game['developers'].length === 4 && game['publishers'] !== undefined && game['publishers'].length === 4) {
+			let baseDev = [...game['developers']]
+			let basePub = [...game['publishers']]
+			let developers = game['developers'].sort((a, b) => a.localeCompare(b))
+			let publishers = game['publishers'].sort((a, b) => a.localeCompare(b))
+			if (developers.join('') === publishers.join('')) {
+				// counter++
+				if (baseDev.join('') !== basePub.join('')) {
+					console.log(developers, publishers)
+					console.log(baseDev, basePub)
+					console.log('--------')
+				}
+			}
+		}
+	})
+
+	// console.log(counter)
+
+	// console.log(gameFoo)
+})
+
 // router.get('/update', async ctx => {
 
 //   let games = await GameCollection.get().find({}).toArray()
@@ -107,7 +137,7 @@ function aliasFromName(name: string): string[] {
 	return [alias]
 }
 
-router.get('/genres', async (ctx) => {
+router.get('/genres', async ctx => {
 	const genres = await GameCollection.get().distinct('genres')
 	if (genres !== undefined && genres.length > 0) {
 		ctx['status'] = 200

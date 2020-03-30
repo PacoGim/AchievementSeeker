@@ -231,6 +231,7 @@ export default class {
 	/* #region  Query GameByID */
 	@Query(returns => GraphQLGame, { nullable: true })
 	async gameById(@Arg('id') id: string): Promise<IGame | null> {
+		console.log(await GameCollection.get().findOne({ _id: id }))
 		return await GameCollection.get().findOne({ _id: id })
 	}
 	/* #endregion */
@@ -279,6 +280,7 @@ export default class {
 			.find({ _id: game._id })
 			.project({ _id: 0, developers: 1 })
 			.toArray()
+			console.log(result)
 		return result[0]['developers'].map(x => Object.assign({}, { name: x }))
 	}
 	/* #endregion */

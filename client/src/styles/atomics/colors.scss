@@ -7,14 +7,36 @@ $biscay-filter: invert(22%) sepia(14%) saturate(1162%) hue-rotate(177deg) bright
 $blue: #2796e8;
 $blue-filter: invert(59%) sepia(40%) saturate(7076%) hue-rotate(162deg) brightness(96%) contrast(101%);
 
+$bluetiful: #539cff;
+$bluetiful-filter: invert(53%) sepia(49%) saturate(1661%) hue-rotate(192deg) brightness(101%) contrast(101%);
+
+$turquiful: #4addeb;
+$turquiful-filter: invert(65%) sepia(97%) saturate(314%) hue-rotate(137deg) brightness(102%) contrast(84%);
+
 $dark-chocolate: #271403;
 $dark-chocolate-filter: invert(10%) sepia(23%) saturate(1449%) hue-rotate(347deg) brightness(93%) contrast(102%);
+
+$copper: #c98847;
+$copper-filter: invert(66%) sepia(27%) saturate(1009%) hue-rotate(346deg) brightness(86%) contrast(81%);
+
+$silver: #b1c4d0;
+$silver-filter: invert(85%) sepia(20%) saturate(214%) hue-rotate(160deg) brightness(90%) contrast(85%);
+
+$gold: #ffc352;
+$gold-filter: invert(82%) sepia(24%) saturate(1243%) hue-rotate(336deg) brightness(101%) contrast(102%);
+
+$blood: #a71c1c;
+$blood-filter: invert(29%) sepia(73%) saturate(1071%) hue-rotate(338deg) brightness(93%) contrast(102%);
+
+$celestial: #1f0086;
+$celestial-filter: invert(17%) sepia(86%) saturate(5379%) hue-rotate(256deg) brightness(52%) contrast(128%);
 
 :root {
 	--waikawa-grey: #{$waikawa-grey};
 	--biscay: #{$biscay};
 	--blue: #{$blue};
 	--dark-chocolate: #{$dark-chocolate};
+	--bluetiful: #{$bluetiful};
 }
 
 @media (prefers-color-scheme: light) {

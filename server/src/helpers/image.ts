@@ -68,5 +68,5 @@ export function fetchAndSaveImage(fetchUrl: string, dirPath: string, filePath: s
 					if (err) console.log(err)
 				})
 		})
-		.catch(error => console.log(error))
+		.catch(error => {})
 }

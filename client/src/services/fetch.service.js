@@ -1,3 +1,5 @@
+import fetch from 'node-fetch'
+
 const protocol = 'http://'
 const domain = '192.168.1.199'
 const port = '3000'
@@ -43,18 +45,28 @@ export function get(url) {
 	})
 }
 
-export function fetchImage(appid, imageType) {
+export function fetchImage(appid, imageType, id) {
 	return new Promise((resolve, reject) => {
 		try {
-			fetch(`${fullUrl}/image/${imageType}/${appid}`).then(response => {
+			if (imageType === 'achievement') {
+				fetch(`${fullUrl}/image/${imageType}/${appid}/${id}`).then(async response => {
+					processResponse(response)
+				})
+			} else {
+				fetch(`${fullUrl}/image/${imageType}/${appid}`).then(async response => {
+					processResponse(response)
+				})
+			}
+
+			async function processResponse(response) {
 				const contentType = response.headers.get('Content-Type')
 
 				if (contentType === 'plain/text') {
-					resolve(steamImageUrls[imageType](appid))
+					resolve(await response.text())
 				} else if (contentType === 'image/webp') {
 					resolve(response['url'])
 				}
-			})
+			}
 		} catch (error) {
 			reject(error)
 		}

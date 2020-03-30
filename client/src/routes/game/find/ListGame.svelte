@@ -238,7 +238,7 @@
 				var(--points-field-width) var(--release-date-field-width);
 
 			color: #fff;
-			top: 0;
+			top: 5rem;
 			position: sticky;
 			display: grid;
 			text-align: center;
