@@ -11,7 +11,7 @@
 		"@types/passport-steam": "^1.0.1",
 		"concurrently": "^5.1.0",
 		"nodemon": "^2.0.2",
-		"typescript": "^3.7.5"
+		"typescript": "^3.8.3"
 	},
 	"scripts": {
 		"tests": "nodemon ./tests/index.js",
@@ -37,5 +37,8 @@
 	"bugs": {
 		"url": "https://github.com/MrFranchills/AchievementSeeker/issues"
 	},
-	"homepage": "https://github.com/MrFranchills/AchievementSeeker#readme"
+	"homepage": "https://github.com/MrFranchills/AchievementSeeker#readme",
+	"dependencies": {
+		"@types/express-serve-static-core": "^4.17.3"
+	}
 }

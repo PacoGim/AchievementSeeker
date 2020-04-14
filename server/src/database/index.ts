@@ -1,10 +1,10 @@
 import { MongoClient, Collection } from 'mongodb'
 
-import { IGame } from '../entities/GameEntity'
-import { IUser } from '../entities/UserEntity'
+import { IGame } from '../models/Game.model'
+import { IUser } from '../models/User.model'
 
-import GameCollection from './collections/GameCollection'
-import UserCollection from './collections/UserCollection'
+import GameCollection from './collections/Game.collection'
+import UserCollection from './collections/User.collection'
 
 export function connectToDB(dbName: string, uri: string): Promise<string> {
 	return new Promise((resolve, reject) => {

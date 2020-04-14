@@ -18,6 +18,10 @@
 			name: 'Find Game',
 			path: '/game/find',
 		},
+		{
+			name: 'Login',
+			path: '/user/login',
+		},
 	]
 
 	let isScrolledNav = false

@@ -3,10 +3,10 @@ import Router from 'koa-router'
 import { ParameterizedContext } from 'koa'
 import { IRouterParamContext } from 'koa-router'
 
-import GameCollection from '../database/collections/GameCollection'
+import GameCollection from '../database/collections/Game.collection'
 
-import { setCacheUrl } from '../helpers/url-cache'
-import { IGame } from '../entities/GameEntity'
+import { setCacheUrl } from '../utils/url-cache'
+import { IGame } from '../models/Game.model'
 
 const router = new Router({ prefix: '/games' })
 

@@ -1,7 +1,7 @@
 <script>
 	import FetchService from '../../../services/fetch.service.js'
 	import GameImage from '../../../components/Base/GameImage.svelte'
-	import nanoid from 'nanoid'
+	import nanoid  from 'nanoid'
 	import { searchInputValue } from '../../../store/main.store.js'
 
 	const inputHook = nanoid(6)

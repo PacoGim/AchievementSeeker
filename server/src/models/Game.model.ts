@@ -1,6 +1,6 @@
-import { IAchievement, Achievement } from './AchievementEntity'
-import { IDifficulty } from './DifficultyEntity'
-import { IReleaseDateSplit } from './ReleaseDateSplitEntity'
+import { IAchievement, Achievement } from './Achievement.model'
+import { IDifficulty } from './Difficulty.model'
+import { IReleaseDateSplit } from './ReleaseDateSplit.model'
 
 export enum Platform {
 	WINDOWS = 'windows',
@@ -72,6 +72,7 @@ export class Game {
 	get_id() {
 		return this._id
 	}
+
 	set_id(_id: string) {
 		this._id = _id
 	}
@@ -79,6 +80,7 @@ export class Game {
 	getAchievementCount() {
 		return this.achievementCount
 	}
+
 	setAchievementCount(achievementCount: number) {
 		this.achievementCount = achievementCount
 	}
@@ -86,6 +88,7 @@ export class Game {
 	getAchievements() {
 		return this.achievements
 	}
+
 	setAchievements(achievements: Achievement[]) {
 		this.achievements = achievements
 	}
@@ -93,6 +96,7 @@ export class Game {
 	getAge() {
 		return this.age
 	}
+
 	setAge(age: number) {
 		this.age = age
 	}
@@ -100,6 +104,7 @@ export class Game {
 	getAlias() {
 		return this.alias
 	}
+
 	setAlias(alias: string[]) {
 		this.alias = alias
 	}
@@ -107,6 +112,7 @@ export class Game {
 	getAppid() {
 		return this.appid
 	}
+
 	setAppid(appid: number) {
 		this.appid = appid
 	}
@@ -114,6 +120,7 @@ export class Game {
 	getBackgrounds() {
 		return this.backgrounds
 	}
+
 	setBackgrounds(backgrounds: string[]) {
 		this.backgrounds = backgrounds
 	}
@@ -121,6 +128,7 @@ export class Game {
 	getCreatedAt() {
 		return this.createdAt
 	}
+
 	setCreatedAt(createdAt: Date) {
 		this.createdAt = createdAt
 	}
@@ -135,6 +143,7 @@ export class Game {
 	getDifficulty() {
 		return this.difficulty
 	}
+
 	setDifficulty(difficulty: IDifficulty) {
 		this.difficulty = difficulty
 	}
@@ -142,6 +151,7 @@ export class Game {
 	getGenres() {
 		return this.genres
 	}
+
 	setGenres(genres: string[]) {
 		this.genres = genres
 	}
@@ -149,6 +159,7 @@ export class Game {
 	getIsFree() {
 		return this.isFree
 	}
+
 	setIsFree(isFree: boolean) {
 		this.isFree = isFree
 	}
@@ -170,6 +181,7 @@ export class Game {
 	getPoints() {
 		return this.points
 	}
+
 	setPoints(points: number) {
 		this.points = points
 	}
@@ -177,6 +189,7 @@ export class Game {
 	getPublishers() {
 		return this.publishers
 	}
+
 	setPublishers(publishers: string[]) {
 		this.publishers = publishers
 	}
@@ -184,6 +197,7 @@ export class Game {
 	getReleaseDate() {
 		return this.releaseDate
 	}
+
 	setReleaseDate(releaseDate: Date) {
 		this.releaseDate = releaseDate
 	}
@@ -191,6 +205,7 @@ export class Game {
 	getReleaseDateSplit() {
 		return this.releaseDateSplit
 	}
+
 	setReleaseDateSplit(releaseDateSplit: IReleaseDateSplit) {
 		this.releaseDateSplit = releaseDateSplit
 	}
@@ -198,6 +213,7 @@ export class Game {
 	getReviewCount() {
 		return this.reviewCount
 	}
+
 	setReviewCount(reviewCount: number) {
 		this.reviewCount = reviewCount
 	}
@@ -205,6 +221,7 @@ export class Game {
 	getScore() {
 		return this.score
 	}
+
 	setScore(score: number) {
 		this.score = score
 	}
@@ -212,6 +229,7 @@ export class Game {
 	getTrend() {
 		return this.trend
 	}
+
 	setTrend(trend: number) {
 		this.trend = trend
 	}
@@ -219,6 +237,7 @@ export class Game {
 	getUpdatedAt() {
 		return this.updatedAt
 	}
+
 	setUpdatedAt(updatedAt: Date) {
 		this.updatedAt = updatedAt
 	}
@@ -233,6 +252,7 @@ export class Game {
 	getVisitCount() {
 		return this.visitCount
 	}
+
 	setVisitCount(visitCount: number) {
 		this.visitCount = visitCount
 	}

@@ -1,7 +1,7 @@
 import { Resolver, FieldResolver, Root, Query } from 'type-graphql'
-import GameCollection from '../database/collections/GameCollection'
-import { GraphQLPublisher } from '../schemas/PublisherSchema'
-import { IPublisher } from '../entities/PublisherEntity'
+import GameCollection from '../../database/collections/Game.collection'
+import { GraphQLPublisher } from '../schemas/Publisher.schema'
+import { IPublisher } from '../../models/Publisher.model'
 
 @Resolver(of => GraphQLPublisher)
 export default class {

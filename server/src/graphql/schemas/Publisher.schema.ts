@@ -1,8 +1,8 @@
 import { Field, ObjectType } from 'type-graphql'
-import { GraphQLGame } from './GameSchema'
+import { GraphQLGame } from './Game.schema'
 
 @ObjectType()
-export class GraphQLDeveloper {
+export class GraphQLPublisher {
 	@Field(type => String)
 	name!: string
 

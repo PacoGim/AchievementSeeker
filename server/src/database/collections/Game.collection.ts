@@ -1,5 +1,5 @@
 import { Collection } from 'mongodb'
-import { IGame } from '../../entities/GameEntity'
+import { IGame } from '../../models/Game.model'
 
 let gameCollection: Collection<IGame>
 

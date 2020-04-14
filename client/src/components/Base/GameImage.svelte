@@ -25,22 +25,22 @@
 	}
 
 	async function loadImage() {
-		if (window.supportsWebp === undefined) {
+		if (globalThis.supportsWebp === undefined) {
 			await supportsWebp()
 		}
 
 		if (imageType === 'achievement') {
-			if (window.supportsWebp === false) {
+			if (globalThis.supportsWebp === false) {
 				src = steamImageUrls['achievement'](appid, achId)
-			} else if (window.supportsWebp === true) {
+			} else if (globalThis.supportsWebp === true) {
 				fetchImage(appid, imageType, achId).then(response => {
 					src = response
 				})
 			}
 		} else {
-			if (window.supportsWebp === false) {
+			if (globalThis.supportsWebp === false) {
 				src = steamImageUrls[imageType](appid)
-			} else if (window.supportsWebp === true) {
+			} else if (globalThis.supportsWebp === true) {
 				fetchImage(appid, imageType).then(response => {
 					src = response
 				})

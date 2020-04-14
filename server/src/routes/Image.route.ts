@@ -1,10 +1,10 @@
 import Router from 'koa-router'
 
-import { hashCode, errorHandler, genNum } from '../helpers/functions'
-import { getGameById } from '../helpers/games'
-import { getFilePaths, sendImageResponse } from '../helpers/image'
+import { hashCode, errorHandler, genNum } from '../utils/functions'
+import { getGameById } from '../utils/games'
+import { getFilePaths, sendImageResponse } from '../utils/image'
 
-import { IUrls } from '../entities/UrlsEntity'
+import { IUrls } from '../models/Urls.model'
 
 const router = new Router({ prefix: '/image' })
 

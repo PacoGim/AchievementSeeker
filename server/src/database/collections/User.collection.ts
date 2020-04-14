@@ -1,10 +1,10 @@
 import { Collection } from 'mongodb'
-import { IUser } from '../../entities/UserEntity'
+import { User } from '../../models/User.model'
 
-let userCollection: Collection<IUser>
+let userCollection: Collection<User>
 
 export default {
-	get(): Collection<IUser>  {
+	get(): Collection<User>  {
 		return userCollection
 	},
 

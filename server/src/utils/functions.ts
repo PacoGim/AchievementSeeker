@@ -1,4 +1,4 @@
-import { IRoute } from '../entities/RouteEntity'
+import { IRoute } from '../models/Route.model'
 import path from 'path'
 import { ParameterizedContext } from 'koa'
 import Koa from 'koa'
@@ -108,11 +108,7 @@ export function genID() {
 		id += options[char]()
 	}
 
-	return id
-		.split('')
-		.reverse()
-		.join('')
-		.toUpperCase()
+	return id.split('').reverse().join('').toUpperCase()
 }
 
 export function getDifficulty(easy: number, medium: number, hard: number) {
@@ -137,15 +133,23 @@ export function getDifficulty(easy: number, medium: number, hard: number) {
 }
 
 export function loadRoutes(app: Koa, rootPath: string, routeList: string[]): void {
-	routeList.forEach(routeName => {
-		let route: IRoute = require(path.join(path.resolve(), rootPath, routeName + '.js'))
+	routeList.forEach((routeName) => {
+		let route: IRoute = require(path.join(path.resolve(), rootPath, routeName + '.route.js'))
 		app.use(route.routes)
-		console.log(`${routeName} Loaded`)
+		console.log(`${routeName} route Loaded`)
 	})
 }
 
 export function getSafeString(name: string, limit: number) {
 	return name.replace(/[^a-zA-Z0-9]+/g, '').substring(0, limit)
+}
+
+export function encryptId(id: string | BigInt): string {
+	if (typeof id === 'string') {
+		id = BigInt(id)
+	}
+
+	return id.toString(36)
 }
 
 export function errorHandler(error: Error, ctx: ParameterizedContext | any) {

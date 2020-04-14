@@ -1,10 +1,10 @@
 import { ObjectType, Field, Int, Float } from 'type-graphql'
-import { GraphQLDifficulty } from './DifficultySchema'
-import { GraphQLAchievement } from './AchievementSchema'
-import { GraphQLDeveloper } from './DeveloperSchema'
-import { GraphQLPublisher } from './PublisherSchema'
-import { GraphQLGenre } from './GenreSchema'
-import { GraphQLReleaseDateSplit } from './ReleaseDateSplitSchema'
+import { GraphQLDifficulty } from './Difficulty.schema'
+import { GraphQLAchievement } from './Achievement.schema'
+import { GraphQLDeveloper } from './Developer.schema'
+import { GraphQLPublisher } from './Publisher.schema'
+import { GraphQLGenre } from './Genre.schema'
+import { GraphQLReleaseDateSplit } from './ReleaseDateSplit.schema'
 
 @ObjectType()
 export class GraphQLGame {

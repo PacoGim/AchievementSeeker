@@ -1,5 +1,5 @@
-import GameCollection from '../database/collections/GameCollection'
-import { IGame } from '../entities/GameEntity'
+import GameCollection from '../database/collections/Game.collection'
+import { IGame } from '../models/Game.model'
 
 export function getGameById(id: string | number): Promise<IGame> {
 	return new Promise(async resolve => {

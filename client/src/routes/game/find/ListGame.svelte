@@ -153,9 +153,9 @@
 
 				<image-field class="field" flex="align-center">
 					{#if window.innerWidth <= 768}
-						<GameImage appid={game['appid']} klass="listGame" imageType="smallCapsule" />
+						<GameImage appid={game['appid']} klass="listGame" imageType="smallCapsule" alt={game['name']} />
 					{:else}
-						<GameImage appid={game['appid']} klass="listGame" imageType="header" />
+						<GameImage appid={game['appid']} klass="listGame" imageType="header" alt={game['name']} />
 					{/if}
 				</image-field>
 
@@ -259,7 +259,6 @@
 		}
 
 		.grid-body {
-
 			min-height: 48px;
 
 			display: grid;

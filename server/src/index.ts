@@ -10,9 +10,9 @@ import path from 'path'
 // Database
 import { connectToDB } from './database/index'
 
-import { loadRoutes } from './helpers/functions'
-import { getGraphQLHTTP } from './helpers/graphql'
-import { getCacheUrl } from './helpers/url-cache'
+import { loadRoutes } from './utils/functions'
+import { getGraphQLHTTP } from './utils/graphql'
+import { getCacheUrl } from './utils/url-cache'
 
 // DotEnv Initialization
 require('dotenv').config()
@@ -20,17 +20,18 @@ require('dotenv').config()
 // Main Function
 ;(async function main() {
 	let app: Koa = new Koa()
+
 	const port: number = Number(process.env.PORT) || 3000
-	const routesToLoad: string[] = ['GameRoute', 'ImageRoute']
-	const uri: string = `mongodb://readOnlyUser:readOnlyUserPWD@localhost:27017`
+	const routesToLoad: string[] = ['Game', 'Image', 'SteamAuth']
+	const mongoDBUri: string = `mongodb://readOnlyUser:readOnlyUserPWD@localhost:27017`
 
 	// Passport Config and Init
 	app.use(
 		passport
 			.use(
 				new SteamStrategy({
-					returnURL: `http://localhost:${port}/steam/return`,
-					realm: `http://localhost:${port}/`,
+					returnURL: `http://192.168.1.199:${port}/steam/return`,
+					realm: `http://192.168.1.199:${port}/`,
 					apiKey: process.env.STEAM_API_KEY,
 				})
 			)
@@ -38,14 +39,14 @@ require('dotenv').config()
 	)
 
 	// MongoDB
-	connectToDB('AchievementSeeker', uri)
-		.then(message => console.log(message))
-		.catch(err => console.error('Error from connectToDB: ', err))
+	connectToDB('AchievementSeeker', mongoDBUri)
+		.then((message) => console.log(message))
+		.catch((err) => console.error('Error from connectToDB: ', err))
 
 	// Serve static public folder
 	app.use(serve(path.join(__dirname, '../public')))
 
-	// Before loading routes
+	// Runs preRouting before matching other routes
 	app.use((ctx: ParameterizedContext, next: Next) => preRouting(ctx, next))
 
 	// Routes Loader
@@ -98,7 +99,7 @@ function setHeaders(ctx: ParameterizedContext) {
 function startServer(app: Koa, port: number): void {
 	app
 		.listen(port)
-		.on('error', err => console.error(err))
+		.on('error', (err) => console.error(err))
 		.on('listening', () => {
 			console.log(`🚀 Server running on port ${port}`)
 		})

@@ -1,8 +1,8 @@
 import { Resolver, Query, Arg, FieldResolver, Root, Args, ArgsType, Field, ObjectType, InputType, Int, registerEnumType } from 'type-graphql'
-import GameCollection from '../database/collections/GameCollection'
-import { IGame, Platform } from '../entities/GameEntity'
+import GameCollection from '../../database/collections/Game.collection'
+import { IGame, Platform } from '../../models/Game.model'
 import { Max } from 'class-validator'
-import { GraphQLGame, GraphQLSearchGame } from '../schemas/GameSchema'
+import { GraphQLGame, GraphQLSearchGame } from '../schemas/Game.schema'
 
 registerEnumType(Platform, {
 	name: 'Platform',
