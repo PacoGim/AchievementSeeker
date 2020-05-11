@@ -4,18 +4,14 @@
 	"description": "",
 	"main": "index.js",
 	"devDependencies": {
-		"@types/koa-graphql": "^0.8.3",
-		"@types/koa-mount": "^4.0.0",
-		"@types/koa-static": "^4.0.1",
-		"@types/koa__router": "^8.0.2",
-		"@types/passport-steam": "^1.0.1",
-		"concurrently": "^5.1.0",
-		"nodemon": "^2.0.2",
+		"concurrently": "^5.2.0",
+		"nodemon": "^2.0.3",
 		"typescript": "^3.8.3"
 	},
 	"scripts": {
 		"tests": "nodemon ./tests/index.js",
-		"server": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\" \"pnpm run mongodb\"",
+		"server": "concurrently \"pnpm run transpile:typescript\" \"pnpm run mongodb\"",
+		"server:bak": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\" \"pnpm run mongodb\"",
 		"mongodb": "mongod --dbpath='/Users/fran/MongoDB Databases' --directoryperdb --quiet",
 		"client:bak": "rimraf client/__sapper__/dev && cd client && pnpm run dev",
 		"client": "cd client && pnpm run dev",
@@ -37,8 +33,5 @@
 	"bugs": {
 		"url": "https://github.com/MrFranchills/AchievementSeeker/issues"
 	},
-	"homepage": "https://github.com/MrFranchills/AchievementSeeker#readme",
-	"dependencies": {
-		"@types/express-serve-static-core": "^4.17.3"
-	}
+	"homepage": "https://github.com/MrFranchills/AchievementSeeker#readme"
 }

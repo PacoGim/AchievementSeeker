@@ -4,6 +4,7 @@ import path from 'path'
 import fetch from 'node-fetch'
 import sharp from 'sharp'
 import { getSafeString } from './functions'
+import { ObjectId } from 'mongodb'
 
 /**
  * @description Sends to the client

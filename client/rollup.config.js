@@ -2,7 +2,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
-import babel from 'rollup-plugin-babel'
+import babel from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 import config from 'sapper/config/rollup.js'
 import pkg from './package.json'
@@ -26,6 +26,7 @@ const preprocess = sveltePreprocess({
 
 export default {
 	client: {
+		preserveEntrySignatures: false,
 		input: config.client.input(),
 		output: config.client.output(),
 		plugins: [
@@ -79,6 +80,7 @@ export default {
 	},
 
 	server: {
+		preserveEntrySignatures: false,
 		input: config.server.input(),
 		output: config.server.output(),
 		plugins: [

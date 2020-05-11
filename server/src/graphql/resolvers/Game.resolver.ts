@@ -3,9 +3,10 @@ import GameCollection from '../../database/collections/Game.collection'
 import { IGame, Platform } from '../../models/Game.model'
 import { Max } from 'class-validator'
 import { GraphQLGame, GraphQLSearchGame } from '../schemas/Game.schema'
+import { ObjectId } from 'mongodb'
 
 registerEnumType(Platform, {
-	name: 'Platform',
+	name: 'Platform'
 })
 
 /* #region  InputType QuerySortBy */
@@ -37,13 +38,13 @@ class Difficulty {
 @ObjectType()
 @InputType('QueryFilterByInput')
 class QueryFilterBy {
-	@Field(type => [String], { nullable: true }) genres: string[]
-	@Field(type => [String], { nullable: true }) developers: string[]
-	@Field(type => [String], { nullable: true }) publishers: string[]
+	@Field((type) => [String], { nullable: true }) genres: string[]
+	@Field((type) => [String], { nullable: true }) developers: string[]
+	@Field((type) => [String], { nullable: true }) publishers: string[]
 	@Field({ nullable: true }) hasCeleste: boolean
 	@Field({ nullable: true }) isFree: boolean
-	@Field(type => Platform, { nullable: true }) platform: Platform
-	@Field(type => Difficulty, { nullable: true }) difficulty: Difficulty
+	@Field((type) => Platform, { nullable: true }) platform: Platform
+	@Field((type) => Difficulty, { nullable: true }) difficulty: Difficulty
 	@Field({ nullable: true }) year: number
 	@Field({ nullable: true }) month: number
 }
@@ -52,17 +53,17 @@ class QueryFilterBy {
 /* #region  ArgsType GetGamesArgs */
 @ArgsType()
 class GetGamesArgs {
-	@Field(type => Int, { defaultValue: 0 })
+	@Field((type) => Int, { defaultValue: 0 })
 	skip: number
 
-	@Field(type => Int, { nullable: true, defaultValue: 20 })
+	@Field((type) => Int, { nullable: true, defaultValue: 20 })
 	@Max(40)
 	limit: number
 
-	@Field(type => QuerySortBy, { nullable: true })
+	@Field((type) => QuerySortBy, { nullable: true })
 	sortBy: QuerySortBy
 
-	@Field(type => QueryFilterBy, { nullable: true })
+	@Field((type) => QueryFilterBy, { nullable: true })
 	filterBy: QueryFilterBy
 }
 /* #endregion */
@@ -113,10 +114,10 @@ interface ISortOptionObject {
 }
 /* #endregion */
 
-@Resolver(of => GraphQLGame)
+@Resolver((of) => GraphQLGame)
 export default class {
 	/* #region  Query Games */
-	@Query(returns => [GraphQLGame], { nullable: true })
+	@Query((returns) => [GraphQLGame], { nullable: true })
 	async games(@Args() { skip, limit, sortBy, filterBy }: GetGamesArgs): Promise<IGame[]> {
 		let filter: IFilterOptionObject = {}
 		let sort: ISortOptionObject = {}
@@ -157,19 +158,19 @@ export default class {
 
 			if (filterBy['genres'] !== undefined) {
 				filter['genres'] = {
-					$all: filterBy['genres'],
+					$all: filterBy['genres']
 				}
 			}
 
 			if (filterBy['developers'] !== undefined) {
 				filter['developers'] = {
-					$in: filterBy['developers'],
+					$in: filterBy['developers']
 				}
 			}
 
 			if (filterBy['publishers'] !== undefined) {
 				filter['publishers'] = {
-					$in: filterBy['publishers'],
+					$in: filterBy['publishers']
 				}
 			}
 		}
@@ -216,35 +217,29 @@ export default class {
 
 		console.log('Server Filter', filterBy)
 
-		let games: IGame[] = await GameCollection.get()
-			.find(filter)
-			.skip(skip)
-			.limit(limit)
-			.sort(sort)
-			.collation({ locale: 'en' })
-			.toArray()
+		let games: IGame[] = await GameCollection.get().find(filter).skip(skip).limit(limit).sort(sort).collation({ locale: 'en' }).toArray()
 
 		return games
 	}
 	/* #endregion */
 
 	/* #region  Query GameByID */
-	@Query(returns => GraphQLGame, { nullable: true })
+	@Query((returns) => GraphQLGame, { nullable: true })
 	async gameById(@Arg('id') id: string): Promise<IGame | null> {
-		console.log(await GameCollection.get().findOne({ _id: id }))
-		return await GameCollection.get().findOne({ _id: id })
+		// console.log(await GameCollection.get().findOne({ _id: id }))
+		return await GameCollection.get().findOne({ _id:id })
 	}
 	/* #endregion */
 
 	/* #region  Query GameByAppID */
-	@Query(returns => GraphQLGame, { nullable: true })
+	@Query((returns) => GraphQLGame, { nullable: true })
 	async gameByAppId(@Arg('appid') appid: number): Promise<IGame | null> {
 		return await GameCollection.get().findOne({ appid })
 	}
 	/* #endregion */
 
 	/* #region  Query GamesByDevelopper */
-	@Query(returns => [GraphQLGame], { nullable: true })
+	@Query((returns) => [GraphQLGame], { nullable: true })
 	async gamesByDeveloper(@Arg('name') name: string): Promise<IGame[] | null> {
 		let result = await GameCollection.get()
 			.find({ developers: { $in: [name] } })
@@ -254,7 +249,7 @@ export default class {
 	/* #endregion */
 
 	/* #region  Query GamesByPulbisher */
-	@Query(returns => [GraphQLGame], { nullable: true })
+	@Query((returns) => [GraphQLGame], { nullable: true })
 	async gamesByPublisher(@Arg('name') name: string): Promise<IGame[] | null> {
 		let result = await GameCollection.get()
 			.find({ publishers: { $in: [name] } })
@@ -264,7 +259,7 @@ export default class {
 	/* #endregion */
 
 	/* #region  Query GamesByGenre */
-	@Query(returns => [GraphQLGame], { nullable: true })
+	@Query((returns) => [GraphQLGame], { nullable: true })
 	async gamesByGenre(@Arg('name') name: string): Promise<IGame[] | null> {
 		let result = await GameCollection.get()
 			.find({ genres: { $in: [name] } })
@@ -276,34 +271,25 @@ export default class {
 	/* #region  FieldResolver Developers */
 	@FieldResolver()
 	async developers(@Root() game: IGame) {
-		let result = await GameCollection.get()
-			.find({ _id: game._id })
-			.project({ _id: 0, developers: 1 })
-			.toArray()
-			console.log(result)
-		return result[0]['developers'].map(x => Object.assign({}, { name: x }))
+		let result = await GameCollection.get().find({ _id: game._id }).project({ _id: 0, developers: 1 }).toArray()
+		console.log(result)
+		return result[0]['developers'].map((x) => Object.assign({}, { name: x }))
 	}
 	/* #endregion */
 
 	/* #region  FielResolver Publishers */
 	@FieldResolver()
 	async publishers(@Root() game: IGame) {
-		let result = await GameCollection.get()
-			.find({ _id: game._id })
-			.project({ _id: 0, publishers: 1 })
-			.toArray()
-		return result[0]['publishers'].map(x => Object.assign({}, { name: x }))
+		let result = await GameCollection.get().find({ _id: game._id }).project({ _id: 0, publishers: 1 }).toArray()
+		return result[0]['publishers'].map((x) => Object.assign({}, { name: x }))
 	}
 	/* #endregion */
 
 	/* #region  FieldResolver Genres */
 	@FieldResolver()
 	async genres(@Root() game: IGame) {
-		let result = await GameCollection.get()
-			.find({ _id: game._id })
-			.project({ _id: 0, genres: 1 })
-			.toArray()
-		return result[0]['genres'].map(x => Object.assign({}, { type: x }))
+		let result = await GameCollection.get().find({ _id: game._id }).project({ _id: 0, genres: 1 }).toArray()
+		return result[0]['genres'].map((x) => Object.assign({}, { type: x }))
 	}
 	/* #endregion */
 }

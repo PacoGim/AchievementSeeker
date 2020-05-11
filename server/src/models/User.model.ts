@@ -1,15 +1,35 @@
 import UserCollection from '../database/collections/User.collection'
+import { ObjectID } from 'mongodb'
+import { IAchievement } from './Achievement.model'
 
-export interface IUser {
+import { encrypt } from '../utils/crypt'
+
+export interface IUserGameQueue {
+	appId: number
+	gameId: string
+	userId: ObjectID
 	steamId: string
 }
 
+interface IUserGames {
+	_id: string
+	achievements: IAchievement[]
+}
+
+export interface IUser {
+	_id?: ObjectID
+	steamId: string
+	games?: IUserGames[]
+}
+
 export class User {
-	private steamId: string
-	private id:string
+	_id: ObjectID
+	steamId: string
+	games: IUserGames[]
 
 	constructor(data: IUser) {
-		this.steamId = encryptId(data['steamId'])
+		this.steamId = encrypt(data['steamId'])
+		this.games = []
 	}
 
 	save(): Promise<User> {
@@ -26,11 +46,15 @@ export class User {
 			})
 		})
 	}
+
+	delete() {
+		UserCollection.get().deleteOne({ _id: this._id })
+	}
 }
 
-export function findUserBySteamId(steamId: string): Promise<Object> {
+export function findUserBySteamId(steamId: string): Promise<User | null> {
 	return new Promise((resolve, reject) => {
-		UserCollection.get().findOne({ steamId: encryptId(steamId) }, (error, result) => {
+		UserCollection.get().findOne({ steamId: encrypt(steamId) }, (error, result) => {
 			if (error) {
 				reject({
 					errCode: error['code'],
@@ -41,8 +65,4 @@ export function findUserBySteamId(steamId: string): Promise<Object> {
 			}
 		})
 	})
-}
-
-function encryptId(id: string): string {
-	return BigInt(id).toString(36)
 }
