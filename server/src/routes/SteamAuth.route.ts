@@ -29,21 +29,11 @@ router.get('/return', async (ctx) => {
 				redirectUrl = 'http://192.168.1.199:8080/user/welcome'
 
 				fetchUserGames(response['_id'], steamId)
-
-				// setTimeout(() => {
-				// 	user.delete()
-				// }, 2000)
-
-				/*TODO Fetch user games list
-					TODO Add the user to the fetch list
-				*/
 			})
 		} else {
-			fetchUserGames(result['_id'], steamId)
-
 			// If User exists
-			// jwtPayload = { id: result['_id'] }
-			// redirectUrl = 'http://192.168.1.199:8080'
+			jwtPayload = { id: result['_id'] }
+			redirectUrl = 'http://192.168.1.199:8080/user/redirect'
 		}
 	})
 

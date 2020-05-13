@@ -9,6 +9,7 @@
 
 		if (cookies && cookies['steamUserId']) {
 			steamId = cookies['steamUserId']
+			console.log(steamId)
 		}
 	})
 </script>

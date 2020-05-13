@@ -12,16 +12,16 @@
 	const routes = [
 		{
 			name: 'Home',
-			path: '/',
+			path: '/'
 		},
 		{
 			name: 'Find Game',
-			path: '/game/find',
+			path: '/game/find'
 		},
 		{
 			name: 'Login',
-			path: '/user/login',
-		},
+			path: '/user/login'
+		}
 	]
 
 	let isScrolledNav = false
@@ -49,6 +49,10 @@
 			} else {
 				isScrolledNav = false
 			}
+		})
+
+		document.querySelector(`#route-Login`).addEventListener('mouseenter', () => {
+			localStorage.setItem('lastLocation', document.location.href)
 		})
 	})
 
@@ -78,7 +82,7 @@
 		<page-name text="weight-7 size-3" padding="xy-2" hook={pageNameHook}>{pageName}</page-name>
 		<links>
 			{#each routes as route, index (index)}
-				<a href={route['path']} selected={pagePath === route['path']}>{route['name']}</a>
+				<a id="route-{route['name']}" href={route['path']} selected={pagePath === route['path']}>{route['name']}</a>
 			{/each}
 		</links>
 	</main-navigation>

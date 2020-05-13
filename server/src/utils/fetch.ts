@@ -5,18 +5,12 @@ import { ObjectId } from 'mongodb'
 import GameCollection from '../database/collections/Game.collection'
 import UserCollection from '../database/collections/User.collection'
 
-import { decrypt, encrypt } from '../utils/crypt'
+import {  encrypt } from '../utils/crypt'
 
 import { userQueue } from '../utils/queue'
 import { IGame } from '../models/Game.model'
 
 export async function fetchUserGames(userId: ObjectId, steamId: string) {
-	let encrypted = encrypt(steamId)
-
-	console.log(steamId)
-	console.log(encrypted)
-	console.log(decrypt(encrypted))
-
 	let userGames = await fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${steamId}&format=json`).then((res) => res.json())
 
 	if (userGames?.['response']?.['games']) {
@@ -57,7 +51,7 @@ export async function fetchUserGames(userId: ObjectId, steamId: string) {
 				userQueue.push({ userId, steamId, gameId: game['_id'], appId: game['appid'] })
 			})
 
-		UserCollection.get().deleteOne({ _id: userId })
+		// UserCollection.get().deleteOne({ _id: userId })
 	} else {
 		//TODO: What to do if Steam doesn'y give back a good response 🤷‍♀️
 		// console.log('I Dont Work')

@@ -1,9 +1,9 @@
-export interface IServer{
-  id:number
-  busy:boolean
+export interface IServer {
+	id: number
+	busy: boolean
 }
 
-export const servers= [
+export const servers = [
 	{
 		id: 1,
 		busy: false

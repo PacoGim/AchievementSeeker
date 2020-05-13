@@ -13,7 +13,7 @@ export interface IUserGameQueue {
 
 interface IUserGames {
 	_id: string
-	achievements: IAchievement[]
+	achievements: number[]
 }
 
 export interface IUser {
@@ -54,6 +54,7 @@ export class User {
 
 export function findUserBySteamId(steamId: string): Promise<User | null> {
 	return new Promise((resolve, reject) => {
+		console.log(encrypt(steamId))
 		UserCollection.get().findOne({ steamId: encrypt(steamId) }, (error, result) => {
 			if (error) {
 				reject({

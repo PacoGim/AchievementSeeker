@@ -3,9 +3,6 @@ import mount from 'koa-mount'
 import serve from 'koa-static'
 import passport from 'koa-passport'
 
-//TODO Delete this later
-import fetch from 'node-fetch'
-
 import { Strategy as SteamStrategy } from 'passport-steam'
 
 import path from 'path'
