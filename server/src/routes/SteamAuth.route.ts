@@ -1,11 +1,11 @@
 import Router from 'koa-router'
 import passport from 'koa-passport'
 
-import { User, findUserBySteamId } from '../models/User.model'
+import { findUserBySteamId, saveUser } from '../models/User.model'
 
 import { getToken } from '../utils/jwt'
 import { fetchUserGames } from '../utils/fetch'
-import UserCollection from '../database/collections/User.collection'
+import { UserType } from '../types/User.type'
 
 const router = new Router({ prefix: '/steam' })
 
@@ -21,14 +21,18 @@ router.get('/return', async (ctx) => {
 	await findUserBySteamId(steamId).then(async (result) => {
 		if (result === null) {
 			// If User doesn't exist, we create it
-			const user = new User({ steamId })
+			const user: UserType = {
+				steamId
+			}
 
 			// And save it
-			await user.save().then(async (response) => {
-				jwtPayload = { id: response['_id'] }
-				redirectUrl = 'http://192.168.1.199:8080/user/welcome'
+			await saveUser(user).then(async (response) => {
+				if (response?.['_id']) {
+					jwtPayload = { id: response['_id'] }
+					redirectUrl = 'http://192.168.1.199:8080/user/welcome'
 
-				fetchUserGames(response['_id'], steamId)
+					fetchUserGames(response['_id'], steamId)
+				}
 			})
 		} else {
 			// If User exists

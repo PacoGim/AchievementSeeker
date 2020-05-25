@@ -1,45 +1,88 @@
 import Router from 'koa-router'
 
-import { ParameterizedContext } from 'koa'
-import { IRouterParamContext } from 'koa-router'
+import koaBody from 'koa-body'
 
 import GameCollection from '../database/collections/Game.collection'
 
 import { setCacheUrl } from '../utils/url-cache'
-import { IGame } from '../models/Game.model'
+import { GameType } from '../types/Game.type'
+import { getGameById, getCustomGames } from '../models/Game.model'
+import { isJson } from '../utils/functions'
 
 const router = new Router({ prefix: '/games' })
 
-router.get('/search/:query/:limit', async ctx => {
+router.get('/:id', async (ctx) => {
+	let id = ctx['params']['id']
+
+	let game = await getGameById(id)
+
+	if (game !== undefined) {
+		ctx['status'] = 200
+		ctx['body'] = game
+	} else {
+		ctx['status'] = 204
+		ctx.set(
+			'Response-Details',
+			JSON.stringify({
+				message: `Game with ID or AppID ${id} not found.`
+			})
+		)
+	}
+})
+
+router.post('/', koaBody(), async (ctx) => {
+	let options = ctx['request']['body']
+
+	if (typeof options !== 'object') {
+		ctx['status'] = 200
+		return (ctx['body'] = 'Submit a valid JSON type POST request.')
+	}
+
+	let games = await getCustomGames(options)
+
+	if (games.length === 0) {
+		ctx['status'] = 204
+		return ctx.set(
+			'Response-Details',
+			JSON.stringify({
+				message: `No games found.`
+			})
+		)
+	}
+
+	ctx['body'] = games
+})
+
+router.get('/search/:query/:limit', async (ctx) => {
 	let limit: number | undefined = Number(ctx['params']['limit'])
 	let query: string | undefined = ctx['params']['query']
 
 	interface IResponseObject {
 		details?: any
-		data: IGame[] | undefined
+		data: GameType[] | undefined
 	}
 
 	let responseObject: IResponseObject = {
-		data: undefined,
+		data: undefined
 	}
 
 	if (query) {
-		let foundGamesArray: IGame[] = []
+		let foundGamesArray: GameType[] = []
 
 		let regAlias: RegExp = RegExp(`${query}`, 'i')
 		let regName: RegExp = RegExp(`${query}`, 'i')
 
-		let gamesSearchName: IGame[] = await GameCollection.get()
+		let gamesSearchName: GameType[] = await GameCollection.get()
 			.find({ name: { $regex: regName } })
 			.project({ name: 1, _id: 1, appid: 1, alias: 1 })
 			.toArray()
 
-		let gamesSearchAlias: IGame[] = await GameCollection.get()
+		let gamesSearchAlias: GameType[] = await GameCollection.get()
 			.find({ alias: { $in: [regAlias] } })
 			.project({ name: 1, _id: 1, appid: 1, alias: 1 })
 			.toArray()
 
-		gamesSearchName = gamesSearchName.filter(a => !gamesSearchAlias.find(b => a['_id'] === b['_id']))
+		gamesSearchName = gamesSearchName.filter((a) => !gamesSearchAlias.find((b) => a['_id'] === b['_id']))
 
 		foundGamesArray = gamesSearchAlias.concat(gamesSearchName)
 
@@ -60,84 +103,7 @@ router.get('/search/:query/:limit', async ctx => {
 	}
 })
 
-router.get('/check', async ctx => {
-	let games = await GameCollection.get()
-		.find({})
-		.toArray()
-
-	let gameFoo
-	let counter = 0
-
-	games.forEach(game => {
-		if (game['developers'] !== undefined && game['developers'].length === 4 && game['publishers'] !== undefined && game['publishers'].length === 4) {
-			let baseDev = [...game['developers']]
-			let basePub = [...game['publishers']]
-			let developers = game['developers'].sort((a, b) => a.localeCompare(b))
-			let publishers = game['publishers'].sort((a, b) => a.localeCompare(b))
-			if (developers.join('') === publishers.join('')) {
-				// counter++
-				if (baseDev.join('') !== basePub.join('')) {
-					console.log(developers, publishers)
-					console.log(baseDev, basePub)
-					console.log('--------')
-				}
-			}
-		}
-	})
-
-	// console.log(counter)
-
-	// console.log(gameFoo)
-})
-
-// router.get('/update', async ctx => {
-
-//   let games = await GameCollection.get().find({}).toArray()
-
-//   games.forEach(game => {
-//     let alias = aliasFromName(game['name'])
-
-//     if (alias[0].length > 1) {
-//       game['alias'] = aliasFromName(game['name'])
-//     } else {
-//       game['alias'] = []
-//     }
-
-//     GameCollection.get().updateOne({ _id: game['_id'] }, { $set: game }, { upsert: true }, (error, result) => {
-//       if (error) {
-//         console.log(error)
-//       } else {
-
-//         console.log(result['modifiedCount'])
-//       }
-//     })
-//   });
-
-//   ctx.body = 'Ok'
-// })
-
-function aliasFromName(name: string): string[] {
-	let alias: string = name
-
-	alias = alias.replace(':', ' ')
-	alias = alias.replace('-', ' ')
-	alias = alias.replace('/', ' ')
-	alias = alias.replace(')', ' ')
-	alias = alias.replace('(', ' ')
-
-	alias = alias
-		.split(' ')
-		.map(x => {
-			if (RegExp('^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$').test(x)) return x
-			else return x.substring(0, 1)
-		})
-		.join('')
-		.toLowerCase()
-
-	return [alias]
-}
-
-router.get('/genres', async ctx => {
+router.get('/genres', async (ctx) => {
 	const genres = await GameCollection.get().distinct('genres')
 	if (genres !== undefined && genres.length > 0) {
 		ctx['status'] = 200
@@ -150,5 +116,5 @@ router.get('/genres', async ctx => {
 
 module.exports = {
 	routes: router.routes(),
-	allowedMethods: router.allowedMethods(),
+	allowedMethods: router.allowedMethods()
 }

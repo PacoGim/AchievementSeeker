@@ -1,7 +1,21 @@
-import { IRoute } from '../models/Route.model'
 import path from 'path'
 import { ParameterizedContext } from 'koa'
 import Koa from 'koa'
+import { RouteType } from '../types/Route.type'
+import { ObjectId } from 'mongodb'
+
+export function isJson(jsonToCheck: string) {
+
+	console.log(typeof jsonToCheck)
+
+	try {
+		let foo: JSON = JSON.parse(jsonToCheck)
+
+		console.log(foo)
+	} catch (error) {
+		console.log(error)
+	}
+}
 
 export function genNum(min: number, max: number): number {
 	return Number(Math.floor(Math.random() * (max - min + 1) + min))
@@ -94,7 +108,7 @@ export function genID() {
 		},
 		'9': () => {
 			return ['m', 'y', '9'][genNum(0, 2)]
-		},
+		}
 	}
 
 	let value = new Date().getTime().toString(10)
@@ -134,7 +148,7 @@ export function getDifficulty(easy: number, medium: number, hard: number) {
 
 export function loadRoutes(app: Koa, rootPath: string, routeList: string[]): void {
 	routeList.forEach((routeName) => {
-		let route: IRoute = require(path.join(path.resolve(), rootPath, routeName + '.route.js'))
+		let route: RouteType = require(path.join(path.resolve(), rootPath, routeName + '.route.js'))
 		app.use(route.routes)
 		console.log(`${routeName} route Loaded`)
 	})
@@ -164,4 +178,26 @@ export function errorHandler(error: Error, ctx: ParameterizedContext | any) {
 	}
 	ctx.status = 204
 	ctx.set('Response-Detail', errorMessage)
+}
+
+export function stringToObjectId(id: string): ObjectId {
+	let newId: ObjectId
+
+	try {
+		newId = new ObjectId(id)
+	} catch {
+		newId = new ObjectId()
+	}
+
+	return newId
+}
+
+export function stringToNumber(id: string): number {
+	let newId: number
+
+	if (isNaN(Number(id))) {
+		return 0
+	} else {
+		return Number(id)
+	}
 }

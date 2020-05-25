@@ -2,13 +2,13 @@ import fetch from 'node-fetch'
 
 import { debugWrite } from '../debug'
 
-import { IUserGameQueue } from '../models/User.model'
-
 import { servers, IServer } from '../utils/servers'
 import GameCollection from '../database/collections/Game.collection'
 import UserCollection from '../database/collections/User.collection'
+import { UserGameQueueType } from '../types/User.type'
+import { ObjectId } from 'mongodb'
 
-export let userQueue: IUserGameQueue[] = []
+export let userQueue: UserGameQueueType[] = []
 let isfetchUserGameRunning = false
 
 observeArray(userQueue, ['push'], () => {
@@ -47,7 +47,7 @@ function setUserAndServer() {
 	}
 }
 
-function fetchUserAchievements(user: IUserGameQueue, server: IServer) {
+function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 	// Fetch user achievement for game
 	fetch(`https://us-central1-sth-functions.cloudfunctions.net/fetchUserGame${server['id']}?appid=${user['appId']}&key=${process.env.STEAM_API_KEY}&steamid=${user['steamId']}`)
 		.then((res) => res.json())
@@ -61,7 +61,7 @@ function fetchUserAchievements(user: IUserGameQueue, server: IServer) {
 			if (!achievements) return
 
 			// Get game from db
-			let game = await GameCollection.get().findOne({ _id: user['gameId'] }, { projection: { name: 1, 'achievements._id': 1, 'achievements.steamName': 1, 'achievements.value': 1 } })
+			let game = await GameCollection.get().findOne({ _id: new ObjectId(user['gameId']) }, { projection: { name: 1, 'achievements._id': 1, 'achievements.steamName': 1, 'achievements.value': 1 } })
 
 			// Should never happen since all games were previously added from the database
 			if (!game) return
@@ -103,21 +103,21 @@ function fetchUserAchievements(user: IUserGameQueue, server: IServer) {
 			let dbUser = await UserCollection.get().findOne({ _id: user['userId'] })
 
 			// If the user wasn't found should not happen since it was just created
-			if (!dbUser) return
+			if (dbUser?.['games']) {
+				// Looks finds in the user games wich game to update
+				let foundGame = dbUser['games'].find((game) => new ObjectId(game['_id']) === new ObjectId(user['gameId']))
 
-			// Looks finds in the user games wich game to update
-			let foundGame = dbUser['games'].find((game) => game['_id'] === user['gameId'])
+				// Again, the game is obviously in the user array since it was added just before
+				if (!foundGame) return
 
-			// Again, the game is obviously in the user array since it was added just before
-			if (!foundGame) return
+				// Updates the achievements
+				foundGame['achievements'] = userAchievedAchievements
 
-			// Updates the achievements
-			foundGame['achievements'] = userAchievedAchievements
+				// Updates the user
+				UserCollection.get().updateOne({ _id: user['userId'] }, { $set: dbUser }, { upsert: true })
 
-			// Updates the user
-			UserCollection.get().updateOne({ _id: user['userId'] }, { $set: dbUser }, { upsert: true })
-
-			debugWrite(`User ${user['userId']} updated game ${user['appId']}.`)
+				debugWrite(`User ${user['userId']} updated game ${user['appId']}.`)
+			}
 		})
 		.catch((error) => {
 			console.log(error)

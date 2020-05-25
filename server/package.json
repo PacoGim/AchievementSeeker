@@ -11,15 +11,11 @@
 	"license": "ISC",
 	"dependencies": {
 		"@koa/router": "^8.0.8",
-		"class-validator": "^0.12.2",
 		"dotenv": "^8.2.0",
 		"fs-extra": "^9.0.0",
-		"graphql": "14.6.0",
 		"jsonwebtoken": "^8.5.1",
 		"koa": "^2.11.0",
 		"koa-body": "^4.1.1",
-		"koa-graphql": "^0.8.0",
-		"koa-mount": "^4.0.0",
 		"koa-passport": "^2.2.2",
 		"koa-router": "^8.0.8",
 		"koa-send": "^5.0.0",
@@ -29,9 +25,7 @@
 		"node-fetch": "^2.6.0",
 		"passport-openid": "^0.4.0",
 		"passport-steam": "^1.0.14",
-		"reflect-metadata": "^0.1.13",
-		"sharp": "^0.25.2",
-		"type-graphql": "^0.17.6"
+		"sharp": "^0.25.2"
 	},
 	"devDependencies": {
 		"@types/bcryptjs": "^2.4.2",

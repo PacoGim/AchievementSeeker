@@ -5,10 +5,8 @@ import { ObjectId } from 'mongodb'
 import GameCollection from '../database/collections/Game.collection'
 import UserCollection from '../database/collections/User.collection'
 
-import {  encrypt } from '../utils/crypt'
-
 import { userQueue } from '../utils/queue'
-import { IGame } from '../models/Game.model'
+import { GameType } from '../types/Game.type'
 
 export async function fetchUserGames(userId: ObjectId, steamId: string) {
 	let userGames = await fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${process.env.STEAM_API_KEY}&steamid=${steamId}&format=json`).then((res) => res.json())
@@ -33,7 +31,7 @@ export async function fetchUserGames(userId: ObjectId, steamId: string) {
 
 		if (userFound) {
 			// Iterates through every game and gives back an array of objects just as placeholder
-			userFound['games'] = dbMatchingUserGames.map((game: IGame) => {
+			userFound['games'] = dbMatchingUserGames.map((game: GameType) => {
 				return {
 					_id: game['_id'],
 					achievements: []

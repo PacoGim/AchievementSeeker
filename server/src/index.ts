@@ -1,5 +1,4 @@
 import Koa, { ParameterizedContext, Next } from 'koa'
-import mount from 'koa-mount'
 import serve from 'koa-static'
 import passport from 'koa-passport'
 
@@ -11,7 +10,6 @@ import path from 'path'
 import { connectToDB } from './database/index'
 
 import { loadRoutes } from './utils/functions'
-import { getGraphQLHTTP } from './utils/graphql'
 import { getCacheUrl } from './utils/url-cache'
 
 // DotEnv Initialization
@@ -54,9 +52,6 @@ require('dotenv').config()
 
 	// Routes Loader
 	loadRoutes(app, '/server/dist/routes', routesToLoad)
-
-	// GraphQL Mount
-	app.use(mount('/api', await getGraphQLHTTP()))
 
 	// 404
 	app.use((ctx: ParameterizedContext) => {

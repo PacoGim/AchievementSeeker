@@ -23,6 +23,7 @@
 	],
 	"settings": {
 		"typescript.tsdk": "achievement-seeker\\node_modules\\typescript\\lib",
-		"liveServer.settings.multiRootWorkspaceName": "Project Root"
+		"liveServer.settings.multiRootWorkspaceName": "Project Root",
+		"deno.enable": false
 	}
 }

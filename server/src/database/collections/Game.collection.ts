@@ -1,10 +1,10 @@
 import { Collection } from 'mongodb'
-import { IGame } from '../../models/Game.model'
+import { GameType } from '../../types/Game.type'
 
-let gameCollection: Collection<IGame>
+let gameCollection: Collection<GameType>
 
 export default {
-	get(): Collection<IGame> {
+	get(): Collection<GameType> {
 		return gameCollection
 	},
 

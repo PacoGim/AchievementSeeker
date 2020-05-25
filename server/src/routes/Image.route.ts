@@ -1,16 +1,16 @@
 import Router from 'koa-router'
 
 import { hashCode, errorHandler, genNum } from '../utils/functions'
-import { getGameById } from '../utils/games'
 import { getFilePaths, sendImageResponse } from '../utils/image'
-
-import { IUrls } from '../models/Urls.model'
+import { getGameById } from '../models/Game.model'
 
 const router = new Router({ prefix: '/image' })
 
 const baseSteamUrl = 'https://steamcdn-a.akamaihd.net/steam/apps/'
 
-const urls: IUrls = {
+const urls: {
+	[key: string]: Function
+} = {
 	header: (appid: number) => `${baseSteamUrl}${appid}/header.jpg`,
 	smallCapsule: (appid: number) => `${baseSteamUrl}${appid}/capsule_sm_120.jpg`,
 	bigCapsule: (appid: number) => `${baseSteamUrl}${appid}/capsule_616x353.jpg`,
@@ -18,10 +18,10 @@ const urls: IUrls = {
 	hero: (appid: number) => `${baseSteamUrl}${appid}/library_hero.jpg`,
 	library: (appid: number) => `${baseSteamUrl}${appid}/library_600x900.jpg`,
 	background: (appid: number, backgroundUrl: string) => `${baseSteamUrl}${appid}/${backgroundUrl}`,
-	achievement: (appid: number, achievementId: string) => `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievementId}`,
+	achievement: (appid: number, achievementId: string) => `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievementId}`
 }
 
-router.get('/achievement/:id/:achId/:isGray*', async ctx => {
+router.get('/achievement/:id/:achId/:isGray*', async (ctx) => {
 	try {
 		const { id, achId, isGray } = ctx['params']
 
@@ -31,13 +31,13 @@ router.get('/achievement/:id/:achId/:isGray*', async ctx => {
 
 		const { achievements } = game
 
-		const achievement = achievements.find(i => i['_id'] === Number(achId))
+		const achievement = achievements.find((i) => i['_id'] === Number(achId))
 
 		if (achievement === undefined) throw new Error(`Achievement with id: ${achId}, not found`)
 
 		const achName = isGray !== 'true' ? achievement['img'] : achievement['imgGray']
 		const fetchUrl = urls['achievement'](game['appid'], achName)
-		const { dirPath, filePath } = getFilePaths(game['name'], game['_id'], hashCode(achName), 'achievements')
+		const { dirPath, filePath } = getFilePaths(game['name'], String(game['_id']), hashCode(achName), 'achievements')
 
 		await sendImageResponse(ctx, filePath, fetchUrl, dirPath)
 	} catch (error) {
@@ -45,7 +45,7 @@ router.get('/achievement/:id/:achId/:isGray*', async ctx => {
 	}
 })
 
-router.get('/background/:id', async ctx => {
+router.get('/background/:id', async (ctx) => {
 	try {
 		const { id } = ctx['params']
 
@@ -60,7 +60,7 @@ router.get('/background/:id', async ctx => {
 
 		ctx['body'] = fetchUrl
 
-		const { dirPath, filePath } = getFilePaths(game['name'], game['_id'], hashCode(backgroundUrl), 'backgrounds')
+		const { dirPath, filePath } = getFilePaths(game['name'], String(game['_id']), hashCode(backgroundUrl), 'backgrounds')
 
 		await sendImageResponse(ctx, filePath, fetchUrl, dirPath)
 	} catch (error) {
@@ -79,7 +79,7 @@ router.get('/:type/:id', async (ctx: any) => {
 		// Will throw error if type not found, retuns the proper steam fetch url
 		const fetchUrl: string = urls[type](game['appid'])
 
-		const { dirPath, filePath } = getFilePaths(game['name'], game['_id'], type)
+		const { dirPath, filePath } = getFilePaths(game['name'], String(game['_id']), type)
 
 		await sendImageResponse(ctx, filePath, fetchUrl, dirPath)
 	} catch (error) {
@@ -89,5 +89,5 @@ router.get('/:type/:id', async (ctx: any) => {
 
 module.exports = {
 	routes: router.routes(),
-	allowedMethods: router.allowedMethods(),
+	allowedMethods: router.allowedMethods()
 }

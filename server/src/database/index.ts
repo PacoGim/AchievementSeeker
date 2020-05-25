@@ -1,10 +1,9 @@
 import { MongoClient, Collection } from 'mongodb'
 
-import { IGame } from '../models/Game.model'
-import { IUser } from '../models/User.model'
-
 import GameCollection from './collections/Game.collection'
 import UserCollection from './collections/User.collection'
+import { GameType } from '../types/Game.type'
+import { UserType } from '../types/User.type'
 
 export function connectToDB(dbName: string, uri: string): Promise<string> {
 	return new Promise((resolve, reject) => {
@@ -24,13 +23,13 @@ export function connectToDB(dbName: string, uri: string): Promise<string> {
 	})
 }
 
-function getCollectionFromDB(collectionName: string, dbName: string, client: MongoClient): Collection<IGame | IUser> {
-	let collection: Collection<IGame | IUser> = client.db(dbName).collection(collectionName)
+function getCollectionFromDB(collectionName: string, dbName: string, client: MongoClient): Collection<GameType | UserType> {
+	let collection: Collection<GameType | UserType> = client.db(dbName).collection(collectionName)
 
 	return collection
 }
 
-function setCollection(collection: Collection<IGame | IUser>) {
+function setCollection(collection: Collection<GameType | UserType>) {
 	const collectionName = collection.collectionName
 	switch (collectionName) {
 		case 'Games':
