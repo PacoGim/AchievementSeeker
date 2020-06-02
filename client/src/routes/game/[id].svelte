@@ -1,10 +1,46 @@
 <script context="module">
 	export async function preload({ host, path, query, params }, session) {
-		let fieldsToFetch = ['_id', 'name', 'visitCount', 'appid', 'releaseDate', 'score', 'platforms', 'points', 'genres{type}', 'developers{name}', 'publishers{name}', 'achievements{_id,name,score,description,isHidden,value}']
+		let game = await FetchService.post('games', {
+			games: [params['id']],
+			project: {
+				_id: 1,
+				name: 1,
+				visitCount: 1,
+				appid: 1,
+				releaseDate: 1,
+				score: 1,
+				platforms: 1,
+				points: 1,
+				genres: 1,
+				developers: 1,
+				publishers: 1,
+				'achievements._id': 1,
+				'achievements.name': 1,
+				'achievements.score': 1,
+				'achievements.description': 1,
+				'achievements.isHidden': 1,
+				'achievements.value': 1
+			}
+		})
 
-		let game = await FetchService.get(`api?query=${GraphQLService.buildQuery(`gameById(id:"${params['id']}")`, fieldsToFetch)}`)
+		game = game[0]
 
-		game = game['data']['gameById']
+		await fetch(`http://192.168.1.199:3000/user/${params['id']}`, {
+			credentials: 'include'
+		})
+			.then(response => response.json())
+			.then(response => {
+				if (response && response['message'] === undefined && response['game'] && response['game']['achievements'] && response['game']['achievements'].length > 0) {
+					let achievements = response['game']['achievements']
+
+					achievements.forEach(achId => {
+						let foundAchievement = game['achievements'].find(i => i['_id'] === achId)
+						if (foundAchievement) {
+							foundAchievement['isAchieved'] = true
+						}
+					})
+				}
+			})
 
 		return { game }
 	}
@@ -15,7 +51,6 @@
 	import { onMount } from 'svelte'
 
 	import FetchService from '../../services/fetch.service.js'
-	import GraphQLService from '../../services/graphql.service.js'
 	import { parseDate } from '../../services/helper.service.js'
 
 	import GameImage from '../../components/Base/GameImage.svelte'
@@ -29,7 +64,10 @@
 	onMount(() => {
 		$dynamicPageName = game['name']
 		title = game['name']
+		mergeDevAndPublishers()
+	})
 
+	function mergeDevAndPublishers() {
 		let developers = game['developers']
 		let publishers = game['publishers']
 
@@ -43,7 +81,7 @@
 				arePublishersAndDevelopersSame = true
 			}
 		}
-	})
+	}
 
 	function hideText(text) {
 		if (text) {
@@ -124,7 +162,7 @@
 		<!-- <span>Genres</span> -->
 		<genres>
 			{#each game['genres'] as genre, index (index)}
-				<genre text="white size-5 weight-8" padding="x-2 y-1">{genre['type']}</genre>
+				<genre text="white size-5 weight-8" padding="x-2 y-1">{genre}</genre>
 			{/each}
 		</genres>
 
@@ -162,7 +200,7 @@
 		<achievements flex="direction-column">
 			{#each game['achievements'] as achievement, index (index)}
 				<achievement>
-
+					{achievement['isAchieved']}
 					<GameImage imageType="achievement" appid={game['appid']} achId={achievement['_id']} alt={achievement['_id']} />
 
 					<name>Name: {achievement['isHidden'] ? hideText(achievement['name']) : achievement['name']}</name>

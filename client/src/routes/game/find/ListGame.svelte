@@ -6,7 +6,6 @@
 
 	import { parseDate, parseDateReduced } from '../../../services/helper.service.js'
 	import FetchService from '../../../services/fetch.service.js'
-	import GraphQLService from '../../../services/graphql.service.js'
 
 	import { sortReleaseDate, sortScore, sortPoints, sortAchievements, sortDifficulty } from '../../../store/sort.store.js'
 	import { searchInputValue } from '../../../store/main.store.js'
@@ -47,27 +46,36 @@
 		}
 	}
 
-	function fetchGames(skip = 0) {
+	function fetchGames() {
 		return new Promise((resolve, reject) => {
-			FetchService.get(
-				`api?query=${GraphQLService.buildQuery(
-					'games',
-					['_id', 'appid', 'platforms', 'name', 'releaseDate', 'score', 'points', 'achievementCount', 'difficulty{average}'],
-					{
-						releaseDate: $sortReleaseDate,
-						score: $sortScore,
-						points: $sortPoints,
-						achievementCount: $sortAchievements,
-						difficulty: $sortDifficulty,
-					},
-					{},
-					skip
-				)}`
-			)
-				.then(response => {
-					resolve(response['data']['games'])
+			FetchService.post('games', {
+				project: {
+					_id: 1,
+					appid: 1,
+					platforms: 1,
+					points: 1,
+					name: 1,
+					releaseDate: 1,
+					score: 1,
+					achievementCount: 1,
+					'difficulty.average': 1
+				},
+				sort: {
+					releaseDate: $sortReleaseDate,
+					score: $sortScore,
+					points: $sortPoints,
+					achievementCount: $sortAchievements,
+					'difficulty.average': $sortDifficulty
+				},
+				skip,
+				limit: Math.floor(window.innerHeight / (3 * 16))
+			})
+				.then(data => {
+					resolve(data)
 				})
-				.catch(error => console.log('Oopsie', error))
+				.catch(error => {
+					console.log(error)
+				})
 		})
 	}
 
@@ -187,7 +195,7 @@
 	{/if}
 
 	{#if $searchInputValue !== ''}
-		<scroll-locked-message flex="align-center justify-center" text="size-3 weight-6 white" padding="xy-2">
+		<scroll-locked-message flex="align-center justify-center" text="size-5 weight-6 white" padding="xy-2">
 			<img class="icon" icon="white size-5" margin="r-1" src="icons/info.svg" alt="" />
 			The infinite scroll is locked while searching. Clear search to continue.
 		</scroll-locked-message>
@@ -259,7 +267,7 @@
 		}
 
 		.grid-body {
-			min-height: 48px;
+			min-height: 3rem;
 
 			display: grid;
 

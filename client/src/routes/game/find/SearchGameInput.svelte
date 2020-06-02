@@ -1,7 +1,11 @@
 <script>
+	import { onDestroy } from 'svelte'
+	import nanoid from 'nanoid'
+
 	import FetchService from '../../../services/fetch.service.js'
+
 	import GameImage from '../../../components/Base/GameImage.svelte'
-	import nanoid  from 'nanoid'
+
 	import { searchInputValue } from '../../../store/main.store.js'
 
 	const inputHook = nanoid(6)
@@ -17,6 +21,10 @@
 			fetchGamesFromInput()
 		}
 	}
+
+	onDestroy(() => {
+		$searchInputValue = ''
+	})
 
 	function fetchGamesFromInput() {
 		clearTimeout(searchTimeout)
@@ -61,8 +69,8 @@
 	<search-input display="block dynawidth" padding="t-10 b-10">
 
 		<input-container grid="overlap">
-			<input type="text" hook={inputHook} text="blue size-5" padding="xy-2" bind:value={$searchInputValue} />
-			<input-placeholder margin="xy-2" text="blue size-5" flex="align-center">
+			<input type="text" hook={inputHook} text="blue size-7" padding="xy-2" bind:value={$searchInputValue} />
+			<input-placeholder margin="xy-2" text="blue size-7" flex="align-center">
 				Type
 				<span text="weight-9" margin="x-1" />
 				to search for a Game
@@ -76,7 +84,7 @@
 	</search-input>
 
 	<search-results>
-		<results-info text="white size-3 weight-6" padding="xy-2" style={$searchInputValue !== '' ? 'display:block' : 'display:none'}>{resultsInfoText}</results-info>
+		<results-info text="white size-5 weight-6" padding="xy-2" style={$searchInputValue !== '' ? 'display:block' : 'display:none'}>{resultsInfoText}</results-info>
 		<results flex="direction-column" text="white">
 			{#if searchedGameList !== undefined && searchedGameList.length > 0}
 				{#each searchedGameList as game, index (index)}
@@ -114,7 +122,7 @@
 				input[value] ~ input-placeholder,
 				input:focus ~ input-placeholder {
 					transform: translateY(-2rem);
-					font-size: var(--font-size-2);
+					font-size: var(--font-size-5);
 
 					span::after {
 						content: 'down';
@@ -155,7 +163,7 @@
 		}
 
 		search-results {
-			transform: translateY(-4.9rem);
+			transform: translateY(-2.5rem);
 			position: absolute;
 			z-index: 2;
 			display: block;
@@ -174,11 +182,16 @@
 				}
 
 				a {
-					color: #525858;
-					background-color: #fefefe;
+					box-shadow: inset 1px 0 0 1px #fff;
+
+					// border-width: 2px 0 2px 0;
+					// border-color: #fff;
+					// border-style: solid;
 					margin: 0.2rem 0;
-					border-radius: 0 3px 3px 0;
 					min-height: 42px;
+
+					transition-property: box-shadow, color;
+					transition-duration: .3s;
 
 					@media (max-width: 768px) {
 						// border-radius: 0;
@@ -207,9 +220,11 @@
 						padding: 0 0.5rem;
 						white-space: nowrap;
 					}
-				}
 
-				a:hover {
+					&:hover {
+						box-shadow: inset 25px 0 0 25px #fff;
+						color: #000;
+					}
 				}
 			}
 		}

@@ -3,26 +3,26 @@ import fetch from 'node-fetch'
 const protocol = 'http://'
 const domain = '192.168.1.199'
 const port = '3000'
-const fullUrl = `${protocol}${domain}:${port}`
+const baseUrl = `${protocol}${domain}:${port}`
 
 const baseSteamUrl = 'https://steamcdn-a.akamaihd.net/steam/apps/'
 
 export const steamImageUrls = {
-	header: appid => `${baseSteamUrl}${appid}/header.jpg`,
-	smallCapsule: appid => `${baseSteamUrl}${appid}/capsule_sm_120.jpg`,
-	bigCapsule: appid => `${baseSteamUrl}${appid}/capsule_616x353.jpg`,
-	logo: appid => `${baseSteamUrl}${appid}/logo.png`,
-	hero: appid => `${baseSteamUrl}${appid}/library_hero.jpg`,
-	library: appid => `${baseSteamUrl}${appid}/library_600x900.jpg`,
+	header: (appid) => `${baseSteamUrl}${appid}/header.jpg`,
+	smallCapsule: (appid) => `${baseSteamUrl}${appid}/capsule_sm_120.jpg`,
+	bigCapsule: (appid) => `${baseSteamUrl}${appid}/capsule_616x353.jpg`,
+	logo: (appid) => `${baseSteamUrl}${appid}/logo.png`,
+	hero: (appid) => `${baseSteamUrl}${appid}/library_hero.jpg`,
+	library: (appid) => `${baseSteamUrl}${appid}/library_600x900.jpg`,
 	background: (appid, backgroundUrl) => `${baseSteamUrl}${appid}/${backgroundUrl}`,
-	achievement: (appid, achievementId) => `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievementId}`,
+	achievement: (appid, achievementId) => `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievementId}`
 }
 
 export function get(url) {
 	return new Promise((resolve, reject) => {
 		try {
-			fetch(`${fullUrl}/${url}`)
-				.then(async response => {
+			fetch(`${baseUrl}/${url}`)
+				.then(async (response) => {
 					let status = response['status']
 					let responseDetails = JSON.parse(response['headers'].get('Response-Details'))
 					let contentType = response['headers'].get('Content-Type')
@@ -36,7 +36,7 @@ export function get(url) {
 						}
 					}
 				})
-				.catch(err => {
+				.catch((err) => {
 					throw new Error(err)
 				})
 		} catch (error) {
@@ -45,25 +45,56 @@ export function get(url) {
 	})
 }
 
+export function post(url, body) {
+	return new Promise((resolve, reject) => {
+		try {
+			fetch(`http://192.168.1.199:3000/${url}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			})
+				.then((response) => {
+					if (response['status'] === 200) {
+						let contentType = response['headers'].get('Content-Type')
+
+						if (contentType.includes('text/plain')) {
+							return response.text()
+						} else if (contentType.includes('application/json')) {
+							return response.json()
+						}
+					}
+
+					if (response['status'] === 204) {
+						return reject(response.headers.get('Response-Details'))
+					}
+				})
+				.then((data) => {
+					resolve(data)
+				})
+		} catch (error) {}
+	})
+}
+
 export function fetchImage(appid, imageType, id) {
 	return new Promise((resolve, reject) => {
 		try {
-			if (imageType === 'achievement') {
-				fetch(`${fullUrl}/image/${imageType}/${appid}/${id}`).then(async response => {
+			if (imageType === 'achievement' || imageType === 'steamAchievement') {
+				fetch(`${baseUrl}/image/${imageType}/${appid}/${id}`).then(async (response) => {
 					processResponse(response)
 				})
 			} else {
-				fetch(`${fullUrl}/image/${imageType}/${appid}`).then(async response => {
+				fetch(`${baseUrl}/image/${imageType}/${appid}`).then(async (response) => {
 					processResponse(response)
 				})
 			}
 
 			async function processResponse(response) {
 				const contentType = response.headers.get('Content-Type')
-
-				if (contentType === 'plain/text') {
+				if (contentType.includes('text/plain')) {
 					resolve(await response.text())
-				} else if (contentType === 'image/webp') {
+				} else if (contentType.includes('image/webp')) {
 					resolve(response['url'])
 				}
 			}
@@ -75,5 +106,6 @@ export function fetchImage(appid, imageType, id) {
 
 export default {
 	get,
-	fetchImage,
+	post,
+	fetchImage
 }

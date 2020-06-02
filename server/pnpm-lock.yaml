@@ -1,4 +1,5 @@
 dependencies:
+  '@koa/cors': 3.1.0
   '@koa/router': 8.0.8
   dotenv: 8.2.0
   fs-extra: 9.0.0
@@ -28,13 +29,24 @@ devDependencies:
   '@types/koa-send': 4.1.2
   '@types/koa-session': 5.10.2
   '@types/koa-static': 4.0.1
+  '@types/koa__cors': 3.0.1
+  '@types/logger': 0.0.0
   '@types/mongodb': 3.5.18
   '@types/node': 13.13.9
   '@types/node-fetch': 2.5.7
   '@types/passport-steam': 1.0.1
   '@types/sharp': 0.25.0
+  logger: 0.0.1
 lockfileVersion: 5.1
 packages:
+  /@koa/cors/3.1.0:
+    dependencies:
+      vary: 1.1.2
+    dev: false
+    engines:
+      node: '>= 8.0.0'
+    resolution:
+      integrity: sha512-7ulRC1da/rBa6kj6P4g2aJfnET3z8Uf3SWu60cjbtxTA5g8lxRdX/Bd2P92EagGwwAhANeNw8T8if99rJliR6Q==
   /@koa/router/8.0.8:
     dependencies:
       debug: 4.1.1
@@ -219,6 +231,16 @@ packages:
     dev: true
     resolution:
       integrity: sha512-ABxVkrNWa4O/Jp24EYI/hRNqEVRlhB9g09p48neQp4m3xL1TJtdWk2NyNQSMCU45ejeELMQZBYyfstyVvO2H3Q==
+  /@types/koa__cors/3.0.1:
+    dependencies:
+      '@types/koa': 2.11.3
+    dev: true
+    resolution:
+      integrity: sha512-loqZNXliley8kncc4wrX9KMqLGN6YfiaO3a3VFX+yVkkXJwOrZU4lipdudNjw5mFyC+5hd7h9075hQWcVVpeOg==
+  /@types/logger/0.0.0:
+    dev: true
+    resolution:
+      integrity: sha512-VU0u/Nn7XmMh9VPl4UgydlPg5O/gHVdYgKZfEyaqbXjn2qmCNec5lBqH70KsrjfV8FL87ObFfrz8xINwPd+yJA==
   /@types/mime/2.0.2:
     dev: true
     resolution:
@@ -294,6 +316,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-w7M6te42DYbg5ijwRorn7yfWVN8=
+  /ansi-regex/3.0.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=
   /any-promise/1.3.0:
     dev: false
     resolution:
@@ -517,7 +545,7 @@ packages:
       integrity: sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
   /debug/3.2.6:
     dependencies:
-      ms: 2.1.2
+      ms: 2.1.1
     dev: false
     resolution:
       integrity: sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
@@ -864,6 +892,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-754xOG8DGn8NZDr4L95QxFfvAMs=
+  /is-fullwidth-code-point/2.0.0:
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-o7MKXE8ZkYMWeqq5O+764937ZU8=
   /is-generator-function/1.0.7:
     dev: false
     engines:
@@ -1111,6 +1145,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-DdOXEhPHxW34gJd9UEyI+0cal6w=
+  /logger/0.0.1:
+    dev: true
+    engines:
+      node: '>=0.1.90'
+    resolution:
+      integrity: sha1-ywgXH4pvb2dLhJna31C+1L77csQ=
   /media-typer/0.3.0:
     dev: false
     engines:
@@ -1209,6 +1249,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
+  /ms/2.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
   /ms/2.1.2:
     dev: false
     resolution:
@@ -1653,6 +1697,15 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-EYvfW4zcUaKn5w0hHgfisLmxB9M=
+  /string-width/2.1.1:
+    dependencies:
+      is-fullwidth-code-point: 2.0.0
+      strip-ansi: 4.0.0
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha512-nOqH59deCq9SRHlxq1Aw85Jnt4w6KvLKqWVik6oA9ZklXLNIOlqg4F2yrT1MVaTjAqvVwdfeZ7w7aCvJD7ugkw==
   /string_decoder/1.1.1:
     dependencies:
       safe-buffer: 5.1.2
@@ -1673,6 +1726,14 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-ajhfuIU9lS1f8F0Oiq+UJ43GPc8=
+  /strip-ansi/4.0.0:
+    dependencies:
+      ansi-regex: 3.0.0
+    dev: false
+    engines:
+      node: '>=4'
+    resolution:
+      integrity: sha1-qEeQIusaw2iocTibY1JixQXuNo8=
   /strip-json-comments/2.0.1:
     dev: false
     engines:
@@ -1816,7 +1877,7 @@ packages:
       integrity: sha1-Zws6+8VS4LVd9rd4DKdGFfI60cs=
   /wide-align/1.1.3:
     dependencies:
-      string-width: 1.0.2
+      string-width: 2.1.1
     dev: false
     resolution:
       integrity: sha512-QGkOQc8XL6Bt5PwnsExKBPuMKBxnGxWWW3fU55Xt4feHozMUhdUMaBCk290qpm/wG5u/RSKzwdAC4i51YigihA==
@@ -1835,6 +1896,7 @@ packages:
     resolution:
       integrity: sha512-faQrqNMzcPCHGVC2aaOINk13K+aaBDUPjGWl0teOXywElLjyVAB6Oe2jj62jHYtwsU49jXhScYbvPENK+6zAvQ==
 specifiers:
+  '@koa/cors': ^3.1.0
   '@koa/router': ^8.0.8
   '@types/bcryptjs': ^2.4.2
   '@types/express-serve-static-core': ^4.17.6
@@ -1848,8 +1910,10 @@ specifiers:
   '@types/koa-send': ^4.1.2
   '@types/koa-session': ^5.10.2
   '@types/koa-static': ^4.0.1
+  '@types/koa__cors': ^3.0.1
+  '@types/logger': ^0.0.0
   '@types/mongodb': ^3.5.5
-  '@types/node': ^13.11.0
+  '@types/node': ^13.13.9
   '@types/node-fetch': ^2.5.5
   '@types/passport-steam': ^1.0.1
   '@types/sharp': ^0.25.0
@@ -1863,6 +1927,7 @@ specifiers:
   koa-send: ^5.0.0
   koa-session: ^6.0.0
   koa-static: ^5.0.0
+  logger: ^0.0.1
   mongodb: ^3.5.5
   node-fetch: ^2.6.0
   passport-openid: ^0.4.0

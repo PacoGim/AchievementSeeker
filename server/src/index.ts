@@ -1,4 +1,5 @@
 import Koa, { ParameterizedContext, Next } from 'koa'
+import cors from '@koa/cors'
 import serve from 'koa-static'
 import passport from 'koa-passport'
 
@@ -20,7 +21,7 @@ require('dotenv').config()
 	let app: Koa = new Koa()
 
 	const port: number = Number(process.env.PORT) || 3000
-	const routesToLoad: string[] = ['Game', 'Image', 'SteamAuth']
+	const routesToLoad: string[] = ['Game', 'Image', 'SteamAuth','User']
 	const mongoDBUri: string = `mongodb://readOnlyUser:readOnlyUserPWD@localhost:27017`
 
 	// Passport Config and Init
@@ -81,7 +82,7 @@ async function preRouting(ctx: ParameterizedContext, next: Next): Promise<void> 
 	}
 
 	if (url) {
-		console.log(`${decodeURI(url)} served${ctx['cached'] ? ' from cache' : ''} in ${Number(new Date()) - startDate} ms`)
+		console.log(`${ctx['req']['method']} Request to ${decodeURI(url)} served${ctx['cached'] ? ' from cache' : ''} in ${Number(new Date()) - startDate} ms`)
 	}
 }
 
@@ -90,8 +91,9 @@ function setHeaders(ctx: ParameterizedContext) {
 	ctx.set('Strict-Transport-Security', 'max-age=3600')
 	ctx.set('X-Content-Type-Options', 'nosniff')
 	ctx.set('X-Frame-Options', 'deny')
-	ctx.set('Access-Control-Allow-Origin', 'http://192.168.1.199:8080')
 	ctx.set('X-XSS-Protection', '1; mode=block')
+	ctx.set('Access-Control-Allow-Origin', 'http://192.168.1.199:8080')
+	ctx.set('Access-Control-Allow-Headers', 'Content-Type')
 }
 
 function startServer(app: Koa, port: number): void {

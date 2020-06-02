@@ -6,14 +6,9 @@ import { ObjectId } from 'mongodb'
 
 export function isJson(jsonToCheck: string) {
 
-	console.log(typeof jsonToCheck)
-
 	try {
 		let foo: JSON = JSON.parse(jsonToCheck)
-
-		console.log(foo)
 	} catch (error) {
-		console.log(error)
 	}
 }
 

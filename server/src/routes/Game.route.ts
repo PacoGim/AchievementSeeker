@@ -6,8 +6,7 @@ import GameCollection from '../database/collections/Game.collection'
 
 import { setCacheUrl } from '../utils/url-cache'
 import { GameType } from '../types/Game.type'
-import { getGameById, getCustomGames } from '../models/Game.model'
-import { isJson } from '../utils/functions'
+import { getGameById, getModularGames } from '../models/Game.model'
 
 const router = new Router({ prefix: '/games' })
 
@@ -30,6 +29,14 @@ router.get('/:id', async (ctx) => {
 	}
 })
 
+router.options('/', (ctx) => {
+	if (ctx['req']['headers']['access-control-request-method'] === 'POST') {
+		ctx['status'] = 204
+	} else {
+		ctx['status'] = 400
+	}
+})
+
 router.post('/', koaBody(), async (ctx) => {
 	let options = ctx['request']['body']
 
@@ -38,9 +45,13 @@ router.post('/', koaBody(), async (ctx) => {
 		return (ctx['body'] = 'Submit a valid JSON type POST request.')
 	}
 
-	let games = await getCustomGames(options)
+	let games = await getModularGames(options).catch((error) => {
+		return (ctx['body'] = error['message'])
+	})
 
-	if (games.length === 0) {
+	if (games.length !== 0) {
+		ctx['body'] = games
+	} else {
 		ctx['status'] = 204
 		return ctx.set(
 			'Response-Details',
@@ -49,8 +60,6 @@ router.post('/', koaBody(), async (ctx) => {
 			})
 		)
 	}
-
-	ctx['body'] = games
 })
 
 router.get('/search/:query/:limit', async (ctx) => {

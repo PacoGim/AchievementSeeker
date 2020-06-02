@@ -1,4 +1,5 @@
 devDependencies:
+  '@types/node': 14.0.6
   concurrently: 5.2.0
   nodemon: 2.0.3
   typescript: 3.8.3
@@ -22,6 +23,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
+  /@types/node/14.0.6:
+    dev: true
+    resolution:
+      integrity: sha512-FbNmu4F67d3oZMWBV6Y4MaPER+0EpE9eIYf2yaHhCWovc1dlXCZkqGX4NLHfVVr6umt20TNBdRzrNJIzIKfdbw==
   /abbrev/1.1.1:
     dev: true
     resolution:
@@ -1143,6 +1148,7 @@ packages:
     resolution:
       integrity: sha512-AX3Zw5iPruN5ie6xGRIDgqkT+ZhnRlZMLMHAs8tg7nRruy2Nb+i5o9bwghAogtM08q1dpr2LVoS8KSTMYpWXUw==
 specifiers:
+  '@types/node': ^14.0.6
   concurrently: ^5.2.0
   nodemon: ^2.0.3
   typescript: ^3.8.3

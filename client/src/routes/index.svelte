@@ -1,13 +1,7 @@
 <svelte:head>
-	<title>Sapper project template</title>
+	<title>Achievement Seeker</title>
 </svelte:head>
 
 <home>
 	<h1>Home</h1>
 </home>
-
-<style>
-	home {
-		color: #000;
-	}
-</style>

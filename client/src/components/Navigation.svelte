@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte'
 	import { dynamicPageName } from '../store/main.store.js'
+	import { isUserLogged } from '../store/user.store.js'
 
 	import { stores } from '@sapper/app'
 	const { page } = stores()
@@ -9,7 +10,7 @@
 
 	const pageNameHook = nanoid(6)
 
-	const routes = [
+	let routes = [
 		{
 			name: 'Home',
 			path: '/'
@@ -19,8 +20,8 @@
 			path: '/game/find'
 		},
 		{
-			name: 'Login',
-			path: '/user/login'
+			name: 'Logout',
+			path: '/user/logout'
 		}
 	]
 
@@ -29,6 +30,26 @@
 	$: pagePath = $page.path
 
 	let pageName = getPageNameFromPagePath(pagePath, routes)
+
+	$: {
+		if (process.browser === true) {
+			if ($isUserLogged === true) {
+				let foundRoute = routes.find(i => i['name'] === 'Login')
+				if (foundRoute) {
+					foundRoute['name'] = 'Logout'
+					foundRoute['path'] = '/user/logout'
+				}
+			} else if ($isUserLogged === false) {
+				let foundRoute = routes.find(i => i['name'] === 'Logout')
+				if (foundRoute) {
+					foundRoute['name'] = 'Login'
+					foundRoute['path'] = '/user/login'
+				}
+			}
+
+			routes = routes
+		}
+	}
 
 	$: {
 		if (process.browser === true) {
@@ -44,16 +65,22 @@
 
 	onMount(() => {
 		window.addEventListener('scroll', () => {
-			if (window.scrollY >= 28) {
+			if (window.scrollY >= 16 * 2.5) {
 				isScrolledNav = true
 			} else {
 				isScrolledNav = false
 			}
 		})
 
-		document.querySelector(`#route-Login`).addEventListener('mouseenter', () => {
-			localStorage.setItem('lastLocation', document.location.href)
-		})
+		let elemRouteLogInOrOut = document.querySelector(`#route-Login`) || document.querySelector(`#route-Logout`)
+
+		if (elemRouteLogInOrOut) {
+			elemRouteLogInOrOut.addEventListener('mouseenter', () => {
+				if (document.location.href !== 'http://192.168.1.199:8080/user/login' && document.location.href !== 'http://192.168.1.199:8080/user/logout') {
+					localStorage.setItem('lastLocation', document.location.href)
+				}
+			})
+		}
 	})
 
 	function setPageName(newName) {
@@ -77,12 +104,12 @@
 
 <navigation>
 	<navigation-background />
-	<main-navigation flex="align-center justify-between" is-scrolled-nav={isScrolledNav}>
-		<a text="weight-7" padding="xy-2" href="/">Steam Achievement Hunter</a>
-		<page-name text="weight-7 size-3" padding="xy-2" hook={pageNameHook}>{pageName}</page-name>
+	<main-navigation shadow flex="align-center justify-between" is-scrolled-nav={isScrolledNav}>
+		<a text="weight-10 size-7" padding="xy-2" href="/">Steam Achievement Hunter</a>
+		<page-name text="weight-10 size-5" padding="xy-2" hook={pageNameHook}>{pageName}</page-name>
 		<links>
 			{#each routes as route, index (index)}
-				<a id="route-{route['name']}" href={route['path']} selected={pagePath === route['path']}>{route['name']}</a>
+				<a text="weight-5" id="route-{route['name']}" href={route['path']} selected={pagePath === route['path']}>{route['name']}</a>
 			{/each}
 		</links>
 	</main-navigation>
@@ -92,27 +119,30 @@
 	navigation-background {
 		display: block;
 		width: 100%;
-		height: 8rem;
+		height: 5rem;
 		background-image: linear-gradient(to bottom right, #4476fd, #3ca7e9);
 		z-index: -1;
 	}
 
 	main-navigation {
 		align-items: center;
+		height: 5rem;
 		padding: 1rem;
-		width: calc(100% - 3rem);
 		border-radius: 3px;
 		position: fixed;
-		top: 1.5rem;
-		left: 1.5rem;
-		background-color: rgba(255, 255, 255, 0.25);
+		width: 100%;
+		top: 0;
+		background-color: transparent;
 		color: #fff;
 		backdrop-filter: blur(4px);
 		z-index: 4;
 
-		transition-property: width border-radius top left color;
-		transition-duration: 0.3s;
-		transition-timing-function: ease-in-out;
+		transition-property: color, background-color;
+		transition-duration: 1s;
+
+		page-name {
+			transition: opacity 0.3s;
+		}
 
 		links {
 			height: 42px;
@@ -122,14 +152,16 @@
 				display: flex;
 				align-items: center;
 				cursor: pointer;
-				border-radius: 3px;
-				font-variation-settings: 'wght' var(--font-weight-6);
-				background-color: rgba(255, 255, 255, 0.15);
+
+				box-shadow: inset 0 -2px 0px 0px #fff;
+
 				padding: 0 1.5rem 0 0.5rem;
 				margin: 0 0.5rem;
 				height: 100%;
 
-				transition-property: font-variation-settings background-color color border-bottom;
+				color: #fff;
+
+				transition-property: color, font-variation-settings, box-shadow;
 				transition-duration: 0.3s;
 				transition-timing-function: ease-in-out;
 
@@ -137,46 +169,41 @@
 					content: '•';
 					margin-right: 0.25rem;
 					opacity: 0;
-					transition: opacity 0.3s ease-in-out;
 				}
 			}
 
 			a[selected='true'],
 			a:hover {
-				font-variation-settings: 'wght' var(--font-weight-9);
-				background-color: #fff;
-				color: var(--blue);
+				box-shadow: inset 0 -45px 0px 0px #fff;
+				color: var(--bluetiful);
 			}
 			a[selected='true'] {
 				&::before {
+					font-variation-settings: 'wght' var(--font-weight-10);
 					content: '•';
 					opacity: 1;
 				}
 			}
 		}
-
-		page-name {
-			transition: opacity 0.3s ease-in-out;
-		}
 	}
 
 	main-navigation[is-scrolled-nav='true'] {
-		background-color: rgba(255, 255, 255, 0.25);
-		width: 100%;
-		border-radius: 0 0 3px 3px;
-		top: 0;
-		left: 0;
-		color: var(--bluetiful);
-		border-bottom: 3px solid var(--bluetiful);
+		background-color: rgba(255, 255, 255, 0.75);
+		color: #414141;
 
-		a {
-			background-color: #fff;
-			border-radius: 3px;
-		}
+		links {
+			a {
+				background-color: transparent;
+				color: #414141;
+				box-shadow: inset 0 -2px 0px 0px #414141;
+			}
 
-		page-name {
-			background-color: #fff;
-			border-radius: 3px;
+			a[selected='true'],
+			a:hover {
+				color: #fff;
+				box-shadow: inset 0 -45px 0px 0px #414141;
+				background-color: transparent;
+			}
 		}
 	}
 </style>

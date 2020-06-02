@@ -21,6 +21,26 @@ const urls: {
 	achievement: (appid: number, achievementId: string) => `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/apps/${appid}/${achievementId}`
 }
 
+router.get('/steamAchievement/:id/:achId/:isGray*', async (ctx) => {
+	const { id, achId, isGray } = ctx['params']
+
+	const game = await getGameById(id)
+
+	if (game === undefined) throw new Error(`Game with id/appid: ${id} does not exist`)
+
+	const { achievements } = game
+
+	const achievement = achievements.find((i) => i['_id'] === Number(achId))
+
+	if (achievement === undefined) throw new Error(`Achievement with id: ${achId}, not found`)
+
+	const achName = isGray !== 'true' ? achievement['img'] : achievement['imgGray']
+
+	const fetchUrl = urls['achievement'](game['appid'], achName)
+
+	ctx['body'] = fetchUrl
+})
+
 router.get('/achievement/:id/:achId/:isGray*', async (ctx) => {
 	try {
 		const { id, achId, isGray } = ctx['params']

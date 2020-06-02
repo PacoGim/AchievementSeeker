@@ -1,5 +1,19 @@
 <script>
+	import { onMount } from 'svelte'
+
+	import {isUserLogged} from '../store/user.store.js'
+
 	import Navigation from '../components/Navigation.svelte'
+
+	onMount(async () => {
+		let response = await fetch('http://192.168.1.199:3000/user/isLoggedIn', { credentials: 'include' }).then(res => res.json())
+
+		if (response && response['code'] === 201) {
+			$isUserLogged = true
+		} else {
+			$isUserLogged = false
+		}
+	})
 </script>
 
 <Navigation />
@@ -11,7 +25,7 @@
 <style lang="scss" global>
 	@import 'styles/global.scss';
 
-	body{
+	body {
 		// overflow: hidden;
 	}
 </style>

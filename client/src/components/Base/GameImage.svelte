@@ -8,6 +8,7 @@
 	export let klass = undefined
 	export let alt
 	export let achId = undefined
+	export let grey = false
 	let src
 
 	$: {
@@ -31,7 +32,9 @@
 
 		if (imageType === 'achievement') {
 			if (globalThis.supportsWebp === false) {
-				src = steamImageUrls['achievement'](appid, achId)
+				fetchImage(appid, 'steamAchievement', achId).then(response => {
+					src = response
+				})
 			} else if (globalThis.supportsWebp === true) {
 				fetchImage(appid, imageType, achId).then(response => {
 					src = response
@@ -67,11 +70,11 @@
 		width: auto;
 	}
 
-	img.gamePageHero{
+	img.gamePageHero {
 		width: 30vw;
 		height: auto;
 	}
-	img.gamePageLogo{
+	img.gamePageLogo {
 		height: 100px;
 		width: auto;
 		align-self: end;

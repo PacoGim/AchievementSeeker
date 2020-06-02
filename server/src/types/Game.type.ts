@@ -39,3 +39,8 @@ export type GameType = {
 	version: number
 	visitCount: number
 }
+
+export type UserGameAchievementType = {
+	_id: ObjectId
+	achievements: number[]
+}

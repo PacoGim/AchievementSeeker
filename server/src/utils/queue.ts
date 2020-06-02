@@ -1,6 +1,7 @@
 import fetch from 'node-fetch'
 
-import { debugWrite } from '../debug'
+//@ts-ignore
+import { debugWrite } from '../../../debug/debug.js'
 
 import { servers, IServer } from '../utils/servers'
 import GameCollection from '../database/collections/Game.collection'
@@ -105,7 +106,7 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 			// If the user wasn't found should not happen since it was just created
 			if (dbUser?.['games']) {
 				// Looks finds in the user games wich game to update
-				let foundGame = dbUser['games'].find((game) => new ObjectId(game['_id']) === new ObjectId(user['gameId']))
+				let foundGame = dbUser['games'].find((game) => new ObjectId(game['_id']).toHexString() === new ObjectId(user['gameId']).toHexString())
 
 				// Again, the game is obviously in the user array since it was added just before
 				if (!foundGame) return
@@ -116,11 +117,10 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 				// Updates the user
 				UserCollection.get().updateOne({ _id: user['userId'] }, { $set: dbUser }, { upsert: true })
 
-				debugWrite(`User ${user['userId']} updated game ${user['appId']}.`)
+				debugWrite(`User ${user['userId']} updated game ${game['name']}.`)
 			}
 		})
 		.catch((error) => {
-			console.log(error)
 			debugWrite(`User ${user['userId']} with game ${user['appId']} had an error ${error}`)
 			userQueue.unshift(user)
 		})

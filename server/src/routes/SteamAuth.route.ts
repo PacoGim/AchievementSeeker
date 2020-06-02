@@ -29,7 +29,6 @@ router.get('/return', async (ctx) => {
 			await saveUser(user).then(async (response) => {
 				if (response?.['_id']) {
 					jwtPayload = { id: response['_id'] }
-					redirectUrl = 'http://192.168.1.199:8080/user/welcome'
 
 					fetchUserGames(response['_id'], steamId)
 				}
@@ -37,17 +36,16 @@ router.get('/return', async (ctx) => {
 		} else {
 			// If User exists
 			jwtPayload = { id: result['_id'] }
-			redirectUrl = 'http://192.168.1.199:8080/user/redirect'
 		}
 	})
 
 	const token = await getToken(jwtPayload)
 
 	if (token) {
-		ctx.cookies.set('jwt', token, { httpOnly: true, sameSite: 'strict' })
+		ctx.cookies.set('jwt', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 })
 	}
 
-	ctx.redirect(redirectUrl)
+	ctx.redirect('http://192.168.1.199:8080/user/redirect')
 })
 
 module.exports = {

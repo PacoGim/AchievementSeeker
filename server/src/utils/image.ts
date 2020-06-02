@@ -20,7 +20,7 @@ export async function sendImageResponse(ctx: any, filePath: string, fetchUrl: st
 		ctx.set('Cache-Control', 'max-age=604800')
 		await send(ctx, filePath, { root: '/' })
 	} else {
-		ctx.set('Content-Type', 'plain/text')
+		ctx.set('Content-Type', 'text/plain')
 		ctx['body'] = fetchUrl
 
 		fetchAndSaveImage(fetchUrl, dirPath, filePath)
