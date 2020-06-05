@@ -8,6 +8,7 @@ devDependencies:
   '@babel/plugin-transform-runtime': 7.9.6_@babel+core@7.9.6
   '@babel/preset-env': 7.9.6_@babel+core@7.9.6
   '@babel/runtime': 7.9.6
+  '@rollup/plugin-alias': 3.1.0_rollup@2.8.0
   '@rollup/plugin-babel': 5.0.0_@babel+core@7.9.6+rollup@2.8.0
   '@rollup/plugin-commonjs': 11.1.0_rollup@2.8.0
   '@rollup/plugin-node-resolve': 7.1.3_rollup@2.8.0
@@ -870,6 +871,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-3NsZsJIA/22P3QUyrEDNA2D133H4j224twJrdipXN38dpnIOzAbUDtOwkcJ5pXmn75w7LSQDjA4tO9dm1XlqlA==
+  /@rollup/plugin-alias/3.1.0_rollup@2.8.0:
+    dependencies:
+      rollup: 2.8.0
+      slash: 3.0.0
+    dev: true
+    engines:
+      node: '>=8.0.0'
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
+    resolution:
+      integrity: sha512-IzoejtAqdfwAvx4D0bztAJFoL5Js36kJgnbO00zfI1B9jf9G80vWysyG0C4+E6w5uG5hz0EeetPpoBWKdNktCQ==
   /@rollup/plugin-babel/5.0.0_@babel+core@7.9.6+rollup@2.8.0:
     dependencies:
       '@babel/core': 7.9.6
@@ -2918,6 +2930,12 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-dQbZnsMaIiTQPZmbGmktz+c74zt/hyrJEB4tdp2Jj0RNv9J6B/OWR5RyrZEvIn9fyh9Zlg2OlE2XzKz6wMKGAw==
+  /slash/3.0.0:
+    dev: true
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
   /source-map-support/0.5.16:
     dependencies:
       buffer-from: 1.1.1
@@ -3395,6 +3413,7 @@ specifiers:
   '@babel/plugin-transform-runtime': ^7.9.6
   '@babel/preset-env': ^7.9.6
   '@babel/runtime': ^7.9.6
+  '@rollup/plugin-alias': ^3.1.0
   '@rollup/plugin-babel': ^5.0.0
   '@rollup/plugin-commonjs': ^11.1.0
   '@rollup/plugin-node-resolve': ^7.1.3

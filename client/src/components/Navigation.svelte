@@ -21,7 +21,8 @@
 		},
 		{
 			name: 'Logout',
-			path: '/user/logout'
+			path: '/user/logout',
+			onhover: () => saveLastRoute()
 		}
 	]
 
@@ -30,6 +31,12 @@
 	$: pagePath = $page.path
 
 	let pageName = getPageNameFromPagePath(pagePath, routes)
+
+	function saveLastRoute() {
+		if (document.location.href !== 'http://192.168.1.199:8080/user/login' && document.location.href !== 'http://192.168.1.199:8080/user/logout') {
+			localStorage.setItem('lastLocation', document.location.href)
+		}
+	}
 
 	$: {
 		if (process.browser === true) {
@@ -71,16 +78,6 @@
 				isScrolledNav = false
 			}
 		})
-
-		let elemRouteLogInOrOut = document.querySelector(`#route-Login`) || document.querySelector(`#route-Logout`)
-
-		if (elemRouteLogInOrOut) {
-			elemRouteLogInOrOut.addEventListener('mouseenter', () => {
-				if (document.location.href !== 'http://192.168.1.199:8080/user/login' && document.location.href !== 'http://192.168.1.199:8080/user/logout') {
-					localStorage.setItem('lastLocation', document.location.href)
-				}
-			})
-		}
 	})
 
 	function setPageName(newName) {
@@ -109,7 +106,7 @@
 		<page-name text="weight-10 size-5" padding="xy-2" hook={pageNameHook}>{pageName}</page-name>
 		<links>
 			{#each routes as route, index (index)}
-				<a text="weight-5" id="route-{route['name']}" href={route['path']} selected={pagePath === route['path']}>{route['name']}</a>
+				<a text="weight-5" id="route-{route['name']}" href={route['path']} selected={pagePath === route['path']} on:click={route['onclick'] ? () => route['onclick']() : null} on:mouseenter={route['onhover'] ? () => route['onhover']() : null}>{route['name']}</a>
 			{/each}
 		</links>
 	</main-navigation>

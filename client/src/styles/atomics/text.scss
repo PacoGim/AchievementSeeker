@@ -23,6 +23,26 @@
 	color: $bluetiful;
 }
 
+[text~='copper'] {
+	color: $copper;
+}
+
+[text~='silver'] {
+	color: $silver;
+}
+
+[text~='gold'] {
+	color: $gold;
+}
+
+[text~='blood'] {
+	color: $blood;
+}
+
+[text~='celestial'] {
+	color: $celestial;
+}
+
 @for $i from 0 through 19 {
 	[text~='size-#{$i+1}'] {
 		font-size: #{$i * $step-font-size + $min-font-size}rem;

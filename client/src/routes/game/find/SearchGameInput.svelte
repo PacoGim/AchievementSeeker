@@ -88,7 +88,7 @@
 		<results flex="direction-column" text="white">
 			{#if searchedGameList !== undefined && searchedGameList.length > 0}
 				{#each searchedGameList as game, index (index)}
-					<a href="/game/{game['_id']}" flex="align-center justify-between" text="weight-6">
+					<a href="/game/id/{game['_id']}" flex="align-center justify-between" text="weight-6">
 						<GameImage appid={game['appid']} klass="searchGame" imageType="smallCapsule" />
 						<name>{game['name']}</name>
 						<alias flex="direction-column align-center">{game['alias']}</alias>

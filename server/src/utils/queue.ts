@@ -1,8 +1,5 @@
 import fetch from 'node-fetch'
 
-//@ts-ignore
-import { debugWrite } from '../../../debug/debug.js'
-
 import { servers, IServer } from '../utils/servers'
 import GameCollection from '../database/collections/Game.collection'
 import UserCollection from '../database/collections/User.collection'
@@ -33,20 +30,20 @@ function setUserAndServer() {
 		})
 
 		if (availableServer === undefined) {
-			setTimeout(() => {
-				//@ts-ignore
-				userQueue.unshift(user)
-				setUserAndServer()
-			}, 1000)
+			userQueue.unshift(user)
 		} else {
 			fetchUserAchievements(user, availableServer)
 		}
 
-		setUserAndServer()
+		setTimeout(() => {
+			setUserAndServer()
+		}, 1000)
 	} else {
 		isfetchUserGameRunning = false
 	}
 }
+
+let counter = 0
 
 function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 	// Fetch user achievement for game
@@ -58,6 +55,10 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 
 			// All user steam achievements for given game
 			let achievements = data?.['playerstats']?.['achievements']
+
+			// console.log('---------------')
+			// console.log(++counter, user['appId'], achievements, data)
+			// console.log('---------------')
 
 			if (!achievements) return
 
@@ -117,11 +118,13 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 				// Updates the user
 				UserCollection.get().updateOne({ _id: user['userId'] }, { $set: dbUser }, { upsert: true })
 
-				debugWrite(`User ${user['userId']} updated game ${game['name']}.`)
+				console.log(++counter, `User ${user['userId']} updated game ${game['name']}.`,foundGame['achievements'])
+			}else{
+				console.log('User Games not found',user['appId'])
 			}
 		})
 		.catch((error) => {
-			debugWrite(`User ${user['userId']} with game ${user['appId']} had an error ${error}`)
+			console.log(`User ${user['userId']} with game ${user['appId']} had an error ${error}`)
 			userQueue.unshift(user)
 		})
 		.finally(() => {

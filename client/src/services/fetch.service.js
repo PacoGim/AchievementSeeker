@@ -1,5 +1,7 @@
 import fetch from 'node-fetch'
 
+import { supportsWebp } from '../services/helper.service'
+
 const protocol = 'http://'
 const domain = '192.168.1.199'
 const port = '3000'
@@ -45,6 +47,16 @@ export function get(url) {
 	})
 }
 
+export function postWithCredentials(endpoint) {
+	return new Promise((resolve, reject) => {
+		fetch(`${baseUrl}/${endpoint}`, {
+			credentials: 'include'
+		})
+			.then((response) => response.json())
+			.then((response) => resolve(response))
+	})
+}
+
 export function post(url, body) {
 	return new Promise((resolve, reject) => {
 		try {
@@ -74,6 +86,31 @@ export function post(url, body) {
 					resolve(data)
 				})
 		} catch (error) {}
+	})
+}
+
+export function fetchAchievementImage(gameId, achId, isAchieved) {
+	return new Promise(async (resolve, reject) => {
+		let endpoint = isAchieved ? `${gameId}/${achId}` : `${gameId}/${achId}/true`
+
+		if (globalThis.supportsWebp === undefined) {
+			await supportsWebp()
+		}
+
+		if (globalThis.supportsWebp === true) {
+			fetch(`${baseUrl}/image/achievement/${endpoint}`).then(async (res) => {
+				const contentType = res.headers.get('Content-Type')
+
+				if (contentType.includes('text/plain')) {
+					resolve(await res.text())
+				} else if (contentType.includes('image/webp')) {
+					resolve(res['url'])
+				}
+			})
+		} else {
+			let imageSrc = await fetch(`${baseUrl}/image/steamAchievement/${endpoint}`).then((res) => res.text())
+			resolve(imageSrc)
+		}
 	})
 }
 
@@ -107,5 +144,7 @@ export function fetchImage(appid, imageType, id) {
 export default {
 	get,
 	post,
-	fetchImage
+	postWithCredentials,
+	fetchImage,
+	fetchAchievementImage
 }

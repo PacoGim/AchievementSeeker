@@ -25,47 +25,102 @@
 
 		game = game[0]
 
-		await fetch(`http://192.168.1.199:3000/user/${params['id']}`, {
-			credentials: 'include'
+		let achievementsValues = {
+			0: {
+				achievedAmount: 0,
+				amount: 0
+			},
+			1: {
+				achievedAmount: 0,
+				amount: 0
+			},
+			2: {
+				achievedAmount: 0,
+				amount: 0
+			},
+			3: {
+				achievedAmount: 0,
+				amount: 0
+			},
+			4: {
+				achievedAmount: 0,
+				amount: 0
+			}
+		}
+
+		game['achievements'].forEach(ach => {
+			achievementsValues[ach['value']]['amount']++
+
+			if (ach['isAchieved'] === true) {
+				achievementsValues[ach['value']]['achievedAmount']++
+				totalAchieved++
+			}
 		})
-			.then(response => response.json())
-			.then(response => {
-				if (response && response['message'] === undefined && response['game'] && response['game']['achievements'] && response['game']['achievements'].length > 0) {
-					let achievements = response['game']['achievements']
 
-					achievements.forEach(achId => {
-						let foundAchievement = game['achievements'].find(i => i['_id'] === achId)
-						if (foundAchievement) {
-							foundAchievement['isAchieved'] = true
-						}
-					})
-				}
-			})
-
-		return { game }
+		return { game, achievementsValues }
 	}
 </script>
 
 <script>
-	import { dynamicPageName } from '../../store/main.store.js'
+	import { dynamicPageName } from '@/store/main.store.js'
+	import { tweened } from 'svelte/motion'
 	import { onMount } from 'svelte'
 
-	import FetchService from '../../services/fetch.service.js'
-	import { parseDate } from '../../services/helper.service.js'
+	import FetchService from '@/services/fetch.service.js'
+	import { parseDate } from '@/services/helper.service.js'
 
-	import GameImage from '../../components/Base/GameImage.svelte'
+	import GameImage from '@/components/Base/GameImage.svelte'
+	import ImageAchievement from '@/components/Base/Image/Achievement.svelte'
+	import ImagePlaceHolder from '@/components/Base/Image/Placeholder.svelte'
 
 	export let game
+	export let achievementsValues
 
 	let title
+	let startLoadingImages = false
 
 	let arePublishersAndDevelopersSame = false
 
-	onMount(() => {
+	let totalAchieved = 0
+
+	onMount(async () => {
 		$dynamicPageName = game['name']
 		title = game['name']
 		mergeDevAndPublishers()
+
+		getUserAchievements().then(() => countAchievements())
 	})
+
+	function getUserAchievements() {
+		return new Promise(async (resolve, reject) => {
+			let response = await FetchService.postWithCredentials(`user/${game['_id']}`)
+
+			if (response && response['message'] === undefined && response['game'] && response['game']['achievements'] && response['game']['achievements'].length > 0) {
+				let achievements = response['game']['achievements']
+
+				achievements.forEach(achId => {
+					let foundAchievement = game['achievements'].find(i => i['_id'] === achId)
+					if (foundAchievement) {
+						foundAchievement['isAchieved'] = true
+					}
+				})
+
+				game = game
+			}
+
+			startLoadingImages = true
+			resolve()
+		})
+	}
+
+	function countAchievements() {
+		game['achievements'].forEach(ach => {
+			if (ach['isAchieved'] === true) {
+				achievementsValues[ach['value']]['achievedAmount']++
+				totalAchieved++
+			}
+		})
+	}
 
 	function mergeDevAndPublishers() {
 		let developers = game['developers']
@@ -128,7 +183,7 @@
 
 <game-page flex="direction-row">
 
-	<game-card flex="direction-column">
+	<game-card shadow flex="direction-column">
 
 		<header grid="overlap">
 			<GameImage imageType="hero" appid={game['appid']} klass="gamePageHero" />
@@ -175,41 +230,71 @@
 				<developer-publisher>
 					<span>Developer/Publisher:</span>
 					{#each game['developers'] as developer, index (index)}
-						<developer>{developer['name']}</developer>
+						<developer>{developer}</developer>
 					{/each}
 				</developer-publisher>
 			{:else}
 				<developers>
 					<span>Developers:</span>
 					{#each game['developers'] as developer, index (index)}
-						<developer>{developer['name']}</developer>
+						<developer>{developer}</developer>
 					{/each}
 				</developers>
 				<publishers>
 					<span>Publishers:</span>
 					{#each game['publishers'] as publisher, index (index)}
-						<publisher>{publisher['name']}</publisher>
+						<publisher>{publisher}</publisher>
 					{/each}
 				</publishers>
 			{/if}
 		</developers-publishers>
 	</game-card>
 
-	<game-achievements>
-		<summary />
-		<achievements flex="direction-column">
+	<game-achievements shadow>
+		<summary margin="b-10">
+			<span margin="b-10" flex="align-center" text="white size-12 weight-8">
+				Achievements - You have {totalAchieved} of {game['achievements'].length}
+				<img class="icon" icon="size-13 white" src="icons/trophy.svg" alt="" />
+			</span>
+			<achievements-totals flex="justify-around direction-row">
+
+				{#each [0, 1, 2, 3, 4] as value, index (index)}
+					{#if achievementsValues[value]['amount'] !== 0}
+						<container shadow flex="direction-column align-center" text={getColorFromValue(value)}>
+							<totals flex="align-center">
+								{achievementsValues[value]['achievedAmount']}/{achievementsValues[value]['amount']}
+								<img class="icon" icon="size-10 {getColorFromValue(value)}" src="icons/trophy.svg" alt="" />
+							</totals>
+							<value>
+								{getColorFromValue(value)
+									.charAt(0)
+									.toUpperCase() + getColorFromValue(value).slice(1)}
+							</value>
+						</container>
+					{/if}
+				{/each}
+
+			</achievements-totals>
+		</summary>
+		<achievements text="white size-5" flex="direction-column">
 			{#each game['achievements'] as achievement, index (index)}
 				<achievement>
-					{achievement['isAchieved']}
-					<GameImage imageType="achievement" appid={game['appid']} achId={achievement['_id']} alt={achievement['_id']} />
 
-					<name>Name: {achievement['isHidden'] ? hideText(achievement['name']) : achievement['name']}</name>
+					{#if startLoadingImages === true}
+						<ImageAchievement gameId={game['_id']} achId={achievement['_id']} isAchieved={achievement['isAchieved']} />
+					{:else}
+						<ImagePlaceHolder />
+					{/if}
 
-					<description>Description: {achievement['isHidden'] ? hideText(achievement['description']) : achievement['description']}</description>
+					<header text="weight-9" padding="x-3 t-2">
+						<name>{achievement['isHidden'] && achievement['isAchieved'] === undefined ? hideText(achievement['name']) : achievement['name']}</name>
+					</header>
 
-					<score>
+					<description  padding="xy-3" flex="align-center">{achievement['isHidden'] ? hideText(achievement['description']) : achievement['description']}</description>
+
+					<score flex="align-center" padding="xy-2">
 						<img class="icon" icon="size-base {getColorFromValue(achievement['value'])}" src="icons/trophy.svg" alt="" />
-						<span>{achievement['score']}</span>
+						<span text={getColorFromValue(achievement['value'])}>{achievement['score']}</span>
 					</score>
 
 				</achievement>
@@ -220,7 +305,11 @@
 
 <style lang="scss">
 	game-card {
+		margin: 2rem;
+		padding-bottom: 1rem;
+		border-radius: 30px;
 		width: 30vw;
+		height: fit-content;
 		header {
 			score {
 				z-index: 1;
@@ -275,6 +364,49 @@
 				&:last-of-type::after {
 					content: '';
 				}
+			}
+		}
+	}
+
+	game-achievements {
+		width: 100%;
+		margin: 2rem 2rem 0 2rem;
+		padding: 2rem 2rem 0 2rem;
+
+		background-image: linear-gradient(to bottom right, #4476fd, #3ca7e9);
+
+		achievements-totals {
+			container {
+				background-color: #fff;
+				padding: 0.5rem 2.5rem;
+				border-radius: 3px;
+			}
+		}
+
+		achievement {
+			display: grid;
+			background-color: rgba(255, 255, 255, 0.2);
+			border: 1px solid #fff;
+			margin-bottom: 1rem;
+
+			grid-template-columns: max-content auto max-content;
+			grid-template-rows: max-content auto;
+
+			border-radius: 0 3px 3px 0;
+
+			header {
+				grid-area: 1 / 2 / 1 / 2;
+			}
+
+			description {
+				grid-area: 2 / 2 / 2 / 2;
+			}
+
+			score {
+				grid-area: 2 / 3 / 2 / 3;
+				background-color: #fff;
+				border-radius: 3px 0 0 3px;
+				height: max-content;
 			}
 		}
 	}
