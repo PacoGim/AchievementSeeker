@@ -8,7 +8,7 @@
 	export let klass = undefined
 	export let alt
 	export let achId = undefined
-	export let grey = false
+
 	let src
 
 	$: {

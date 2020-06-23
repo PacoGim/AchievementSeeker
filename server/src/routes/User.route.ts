@@ -64,6 +64,13 @@ router.get('/:gameId', async (ctx) => {
 			if (userGame) {
 				ctx['status'] = 200
 				ctx['body'] = userGame
+			} else {
+				ctx['status'] = 200
+				ctx['body'] = {
+					code: CodeType.NoUserGameFound,
+					error: true,
+					message: "The user doesn't have this game."
+				}
 			}
 		}
 	} else {

@@ -2,32 +2,13 @@ import Router from 'koa-router'
 
 import koaBody from 'koa-body'
 
-import GameCollection from '../database/collections/Game.collection'
+import {GameCollection} from '../database/collections/Game.collection'
 
 import { setCacheUrl } from '../utils/url-cache'
 import { GameType } from '../types/Game.type'
-import { getGameById, getModularGames } from '../models/Game.model'
+import { getGameById, getModularGames, getGamesList } from '../models/Game.model'
 
 const router = new Router({ prefix: '/games' })
-
-router.get('/:id', async (ctx) => {
-	let id = ctx['params']['id']
-
-	let game = await getGameById(id)
-
-	if (game !== undefined) {
-		ctx['status'] = 200
-		ctx['body'] = game
-	} else {
-		ctx['status'] = 204
-		ctx.set(
-			'Response-Details',
-			JSON.stringify({
-				message: `Game with ID or AppID ${id} not found.`
-			})
-		)
-	}
-})
 
 router.options('/', (ctx) => {
 	if (ctx['req']['headers']['access-control-request-method'] === 'POST') {
@@ -81,12 +62,12 @@ router.get('/search/:query/:limit', async (ctx) => {
 		let regAlias: RegExp = RegExp(`${query}`, 'i')
 		let regName: RegExp = RegExp(`${query}`, 'i')
 
-		let gamesSearchName: GameType[] = await GameCollection.get()
+		let gamesSearchName: GameType[] = await GameCollection
 			.find({ name: { $regex: regName } })
 			.project({ name: 1, _id: 1, appid: 1, alias: 1 })
 			.toArray()
 
-		let gamesSearchAlias: GameType[] = await GameCollection.get()
+		let gamesSearchAlias: GameType[] = await GameCollection
 			.find({ alias: { $in: [regAlias] } })
 			.project({ name: 1, _id: 1, appid: 1, alias: 1 })
 			.toArray()
@@ -113,13 +94,42 @@ router.get('/search/:query/:limit', async (ctx) => {
 })
 
 router.get('/genres', async (ctx) => {
-	const genres = await GameCollection.get().distinct('genres')
+	const genres = await GameCollection.distinct('genres')
 	if (genres !== undefined && genres.length > 0) {
 		ctx['status'] = 200
 		ctx['body'] = genres
 		setCacheUrl(ctx)
 	} else {
 		ctx['status'] = 204
+	}
+})
+
+router.get('/list', async (ctx) => {
+	let gamesList = await getGamesList()
+
+	if (gamesList !== undefined) {
+		ctx['body'] = gamesList
+	} else {
+		ctx['status'] = 204
+	}
+})
+
+router.get('/:id', async (ctx) => {
+	let id = ctx['params']['id']
+
+	let game = await getGameById(id)
+
+	if (game !== undefined) {
+		ctx['status'] = 200
+		ctx['body'] = game
+	} else {
+		ctx['status'] = 204
+		ctx.set(
+			'Response-Details',
+			JSON.stringify({
+				message: `Game with ID or AppID ${id} not found.`
+			})
+		)
 	}
 })
 

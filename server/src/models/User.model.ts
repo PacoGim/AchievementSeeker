@@ -1,10 +1,10 @@
 import { UserType } from '../types/User.type'
-import UserCollection from '../database/collections/User.collection'
+import {UserCollection} from '../database/collections/User.collection'
 import { ObjectId } from 'mongodb'
 
 export function findUserBySteamId(steamId: string): Promise<UserType | null> {
 	return new Promise((resolve, reject) => {
-		UserCollection.get().findOne({ steamId }, (error, result) => {
+		UserCollection.findOne({ steamId }, (error, result) => {
 			if (error) {
 				reject({
 					errCode: error['code'],
@@ -17,9 +17,9 @@ export function findUserBySteamId(steamId: string): Promise<UserType | null> {
 	})
 }
 
-export function getUserGameData(userId: string, gameId: string): Promise<UserType> {
+export function getUserGameData(userId: string, gameId: string): Promise<UserType | null> {
 	return new Promise((resolve, reject) => {
-		UserCollection.get().findOne(
+		UserCollection.findOne(
 			{ _id: new ObjectId(userId) },
 			{
 				projection: {
@@ -39,6 +39,8 @@ export function getUserGameData(userId: string, gameId: string): Promise<UserTyp
 						delete result['games']
 
 						resolve(result)
+					} else {
+						resolve(null)
 					}
 				}
 			}
@@ -48,7 +50,7 @@ export function getUserGameData(userId: string, gameId: string): Promise<UserTyp
 
 export function saveUser(user: UserType): Promise<UserType> {
 	return new Promise((resolve, reject) => {
-		UserCollection.get().insertOne(user, (error) => {
+		UserCollection.insertOne(user, (error) => {
 			if (error) {
 				reject({
 					errCode: error['code'],

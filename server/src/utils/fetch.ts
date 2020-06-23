@@ -2,8 +2,8 @@ import fetch from 'node-fetch'
 
 import { ObjectId } from 'mongodb'
 
-import GameCollection from '../database/collections/Game.collection'
-import UserCollection from '../database/collections/User.collection'
+import {GameCollection} from '../database/collections/Game.collection'
+import {UserCollection} from '../database/collections/User.collection'
 
 import { userQueue } from '../utils/queue'
 import { GameType } from '../types/Game.type'
@@ -18,7 +18,7 @@ export async function fetchUserGames(userId: ObjectId, steamId: string) {
 		let allUserGamesAppid = userGames.map((game: any) => game['appid'])
 
 		// Get the games from the DB that matches the user games
-		let dbMatchingUserGames = await GameCollection.get()
+		let dbMatchingUserGames = await GameCollection
 			.find({ appid: { $in: allUserGamesAppid } })
 			.project({ _id: 1, appid: 1 })
 			.toArray()
@@ -27,7 +27,7 @@ export async function fetchUserGames(userId: ObjectId, steamId: string) {
 		let userPlayedGamesAppids = userGames.filter((game: any) => game['playtime_forever'] > 0).map((game: any) => game['appid'])
 
 		// Get User from DB
-		let userFound = await UserCollection.get().findOne({ _id: userId })
+		let userFound = await UserCollection.findOne({ _id: userId })
 
 		if (userFound) {
 			// Iterates through every game and gives back an array of objects just as placeholder
@@ -39,7 +39,7 @@ export async function fetchUserGames(userId: ObjectId, steamId: string) {
 			})
 
 			// Saves the new game array to db
-			await UserCollection.get().updateOne({ _id: userId }, { $set: userFound }, { upsert: true })
+			await UserCollection.updateOne({ _id: userId }, { $set: userFound }, { upsert: true })
 		}
 
 		// Keeps only user games played and pushes to the reactive queueing array

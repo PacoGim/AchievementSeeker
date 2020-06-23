@@ -1,14 +1,15 @@
-import GameCollection from '../database/collections/Game.collection'
+import { GameCollection } from '../database/collections/Game.collection'
 import { GameType } from '../types/Game.type'
 import { stringToNumber, stringToObjectId } from '../utils/functions'
 import { ObjectId } from 'mongodb'
 
 export function getGameById(id: string): Promise<GameType> {
 	return new Promise(async (resolve) => {
-		let games: GameType[] = await GameCollection.get()
-			.find({ $or: [{ appid: stringToNumber(id) }, { _id: stringToObjectId(id) }] })
-			.toArray()
-		resolve(games[0])
+		if (GameCollection) {
+			// console.log(GameCollection)
+			let games: GameType[] = await GameCollection.find({ $or: [{ appid: stringToNumber(id) }, { _id: stringToObjectId(id) }] }).toArray()
+			resolve(games[0])
+		}
 	})
 }
 
@@ -88,9 +89,9 @@ export function getModularGames(options: CustomGameOptionType): Promise<GameType
 			}
 
 			// No need to filter if requesting specific games
-			gamesFound = await GameCollection.get().find(findQuery).sort(sortOptions).project(project).skip(skip).limit(limit).toArray()
+			gamesFound = await GameCollection.find(findQuery).sort(sortOptions).project(project).skip(skip).limit(limit).toArray()
 		} else {
-			gamesFound = await GameCollection.get().find(findQuery).filter(filterOptions).sort(sortOptions).project(project).skip(skip).limit(limit).toArray()
+			gamesFound = await GameCollection.find(findQuery).filter(filterOptions).sort(sortOptions).project(project).skip(skip).limit(limit).toArray()
 		}
 
 		resolve(gamesFound)
@@ -145,9 +146,8 @@ function getFiltering(filterOptions: CustomGameOptionTypeFilter) {
 		})
 	}
 
-	/*
-		TODO: Fix issue with age being a string instead of a number in db. Also fixed steam fetching.
-	*/
+	/*TODO: Fix issue with age being a string instead of a number in db. Also fixed steam fetching.
+	 */
 	if (filterOptions?.['age']) {
 		Object.assign(mongoFilter, {
 			age: {
@@ -199,4 +199,72 @@ function getFiltering(filterOptions: CustomGameOptionTypeFilter) {
 	}
 
 	return mongoFilter
+}
+
+export function getGamesList() {
+	return new Promise(async (resolve, reject) => {
+		let gamesList = await GameCollection.find({}).project({ _id: 1, name: 1 }).toArray()
+		resolve(gamesList)
+	})
+}
+
+export function updateGame(id: string, newData: any) {
+	return new Promise(async (resolve, reject) => {
+		//TODO: Create a snapshot mechanism every time a game is updated (just in case)
+
+		let game = await getGameById(id)
+
+		let achievements = game['achievements']
+
+		let newAchievements = newData['achievements']
+
+		if (newAchievements !== undefined) {
+			//TODO All of this is for the snaphot mechanisim
+			for (let i = 0, length = achievements.length; i < length; i++) {
+				if (hash(JSON.stringify(newAchievements[i])) !== hash(JSON.stringify(achievements[i]))) {
+					console.log(achievements[i]['name'])
+					console.log(achievements[i]['description'], newAchievements[i]['description'])
+					console.log('-----------')
+				}
+			}
+		}
+
+		game['achievements'] = newAchievements
+
+		//IMPORTANT Never reach this line in prod without doing a game data snapshot
+
+		// console.log(game)
+
+		GameCollection.updateOne({ _id: game['_id'] }, { $set: game }, (err, result) => {
+			if (err) {
+				console.log(err)
+			} else {
+				console.log(result)
+			}
+		})
+	})
+}
+
+/*
+	snapshotDate:new Date().now()
+	_id:xxxxxxxx,
+	achievements:[
+		{
+			id:0,
+			description:'Complete the game in under 5 hours'
+		}
+	]
+*/
+
+function hash(text: string) {
+	let hash = 0
+	let i
+	let chr
+
+	for (i = 0; i < text.length; i++) {
+		chr = text.charCodeAt(i)
+		hash = (hash << 5) - hash + chr
+		hash |= 0 // Convert to 32bit integer
+	}
+	return hash
 }

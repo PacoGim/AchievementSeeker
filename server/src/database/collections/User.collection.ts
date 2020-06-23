@@ -1,14 +1,8 @@
 import { Collection } from 'mongodb'
 import { UserType } from '../../types/User.type'
 
-let userCollection: Collection<UserType>
+export let UserCollection: Collection<UserType>
 
-export default {
-	get(): Collection<UserType>  {
-		return userCollection
-	},
-
-	set(collection: Collection<any>) {
-		userCollection = collection
-	},
+export function set(collection: Collection<any>) {
+	UserCollection = collection
 }

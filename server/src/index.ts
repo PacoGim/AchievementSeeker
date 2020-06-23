@@ -1,4 +1,5 @@
 import Koa, { ParameterizedContext, Next } from 'koa'
+import mount from 'koa-mount'
 import cors from '@koa/cors'
 import serve from 'koa-static'
 import passport from 'koa-passport'
@@ -20,8 +21,24 @@ require('dotenv').config()
 ;(async function main() {
 	let app: Koa = new Koa()
 
+	app.use(
+		cors({
+			allowMethods: 'GET,POST,PATCH',
+			origin: (ctx) => {
+				const origin = ctx['headers']['origin']
+
+				switch (origin) {
+					case 'http://localhost:5000':
+						return origin
+					case 'http://192.168.1.199:8080':
+						return origin
+				}
+			}
+		})
+	)
+
 	const port: number = Number(process.env.PORT) || 3000
-	const routesToLoad: string[] = ['Game', 'Image', 'SteamAuth','User']
+	const routesToLoad: string[] = ['Game', 'Image', 'SteamAuth', 'User', 'Admin']
 	const mongoDBUri: string = `mongodb://readOnlyUser:readOnlyUserPWD@localhost:27017`
 
 	// Passport Config and Init
@@ -45,11 +62,11 @@ require('dotenv').config()
 		})
 		.catch((err) => console.error('Error from connectToDB: ', err))
 
-	// Serve static public folder
-	app.use(serve(path.join(__dirname, '../public')))
-
 	// Runs preRouting before matching other routes
 	app.use((ctx: ParameterizedContext, next: Next) => preRouting(ctx, next))
+
+	// Serve static public folder
+	app.use(mount('/public', serve(path.join(__dirname, '../public'))))
 
 	// Routes Loader
 	loadRoutes(app, '/server/dist/routes', routesToLoad)
@@ -84,6 +101,10 @@ async function preRouting(ctx: ParameterizedContext, next: Next): Promise<void> 
 	if (url) {
 		console.log(`${ctx['req']['method']} Request to ${decodeURI(url)} served${ctx['cached'] ? ' from cache' : ''} in ${Number(new Date()) - startDate} ms`)
 	}
+
+	if (ctx['URL']['pathname'].includes('/public')) {
+		ctx.set('Cache-Control', 'max-age=604800')
+	}
 }
 
 function setHeaders(ctx: ParameterizedContext) {
@@ -92,7 +113,6 @@ function setHeaders(ctx: ParameterizedContext) {
 	ctx.set('X-Content-Type-Options', 'nosniff')
 	ctx.set('X-Frame-Options', 'deny')
 	ctx.set('X-XSS-Protection', '1; mode=block')
-	ctx.set('Access-Control-Allow-Origin', 'http://192.168.1.199:8080')
 	ctx.set('Access-Control-Allow-Headers', 'Content-Type')
 }
 

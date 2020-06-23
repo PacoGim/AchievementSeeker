@@ -1,14 +1,8 @@
 import { Collection } from 'mongodb'
 import { GameType } from '../../types/Game.type'
 
-let gameCollection: Collection<GameType>
+export let GameCollection: Collection<GameType>
 
-export default {
-	get(): Collection<GameType> {
-		return gameCollection
-	},
-
-	set(collection: Collection<any>) {
-		gameCollection = collection
-	},
+export function set(collection: Collection<any>) {
+	GameCollection = collection
 }

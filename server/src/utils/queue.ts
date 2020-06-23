@@ -1,8 +1,8 @@
 import fetch from 'node-fetch'
 
 import { servers, IServer } from '../utils/servers'
-import GameCollection from '../database/collections/Game.collection'
-import UserCollection from '../database/collections/User.collection'
+import {GameCollection} from '../database/collections/Game.collection'
+import {UserCollection} from '../database/collections/User.collection'
 import { UserGameQueueType } from '../types/User.type'
 import { ObjectId } from 'mongodb'
 
@@ -63,7 +63,7 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 			if (!achievements) return
 
 			// Get game from db
-			let game = await GameCollection.get().findOne({ _id: new ObjectId(user['gameId']) }, { projection: { name: 1, 'achievements._id': 1, 'achievements.steamName': 1, 'achievements.value': 1 } })
+			let game = await GameCollection.findOne({ _id: new ObjectId(user['gameId']) }, { projection: { name: 1, 'achievements._id': 1, 'achievements.steamName': 1, 'achievements.value': 1 } })
 
 			// Should never happen since all games were previously added from the database
 			if (!game) return
@@ -102,7 +102,7 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 			}
 
 			// Find the user in the database
-			let dbUser = await UserCollection.get().findOne({ _id: user['userId'] })
+			let dbUser = await UserCollection.findOne({ _id: user['userId'] })
 
 			// If the user wasn't found should not happen since it was just created
 			if (dbUser?.['games']) {
@@ -116,7 +116,7 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 				foundGame['achievements'] = userAchievedAchievements
 
 				// Updates the user
-				UserCollection.get().updateOne({ _id: user['userId'] }, { $set: dbUser }, { upsert: true })
+				UserCollection.updateOne({ _id: user['userId'] }, { $set: dbUser }, { upsert: true })
 
 				console.log(++counter, `User ${user['userId']} updated game ${game['name']}.`,foundGame['achievements'])
 			}else{

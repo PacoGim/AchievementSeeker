@@ -1,0 +1,11 @@
+$rainbow-animation: rainbow-filter 20s infinite linear;
+
+@keyframes rainbow-filter {
+	from {
+		filter: $bluetiful-filter hue-rotate(0deg);
+	}
+
+	to {
+		filter: $bluetiful-filter hue-rotate(360deg);
+	}
+}

@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte'
 
-	import {isUserLogged} from '../store/user.store.js'
+	import { isUserLogged } from '../store/user.store.js'
 
 	import Navigation from '../components/Navigation.svelte'
 
@@ -25,7 +25,8 @@
 <style lang="scss" global>
 	@import 'styles/global.scss';
 
-	body {
-		// overflow: hidden;
+	main {
+		max-width: 1080px;
+		margin: 0 auto;
 	}
 </style>

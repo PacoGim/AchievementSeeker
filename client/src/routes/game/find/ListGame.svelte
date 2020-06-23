@@ -157,7 +157,7 @@
 	</grid-header>
 	{#if games !== null && games.length > 0}
 		{#each games as game, index (index)}
-			<a class="grid-body" href="/game/{game['_id']}">
+			<a class="grid-body" href="/game/id/{game['_id']}">
 
 				<image-field class="field" flex="align-center">
 					{#if window.innerWidth <= 768}

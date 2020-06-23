@@ -1,7 +1,7 @@
 import { MongoClient, Collection } from 'mongodb'
 
-import GameCollection from './collections/Game.collection'
-import UserCollection from './collections/User.collection'
+import {set as GameCollectionSet} from './collections/Game.collection'
+import {set as UserCollectionSet} from './collections/User.collection'
 import { GameType } from '../types/Game.type'
 import { UserType } from '../types/User.type'
 
@@ -33,10 +33,10 @@ function setCollection(collection: Collection<GameType | UserType>) {
 	const collectionName = collection.collectionName
 	switch (collectionName) {
 		case 'Games':
-			GameCollection.set(collection)
+			GameCollectionSet(collection)
 			break
 		case 'Users':
-			UserCollection.set(collection)
+			UserCollectionSet(collection)
 			break
 	}
 

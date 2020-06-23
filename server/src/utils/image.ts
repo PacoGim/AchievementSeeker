@@ -1,3 +1,4 @@
+import { ParameterizedContext } from 'koa'
 import send from 'koa-send'
 import fs from 'fs-extra'
 import path from 'path'
@@ -22,6 +23,8 @@ export async function sendImageResponse(ctx: any, filePath: string, fetchUrl: st
 	} else {
 		ctx.set('Content-Type', 'text/plain')
 		ctx['body'] = fetchUrl
+
+		console.log(filePath)
 
 		fetchAndSaveImage(fetchUrl, dirPath, filePath)
 	}
@@ -48,7 +51,7 @@ export function getFilePaths(gameName: string, gameId: string, fileName: string,
 
 	const paths: IFilePaths = {
 		dirPath,
-		filePath,
+		filePath
 	}
 
 	return paths
@@ -58,16 +61,20 @@ export function fetchAndSaveImage(fetchUrl: string, dirPath: string, filePath: s
 	fs.mkdirpSync(dirPath)
 
 	fetch(fetchUrl)
-		.then(res => {
+		.then((res) => {
 			if (res['status'] === 404) throw new Error('Appid has not the requested image.')
 			else return res.arrayBuffer()
 		})
-		.then(arrayBuffer => {
+		.then((arrayBuffer) => {
 			sharp(Buffer.from(arrayBuffer))
 				.webp()
 				.toFile(filePath, (err, info) => {
-					if (err) console.log(err)
+					if (err?.['message'] === 'Input buffer contains unsupported image format') {
+						console.log('Given fetch image url does not give back a valid image.')
+					}else{
+						console.log(err)
+					}
 				})
 		})
-		.catch(error => {})
+		.catch((error) => console.log(error))
 }

@@ -43,6 +43,10 @@
 	color: $celestial;
 }
 
+[text~='rainbow'] {
+	animation: $rainbow-animation;
+}
+
 @for $i from 0 through 19 {
 	[text~='size-#{$i+1}'] {
 		font-size: #{$i * $step-font-size + $min-font-size}rem;

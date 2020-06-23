@@ -53,6 +53,10 @@
 	filter: $celestial-filter;
 }
 
+[icon~='rainbow'] {
+	animation: $rainbow-animation;
+}
+
 [icon~='white'] {
 	filter: invert(100%);
 }

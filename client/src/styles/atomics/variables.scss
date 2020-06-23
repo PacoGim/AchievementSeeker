@@ -8,6 +8,7 @@ $max-font-size: 3;
 $step-font-size: ($max-font-size - $min-font-size) / 19;
 
 :root {
+	--rainbow: 0deg;
 	@for $i from 0 through 19 {
 		--font-weight-#{$i+1}: #{round($step-font-weight * $i + $min-font-weight)};
 	}
