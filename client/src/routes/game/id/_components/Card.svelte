@@ -22,7 +22,7 @@
 
 	function mergeDevAndPublishers() {
 		if (developers.length === publishers.length) {
-			if (developers.length !== 1 && publichers.length !== 1) {
+			if (developers.length !== 1 && publishers.length !== 1) {
 				developers.sort((a, b) => a.localeCompare(b))
 				publishers.sort((a, b) => a.localeCompare(b))
 			}
@@ -34,34 +34,34 @@
 	}
 </script>
 
-<game-card shadow flex="direction-column">
+<game-card shadow>
 
 	<header grid="overlap">
 		<GameImage imageType="hero" {appid} klass="gamePageHero" />
 		<GameImage imageType="logo" {appid} klass="gamePageLogo" alt={name} />
 		<score grid="overlap">
 			<circumference />
-			<value text="weight-9 size-5">{score}ρ</value>
+			<value text="weight-9 size-5">{Math.floor(score)}p</value>
 		</score>
 	</header>
 
 	<release-date-platforms margin="xy-2" flex="direction-row justify-between align-center">
 
 		<release-date text="white weight-10 size-5" padding="xy-1" flex="direction-row align-center">
-			<img class="icon" icon="size-8 white" margin="r-1" src="icons/calendar.svg" alt="Release Date: " />
+			<img class="icon" icon="size-8" filter="white" margin="r-1" src="icons/calendar.svg" alt="Release Date: " />
 			<span padding="r-1">{parseDate(releaseDate)}</span>
 		</release-date>
 
 		<platforms>
 			{#each platforms as platform, index (index)}
-				<img class="icon" icon="size-8 bluetiful" margin="l-2" src="icons/{platform}.svg" alt="" />
+				<img class="icon" icon="size-8" filter="bluetiful" margin="l-2" src="icons/{platform}.svg" alt="" />
 			{/each}
 		</platforms>
 
 	</release-date-platforms>
 
 	<visit-count flex="direction-column justify-center align-center">
-		<img class="icon" icon="size-20 bluetiful" src="icons/people.svg" alt="Visit this Week" />
+		<img class="icon" icon="size-20" filter="bluetiful" src="icons/people.svg" alt="Visit this Week" />
 		<span text="size-4 weight-5 bluetiful">Visits this week: {visitCount}</span>
 	</visit-count>
 
@@ -74,10 +74,10 @@
 
 	<points>
 		{points}
-		<span text="weight-9">ρ</span>
+		<span text="weight-9">p</span>
 	</points>
 
-	<play-button>Start Game</play-button>
+	<a href="steam://run/{appid}">Play Now</a>
 
 	<developers-publishers flex="direction-column">
 		{#if arePublishersAndDevelopersSame === true}
@@ -106,25 +106,25 @@
 
 <style lang="scss">
 	game-card {
+		height: fit-content;
 		margin: 2rem;
 		padding-bottom: 1rem;
-		border-radius: 30px;
-		// width: 30vw;
-		// height: fit-content;
+		border-radius: 5px;
 		header {
 			score {
 				z-index: 1;
 				justify-self: end;
 				align-items: center;
 				align-self: start;
-				color: #fff;
+				color: var(--cinder);
 				margin: 0.5rem;
 
 				circumference {
+					background-color: rgba(255,255,255,.75);
 					height: 50px;
 					width: 50px;
 					border-radius: 100px;
-					border: 4px solid #fff;
+					border: 4px solid var(--cinder);
 				}
 
 				value {

@@ -75,9 +75,12 @@
 		height: auto;
 	}
 	img.gamePageLogo {
-		height: 100px;
+		height: 10rem;
+		max-height: 150px;
 		width: auto;
-		align-self: end;
+		max-width: 30vw;
+		align-self: center;
+		justify-self: center;
 	}
 
 	img[alt]:after {

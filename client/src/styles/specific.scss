@@ -1,0 +1,30 @@
+/********************** GameAchievements **********************/
+
+html[theme='dark'] {
+	game-achievements {
+		// background-image: linear-gradient(to bottom right, #172449, #143041);
+		background-color: #172449;
+
+		achievement {
+			background-color: rgba(0, 0, 0, 0.85);
+		}
+	}
+
+	achievements-totals container {
+		background-color: rgba(0, 0, 0, 0.85);
+	}
+}
+
+html[theme='light'] {
+	game-achievements {
+		// background-image: linear-gradient(to bottom right, #4476fd, #3ca7e9);
+		background-color: #4476fd;
+		achievement {
+			background-color: rgba(255, 255, 255, 0.85);
+		}
+	}
+
+	achievements-totals container {
+		background-color: #fff;
+	}
+}

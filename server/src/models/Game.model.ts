@@ -5,11 +5,8 @@ import { ObjectId } from 'mongodb'
 
 export function getGameById(id: string): Promise<GameType> {
 	return new Promise(async (resolve) => {
-		if (GameCollection) {
-			// console.log(GameCollection)
-			let games: GameType[] = await GameCollection.find({ $or: [{ appid: stringToNumber(id) }, { _id: stringToObjectId(id) }] }).toArray()
-			resolve(games[0])
-		}
+		let games: GameType[] = await GameCollection.find({ $or: [{ appid: stringToNumber(id) }, { _id: stringToObjectId(id) }] }).toArray()
+		resolve(games[0])
 	})
 }
 
@@ -30,7 +27,7 @@ type CustomGameOptionTypeSort = {
 type CustomGameOptionTypeFilter = {
 	isFree?: boolean
 	platforms?: string[]
-	isCelestial?: boolean
+	hasCelestial?: boolean
 	age?: number
 	developers?: string[]
 	publishers?: string[]
@@ -130,13 +127,13 @@ function getFiltering(filterOptions: CustomGameOptionTypeFilter) {
 		})
 	}
 
-	if (filterOptions?.['isCelestial'] === true) {
+	if (filterOptions?.['hasCelestial'] === true) {
 		Object.assign(mongoFilter, {
 			achievements: {
 				$elemMatch: { value: 4 }
 			}
 		})
-	} else if (filterOptions?.['isCelestial'] === false) {
+	} else if (filterOptions?.['hasCelestial'] === false) {
 		Object.assign(mongoFilter, {
 			achievements: {
 				$not: {

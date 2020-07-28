@@ -2,13 +2,13 @@
 	import { onMount, onDestroy } from 'svelte'
 	import nanoid from 'nanoid'
 
-	import GameImage from '../../../components/Base/GameImage.svelte'
+	import GameImage from '@/components/Base/GameImage.svelte'
 
-	import { parseDate, parseDateReduced } from '../../../services/helper.service.js'
-	import FetchService from '../../../services/fetch.service.js'
+	import { parseDate, parseDateReduced } from '@/services/helper.service.js'
+	import FetchService from '@/services/fetch.service.js'
 
-	import { sortReleaseDate, sortScore, sortPoints, sortAchievements, sortDifficulty } from '../../../store/sort.store.js'
-	import { searchInputValue } from '../../../store/main.store.js'
+	import { sortReleaseDate, sortScore, sortPoints, sortAchievements, sortDifficulty } from '@/store/sort.store.js'
+	import { searchInputValue } from '@/store/main.store.js'
 
 	let loadingGamesHook = nanoid(6)
 

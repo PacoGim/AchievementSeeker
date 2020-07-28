@@ -3,15 +3,6 @@
 	import { getCookiesAsJson } from '../../services/helper.service.js'
 
 	let steamId = 'Loading...'
-
-	onMount(() => {
-		let cookies = getCookiesAsJson()
-
-		if (cookies && cookies['steamUserId']) {
-			steamId = cookies['steamUserId']
-			console.log(steamId)
-		}
-	})
 </script>
 
 <h1>Login</h1>

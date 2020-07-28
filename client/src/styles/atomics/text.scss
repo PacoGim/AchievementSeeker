@@ -1,46 +1,40 @@
 /********************** Text **********************/
+[text] {
+	transition: color 1s;
+}
+
 [text~='center'] {
 	text-align: center;
 }
 
-[text~='white'] {
-	color: #fff;
+$colors: (
+	"white": #fff,
+	"waikawa-grey": $waikawa-grey,
+	"biscay": $biscay,
+	"blue": $blue,
+	"bluetiful": $bluetiful,
+	"cinder": $cinder,
+	"copper": $copper,
+	"silver": $silver,
+	"gold": $gold,
+	"blood": $blood,
+	"celestial": $celestial
+);
+
+html[theme='light'] {
+	@each $name, $color in $colors {
+		[text~='#{$name}'] {
+			color: $color;
+		}
+	}
 }
 
-[text~='waikawa-grey'] {
-	color: $waikawa-grey;
-}
-
-[text~='biscay'] {
-	color: $biscay;
-}
-
-[text~='blue'] {
-	color: $blue;
-}
-
-[text~='bluetiful'] {
-	color: $bluetiful;
-}
-
-[text~='copper'] {
-	color: $copper;
-}
-
-[text~='silver'] {
-	color: $silver;
-}
-
-[text~='gold'] {
-	color: $gold;
-}
-
-[text~='blood'] {
-	color: $blood;
-}
-
-[text~='celestial'] {
-	color: $celestial;
+html[theme='dark'] {
+	@each $name, $color in $colors {
+		[text-dark~='#{$name}'] {
+			color: $color;
+		}
+	}
 }
 
 [text~='rainbow'] {

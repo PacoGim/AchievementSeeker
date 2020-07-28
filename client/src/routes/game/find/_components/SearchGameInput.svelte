@@ -2,11 +2,11 @@
 	import { onDestroy } from 'svelte'
 	import nanoid from 'nanoid'
 
-	import FetchService from '../../../services/fetch.service.js'
+	import FetchService from '@/services/fetch.service.js'
 
-	import GameImage from '../../../components/Base/GameImage.svelte'
+	import GameImage from '@/components/Base/GameImage.svelte'
 
-	import { searchInputValue } from '../../../store/main.store.js'
+	import { searchInputValue } from '@/store/main.store.js'
 
 	const inputHook = nanoid(6)
 	let searchTimeout = undefined

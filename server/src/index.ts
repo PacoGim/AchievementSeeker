@@ -4,6 +4,8 @@ import cors from '@koa/cors'
 import serve from 'koa-static'
 import passport from 'koa-passport'
 
+import fetch from 'node-fetch'
+
 import { Strategy as SteamStrategy } from 'passport-steam'
 
 import path from 'path'
@@ -32,6 +34,8 @@ require('dotenv').config()
 						return origin
 					case 'http://192.168.1.199:8080':
 						return origin
+					case 'http://192.168.1.199:3000':
+						return origin
 				}
 			}
 		})
@@ -58,6 +62,7 @@ require('dotenv').config()
 	connectToDB('AchievementSeeker', mongoDBUri)
 		.then((message) => {
 			console.log(message)
+
 			// fetch('http://192.168.1.199:3000/steam/return?openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.mode=id_res&openid.op_endpoint=https%3A%2F%2Fsteamcommunity.com%2Fopenid%2Flogin&openid.claimed_id=https%3A%2F%2Fsteamcommunity.com%2Fopenid%2Fid%2F76561198053722442&openid.identity=https%3A%2F%2Fsteamcommunity.com%2Fopenid%2Fid%2F76561198053722442&openid.return_to=http%3A%2F%2F192.168.1.199%3A3000%2Fsteam%2Freturn&openid.response_nonce=2020-04-13T08%3A46%3A32ZmE6Weh4m3l%2FQ9W6uFyoJu6qsw%2FI%3D&openid.assoc_handle=1234567890&openid.signed=signed%2Cop_endpoint%2Cclaimed_id%2Cidentity%2Creturn_to%2Cresponse_nonce%2Cassoc_handle&openid.sig=m2AKjESYmiZeyCELtrmqUXhPvy8%3D')
 		})
 		.catch((err) => console.error('Error from connectToDB: ', err))
@@ -99,15 +104,15 @@ async function preRouting(ctx: ParameterizedContext, next: Next): Promise<void> 
 	}
 
 	if (url) {
-		console.log(`${ctx['req']['method']} Request to ${decodeURI(url)} served${ctx['cached'] ? ' from cache' : ''} in ${Number(new Date()) - startDate} ms`)
+		// console.log(`${ctx['req']['method']} Request to ${decodeURI(url)} served${ctx['cached'] ? ' from cache' : ''} in ${Number(new Date()) - startDate} ms`)
 	}
 
-	if (ctx['URL']['pathname'].includes('/public')) {
-		ctx.set('Cache-Control', 'max-age=604800')
-	}
+	// if (ctx['URL']['pathname'].includes('/public')) {
+	// }
 }
 
 function setHeaders(ctx: ParameterizedContext) {
+	// ctx.set('Cache-Control', 'max-age=604800')
 	ctx.set('Access-Control-Expose-Headers', 'Response-Details')
 	ctx.set('Strict-Transport-Security', 'max-age=3600')
 	ctx.set('X-Content-Type-Options', 'nosniff')

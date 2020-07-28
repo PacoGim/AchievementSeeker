@@ -24,16 +24,16 @@ export function get(url) {
 	return new Promise((resolve, reject) => {
 		try {
 			fetch(`${baseUrl}/${url}`)
-				.then(async (response) => {
-					let status = response['status']
-					let responseDetails = JSON.parse(response['headers'].get('Response-Details'))
-					let contentType = response['headers'].get('Content-Type')
+				.then(async (res) => {
+					let status = res['status']
+					let responseDetails = JSON.parse(res['headers'].get('Response-Details'))
+					let contentType = res['headers'].get('Content-Type')
 
 					if (status === 204) {
 						resolve({ status, details: responseDetails })
 					} else if (status === 200) {
 						if (contentType.includes('application/json')) {
-							let data = await response.json()
+							let data = await res.json()
 							resolve({ status, ...data })
 						}
 					}
@@ -52,8 +52,8 @@ export function postWithCredentials(endpoint) {
 		fetch(`${baseUrl}/${endpoint}`, {
 			credentials: 'include'
 		})
-			.then((response) => response.json())
-			.then((response) => resolve(response))
+			.then((res) => res.json())
+			.then((res) => resolve(res))
 	})
 }
 
@@ -67,19 +67,19 @@ export function post(url, body) {
 				},
 				body: JSON.stringify(body)
 			})
-				.then((response) => {
-					if (response['status'] === 200) {
-						let contentType = response['headers'].get('Content-Type')
+				.then((res) => {
+					if (res['status'] === 200) {
+						let contentType = res['headers'].get('Content-Type')
 
 						if (contentType.includes('text/plain')) {
-							return response.text()
+							return res.text()
 						} else if (contentType.includes('application/json')) {
-							return response.json()
+							return res.json()
 						}
 					}
 
-					if (response['status'] === 204) {
-						return reject(response.headers.get('Response-Details'))
+					if (res['status'] === 204) {
+						return reject(res.headers.get('Response-Details'))
 					}
 				})
 				.then((data) => {
@@ -104,7 +104,7 @@ export function fetchAchievementImage(gameId, achId, isAchieved) {
 				if (contentType.includes('text/plain')) {
 					resolve(await res.text())
 				} else if (contentType.includes('image/webp')) {
-					resolve(res['url'])
+					resolve(URL.createObjectURL(await res.blob()))
 				}
 			})
 		} else {
@@ -118,21 +118,21 @@ export function fetchImage(appid, imageType, id) {
 	return new Promise((resolve, reject) => {
 		try {
 			if (imageType === 'achievement' || imageType === 'steamAchievement') {
-				fetch(`${baseUrl}/image/${imageType}/${appid}/${id}`).then(async (response) => {
-					processResponse(response)
+				fetch(`${baseUrl}/image/${imageType}/${appid}/${id}`).then(async (res) => {
+					processResponse(res)
 				})
 			} else {
-				fetch(`${baseUrl}/image/${imageType}/${appid}`).then(async (response) => {
-					processResponse(response)
+				fetch(`${baseUrl}/image/${imageType}/${appid}`).then(async (res) => {
+					processResponse(res)
 				})
 			}
 
-			async function processResponse(response) {
-				const contentType = response.headers.get('Content-Type')
+			async function processResponse(res) {
+				const contentType = res.headers.get('Content-Type')
 				if (contentType.includes('text/plain')) {
-					resolve(await response.text())
+					resolve(await res.text())
 				} else if (contentType.includes('image/webp')) {
-					resolve(response['url'])
+					resolve(URL.createObjectURL(await res.blob()))
 				}
 			}
 		} catch (error) {

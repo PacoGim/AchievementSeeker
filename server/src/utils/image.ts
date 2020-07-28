@@ -71,10 +71,16 @@ export function fetchAndSaveImage(fetchUrl: string, dirPath: string, filePath: s
 				.toFile(filePath, (err, info) => {
 					if (err?.['message'] === 'Input buffer contains unsupported image format') {
 						console.log('Given fetch image url does not give back a valid image.')
-					}else{
-						console.log(err)
+					}else	{
+						console.log('lel')
 					}
 				})
 		})
-		.catch((error) => console.log(error))
+		.catch((err) => {
+			if (err?.['message'] === 'Appid has not the requested image.'){
+				console.log('Image not available.')
+			}else{
+				console.log(err)
+			}
+		})
 }

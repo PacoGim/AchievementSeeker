@@ -1,6 +1,6 @@
 <script>
-	import SearchGameInput from './SearchGameInput.svelte'
-	import ListGame from './ListGame.svelte'
+	import SearchGameInput from './_components/SearchGameInput.svelte'
+	import ListGame from './_components/ListGame.svelte'
 
 	let title = 'Game Search'
 </script>

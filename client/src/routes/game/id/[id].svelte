@@ -68,8 +68,8 @@
 
 	import FetchService from '@/services/fetch.service.js'
 
-	import GameCard from '@/components/game/id/GameCard.svelte'
-	import GameAchievements from '@/components/game/id/GameAchievements.svelte'
+	import Card from './_components/Card.svelte'
+	import Achievements from './_components/Achievements.svelte'
 
 	export let game
 	export let achievementsValues
@@ -88,13 +88,8 @@
 
 <game-page flex="direction-row">
 
-	<GameCard name={game['name']} developers={game['developers']} publishers={game['publishers']} appid={game['appid']} score={game['score']} releaseDate={game['releaseDate']} platforms={game['platforms']} genres={game['genres']} points={game['points']} visitCount={game['visitCount']} />
-	<GameAchievements _id={game['_id']} achievements={game['achievements']} name={game['name']} {achievementsValues} />
+	<Card name={game['name']} developers={game['developers']} publishers={game['publishers']} appid={game['appid']} score={game['score']} releaseDate={game['releaseDate']} platforms={game['platforms']} genres={game['genres']} points={game['points']} visitCount={game['visitCount']} />
+
+	<Achievements _id={game['_id']} achievements={game['achievements']} name={game['name']} {achievementsValues} />
 
 </game-page>
-
-<style lang="scss">
-game-page{
-	max-width: 1080px;
-}
-</style>

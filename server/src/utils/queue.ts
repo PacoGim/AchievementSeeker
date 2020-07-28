@@ -1,27 +1,46 @@
 import fetch from 'node-fetch'
 
-import { servers, IServer } from '../utils/servers'
-import {GameCollection} from '../database/collections/Game.collection'
-import {UserCollection} from '../database/collections/User.collection'
-import { UserGameQueueType } from '../types/User.type'
+import { IServer } from '../utils/servers'
+import { GameCollection } from '../database/collections/Game.collection'
+import { UserCollection } from '../database/collections/User.collection'
+import { UserGameQueueType, UserType } from '../types/User.type'
 import { ObjectId } from 'mongodb'
 
 export let userQueue: UserGameQueueType[] = []
+let userGameToUpdate: any[] = []
 let isfetchUserGameRunning = false
+let isUserGameToUpdateRunning = false
 
-observeArray(userQueue, ['push'], () => {
+let servers: IServer[] = Array(20)
+	.fill(0)
+	.map((x, i) => {
+		return {
+			id: i + 1,
+			busy: false
+		}
+	})
+
+observeArray(userQueue, ['push', 'unshift'], () => {
 	if (!isfetchUserGameRunning) {
+		isfetchUserGameRunning = true
 		servers.forEach(() => {
 			setUserAndServer()
 		})
 	}
 })
 
-function setUserAndServer() {
-	isfetchUserGameRunning = true
-	let user = userQueue.shift()
+observeArray(userGameToUpdate, ['push'], () => {
+	if (!isUserGameToUpdateRunning) {
+		isUserGameToUpdateRunning = true
+		updateUserGame()
+	}
+})
 
-	if (user) {
+function setUserAndServer() {
+	let userGame = userQueue.shift()
+
+	if (userGame) {
+		// Looks for a server with busy set to false
 		let availableServer = servers.find((server) => {
 			if (server['busy'] === false) {
 				server['busy'] = true
@@ -30,14 +49,14 @@ function setUserAndServer() {
 		})
 
 		if (availableServer === undefined) {
-			userQueue.unshift(user)
+			userQueue.unshift(userGame)
 		} else {
-			fetchUserAchievements(user, availableServer)
+			fetchUserAchievements(userGame, availableServer)
 		}
 
 		setTimeout(() => {
 			setUserAndServer()
-		}, 1000)
+		}, 2000)
 	} else {
 		isfetchUserGameRunning = false
 	}
@@ -50,15 +69,11 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 	fetch(`https://us-central1-sth-functions.cloudfunctions.net/fetchUserGame${server['id']}?appid=${user['appId']}&key=${process.env.STEAM_API_KEY}&steamid=${user['steamId']}`)
 		.then((res) => res.json())
 		.then(async (data) => {
-			// List of db games achievement id that the user has achieved
+			// List of db games achievement id that the user has achieved to fill later
 			let userAchievedAchievements: number[] = []
 
 			// All user steam achievements for given game
 			let achievements = data?.['playerstats']?.['achievements']
-
-			// console.log('---------------')
-			// console.log(++counter, user['appId'], achievements, data)
-			// console.log('---------------')
 
 			if (!achievements) return
 
@@ -74,8 +89,8 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 					// Looks for the matching achievement inside the game object from the database
 					let foundAchievement = game['achievements'].find((dbAchievement) => dbAchievement['steamName'] === achievement['name'])
 
-					// If this triggers, it means that a game developer added an achievement to his
-					// game and the user achieved it BEFORE it was added to the database.
+					// If this gives false, it means that a game as added to the database.developer added an achievement to his
+					// game and the user achieved it BEFORE it w
 					if (foundAchievement) {
 						userAchievedAchievements.push(foundAchievement['_id'])
 					} else {
@@ -89,39 +104,23 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 				}
 			}
 
-			// Sorts user achievements since the ids are simple numbers. Just so it's nice and tidy.
+			// Sorts user achievements since the ids are simply numbers. Just so it's nice and tidy.
 			userAchievedAchievements = userAchievedAchievements.sort((a, b) => a - b)
 
-			// Checks if a game has a celestial achievement
-			let gameHasCelestialAchievement = game['achievements'].find((achievement) => achievement['value'] === 4)
+			// Checks if a game has a rainbow achievement
+			let gameHasRainbowAchievement = game['achievements'].find((achievement) => achievement['value'] === 4)
 
-			// If User has ALL achievements AND the game has a celestial achievement
-			if (gameHasCelestialAchievement && game['achievements'].length === achievements.length + 1) {
-				//@ts-ignore
-				userAchievedAchievements.push(gameHasCelestialAchievement['_id'])
+			// If User has ALL achievements AND the game has a rainbow achievement
+			if (gameHasRainbowAchievement && game['achievements'].length === achievements.length + 1) {
+				userAchievedAchievements.push(gameHasRainbowAchievement['_id'])
 			}
 
-			// Find the user in the database
-			let dbUser = await UserCollection.findOne({ _id: user['userId'] })
-
-			// If the user wasn't found should not happen since it was just created
-			if (dbUser?.['games']) {
-				// Looks finds in the user games wich game to update
-				let foundGame = dbUser['games'].find((game) => new ObjectId(game['_id']).toHexString() === new ObjectId(user['gameId']).toHexString())
-
-				// Again, the game is obviously in the user array since it was added just before
-				if (!foundGame) return
-
-				// Updates the achievements
-				foundGame['achievements'] = userAchievedAchievements
-
-				// Updates the user
-				UserCollection.updateOne({ _id: user['userId'] }, { $set: dbUser }, { upsert: true })
-
-				console.log(++counter, `User ${user['userId']} updated game ${game['name']}.`,foundGame['achievements'])
-			}else{
-				console.log('User Games not found',user['appId'])
-			}
+			userGameToUpdate.push({
+				gameId: user['gameId'],
+				userId: user['userId'],
+				gameName: game['name'],
+				userAchievedAchievements
+			})
 		})
 		.catch((error) => {
 			console.log(`User ${user['userId']} with game ${user['appId']} had an error ${error}`)
@@ -130,6 +129,39 @@ function fetchUserAchievements(user: UserGameQueueType, server: IServer) {
 		.finally(() => {
 			server['busy'] = false
 		})
+}
+
+async function updateUserGame() {
+	let userData = userGameToUpdate.shift()
+
+	// console.log(userData)
+
+	if (userData) {
+		// Find the user in the database
+		let dbUser = await UserCollection.findOne({ _id: userData['userId'] })
+
+		// User not found should not happen since it was just created
+		if (dbUser?.['games']) {
+			// Looks in the user games wich game to update
+			let foundGame = dbUser['games'].find((game) => new ObjectId(game['_id']).toHexString() === new ObjectId(userData['gameId']).toHexString())
+
+			// Again, the game is obviously in the user array since it was added just before
+			if (!foundGame) return
+
+			// Updates the achievements
+			foundGame['achievements'] = userData['userAchievedAchievements']
+
+			// Updates the user
+			await UserCollection.updateOne({ _id: dbUser['_id'] }, { $set: dbUser }, { upsert: true })
+
+			console.log(++counter, `User ${userData['userId']} updated game ${userData['gameName']}.`, foundGame['achievements'])
+			updateUserGame()
+		} else {
+			console.log('User Games not found')
+		}
+	} else {
+		isUserGameToUpdateRunning = false
+	}
 }
 
 function observeArray(arr: { [index: string]: any }, toObserve: string[], callback: Function) {

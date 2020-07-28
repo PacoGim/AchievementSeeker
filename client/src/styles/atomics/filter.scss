@@ -1,0 +1,37 @@
+[filter] {
+	transition: filter 1s;
+}
+
+$filters: (
+	'white': $white-filter,
+	'waikawa-grey': $waikawa-grey-filter,
+	'biscay': $biscay-filter,
+	'blue': $blue-filter,
+	'bluetiful': $bluetiful-filter,
+	'cinder': $cinder-filter,
+	'copper': $copper-filter,
+	'silver': $silver-filter,
+	'gold': $gold-filter,
+	'blood': $blood-filter,
+	'celestial': $celestial
+);
+
+html[theme='light'] {
+	@each $name, $filter in $filters {
+		[filter~='#{$name}'] {
+			filter: $filter;
+		}
+	}
+}
+
+html[theme='dark'] {
+	@each $name, $filter in $filters {
+		[filter-dark~='#{$name}'] {
+			filter: $filter;
+		}
+	}
+}
+
+[filter~='rainbow'] {
+	animation: $rainbow-animation;
+}

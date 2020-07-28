@@ -13,54 +13,6 @@
 	width: auto;
 }
 
-[icon~='waikawa-grey'] {
-	filter: $waikawa-grey-filter;
-}
-
-[icon~='biscay'] {
-	filter: $biscay-filter;
-}
-
-[icon~='blue'] {
-	filter: $blue-filter;
-}
-
-[icon~='bluetiful'] {
-	filter: $bluetiful-filter;
-}
-
-[icon~='dark-chocolate'] {
-	filter: $dark-chocolate-filter;
-}
-
-[icon~='copper'] {
-	filter: $copper-filter;
-}
-
-[icon~='silver'] {
-	filter: $silver-filter;
-}
-
-[icon~='gold'] {
-	filter: $gold-filter;
-}
-
-[icon~='blood'] {
-	filter: $blood-filter;
-}
-
-[icon~='celestial'] {
-	filter: $celestial-filter;
-}
-
-[icon~='rainbow'] {
-	animation: $rainbow-animation;
-}
-
-[icon~='white'] {
-	filter: invert(100%);
-}
-
 [icon~='size-base'] {
 	height: 1rem;
 }

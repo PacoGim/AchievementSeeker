@@ -1,3 +1,9 @@
+$white:#fff;
+$white-filter: invert(100%);
+
+$cinder: #24292e;
+$cinder-filter: invert(15%) sepia(23%) saturate(278%) hue-rotate(169deg) brightness(97%) contrast(98%);
+
 $waikawa-grey: #5d6d83;
 $waikawa-grey-filter: invert(43%) sepia(32%) saturate(332%) hue-rotate(175deg) brightness(89%) contrast(87%);
 
@@ -10,17 +16,14 @@ $blue-filter: invert(59%) sepia(40%) saturate(7076%) hue-rotate(162deg) brightne
 $bluetiful: #539cff;
 $bluetiful-filter: invert(53%) sepia(49%) saturate(1661%) hue-rotate(192deg) brightness(101%) contrast(101%);
 
-// $rainbow: #539cff;
-// $rainbow-filter: invert(53%) sepia(49%) saturate(1661%) hue-rotate(192deg) brightness(101%) contrast(101%);
-
 $turquiful: #4addeb;
 $turquiful-filter: invert(65%) sepia(97%) saturate(314%) hue-rotate(137deg) brightness(102%) contrast(84%);
 
 $dark-chocolate: #271403;
 $dark-chocolate-filter: invert(10%) sepia(23%) saturate(1449%) hue-rotate(347deg) brightness(93%) contrast(102%);
 
-$copper: #ffa53c;
-$copper-filter: invert(62%) sepia(71%) saturate(487%) hue-rotate(343deg) brightness(102%) contrast(101%);
+$copper: #fabb84;
+$copper-filter: invert(71%) sepia(61%) saturate(350%) hue-rotate(335deg) brightness(102%) contrast(96%);
 
 $silver: #90acbc;
 $silver-filter: invert(71%) sepia(55%) saturate(134%) hue-rotate(158deg) brightness(85%) contrast(88%);
@@ -35,33 +38,6 @@ $celestial: #424da0;
 $celestial-filter: invert(26%) sepia(92%) saturate(668%) hue-rotate(202deg) brightness(93%) contrast(90%);
 
 :root {
-	--waikawa-grey: #{$waikawa-grey};
-	--biscay: #{$biscay};
-	--blue: #{$blue};
-	--dark-chocolate: #{$dark-chocolate};
 	--bluetiful: #{$bluetiful};
-}
-
-@media (prefers-color-scheme: light) {
-	:root {
-		--background-color-separator: #fafafa;
-		--odd-table-bg-color: #fff;
-		--even-table-bg-color: #f7f7f7;
-	}
-
-	body {
-		color: #090f15;
-	}
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background-color-separator: #080808;
-		--odd-table-bg-color: #000;
-		--even-table-bg-color: #070707;
-	}
-
-	body {
-		color: #e1e8f7;
-	}
+	--cinder: #{$cinder};
 }

@@ -1,3 +1,24 @@
+export function getColorFromValue(value) {
+	return ['copper', 'silver', 'gold', 'blood', 'rainbow'][value]
+}
+
+export function detectColorScheme() {
+	let localStorageTheme = localStorage.getItem('theme')
+	let theme = localStorageTheme === null ? null : localStorageTheme
+
+	if (theme === null) {
+		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			theme = 'dark'
+		} else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+			theme = 'light'
+		} else {
+			theme = 'light'
+		}
+	}
+
+	document.querySelector('html').setAttribute('theme', theme)
+}
+
 export function supportsWebp() {
 	return new Promise(async (resolve, reject) => {
 		if (!self.createImageBitmap) {

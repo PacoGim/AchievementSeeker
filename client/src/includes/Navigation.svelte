@@ -20,9 +20,11 @@
 			path: '/game/find'
 		},
 		{
-			name: 'Logout',
-			path: '/user/logout',
-			onhover: () => saveLastRoute()
+			id: 'LogInOut',
+			name: 'Loading...',
+			path: '',
+			onhover: () => saveLastRoute(),
+			onclick: () => logOutUser()
 		}
 	]
 
@@ -32,6 +34,16 @@
 
 	let pageName = getPageNameFromPagePath(pagePath, routes)
 
+	async function logOutUser() {
+		let foundRoute = routes.find(i => i['id'] === 'LogInOut')
+
+		if (foundRoute['name'] === 'Logout') {
+			let response = await fetch('http://192.168.1.199:3000/user/logout', { credentials: 'include' }).then(res => res.json())
+
+			document.location.replace(localStorage.getItem('lastLocation'))
+		}
+	}
+
 	function saveLastRoute() {
 		if (document.location.href !== 'http://192.168.1.199:8080/user/login' && document.location.href !== 'http://192.168.1.199:8080/user/logout') {
 			localStorage.setItem('lastLocation', document.location.href)
@@ -40,17 +52,16 @@
 
 	$: {
 		if (process.browser === true) {
-			if ($isUserLogged === true) {
-				let foundRoute = routes.find(i => i['name'] === 'Login')
-				if (foundRoute) {
+			let foundRoute = routes.find(i => i['id'] === 'LogInOut')
+			if (foundRoute) {
+				if ($isUserLogged === true) {
 					foundRoute['name'] = 'Logout'
-					foundRoute['path'] = '/user/logout'
-				}
-			} else if ($isUserLogged === false) {
-				let foundRoute = routes.find(i => i['name'] === 'Logout')
-				if (foundRoute) {
+					foundRoute['path'] = ''
+					foundRoute['icon'] = 'log-out'
+				} else {
 					foundRoute['name'] = 'Login'
 					foundRoute['path'] = '/user/login'
+					foundRoute['icon'] = 'user-lock'
 				}
 			}
 
@@ -103,10 +114,13 @@
 	<navigation-background />
 	<main-navigation shadow flex="align-center justify-between" is-scrolled-nav={isScrolledNav}>
 		<a text="weight-10 size-7" padding="xy-2" href="/">Steam Achievement Hunter</a>
-		<page-name text="weight-10 size-5" padding="xy-2" hook={pageNameHook}>{pageName}</page-name>
+		<page-name text="weight-6 size-7" padding="xy-2" hook={pageNameHook}>{pageName}</page-name>
 		<links>
 			{#each routes as route, index (index)}
-				<a text="weight-5" id="route-{route['name']}" href={route['path']} selected={pagePath === route['path']} on:click={route['onclick'] ? () => route['onclick']() : null} on:mouseenter={route['onhover'] ? () => route['onhover']() : null}>{route['name']}</a>
+				<a flex="align-center" text="weight-5" id="route-{route['name']}" href={route['path']} selected={pagePath === route['path']} on:click={route['onclick'] ? () => route['onclick']() : null} on:mouseenter={route['onhover'] ? () => route['onhover']() : null}>
+					<img class="icon" icon="size-8" filter="white" filter-dark="cinder" margin="r-2" src="icons/{route['icon']}.svg" alt="" />
+					{route['name']}
+				</a>
 			{/each}
 		</links>
 	</main-navigation>
@@ -131,7 +145,7 @@
 		top: 0;
 		background-color: transparent;
 		color: #fff;
-		backdrop-filter: blur(4px);
+
 		z-index: 4;
 
 		transition-property: color, background-color;
@@ -166,6 +180,8 @@
 					content: '•';
 					margin-right: 0.25rem;
 					opacity: 0;
+
+					transition: opacity 0.5s;
 				}
 			}
 
@@ -185,7 +201,15 @@
 	}
 
 	main-navigation[is-scrolled-nav='true'] {
-		background-color: rgba(255, 255, 255, 0.75);
+		background-color: rgba(255, 255, 255, 0.9);
+
+		@supports (backdrop-filter: blur(10px)) {
+			& {
+				backdrop-filter: blur(10px);
+				background-color: rgba(255, 255, 255, 0.25);
+			}
+		}
+
 		color: #414141;
 
 		links {

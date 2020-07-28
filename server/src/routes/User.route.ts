@@ -1,26 +1,20 @@
 import Router from 'koa-router'
 import { getUserGameData } from '../models/User.model'
 import { getTokenData, verifyToken } from '../utils/jwt'
-import { UserType } from '../types/User.type'
+// import { UserType } from '../types/User.type'
 import { CodeType } from '../types/Code.type'
+import { User } from '../types/User.type'
+import { UserCollection } from '../database/collections/User.collection'
+import { ObjectID } from 'mongodb'
 
 const router = new Router({ prefix: '/user' })
 
 router.get('/logout', (ctx) => {
 	ctx.cookies.set('jwt')
 
-	const token = ctx.cookies.get('jwt')
-
-	if (token === undefined) {
-		ctx['body'] = {
-			code: CodeType['UserLogOut'],
-			error: false
-		}
-	} else {
-		ctx['body'] = {
-			code: CodeType['FailUserLogOut'],
-			error: true
-		}
+	ctx['body'] = {
+		code: CodeType['UserLogOut'],
+		error: false
 	}
 
 	ctx.set('Access-Control-Allow-Credentials', 'true')
@@ -78,6 +72,26 @@ router.get('/:gameId', async (ctx) => {
 	}
 })
 
+router.get('/games/:userId', async (ctx) => {
+	let id = ctx['params']['userId']
+
+	let counter = 0
+
+	let user = await UserCollection.findOne({ _id: new ObjectID(id) })
+
+	if (user?.['games']) {
+		user['games'].forEach((game) => {
+			if (game['achievements'].length>0) {
+				// console.log(game['achievements'].length)
+				counter++
+			}
+		})
+
+		console.log(counter)
+	}
+
+	ctx['body'] = 'OK'
+})
 // router.post('/', koaBody(), async (ctx) => {
 // 	let options = ctx['request']['body']
 

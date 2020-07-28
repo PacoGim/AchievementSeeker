@@ -1,6 +1,40 @@
 import { ObjectId } from 'mongodb'
 import { UserGameAchievementType } from './Game.type'
 
+import { saveUser } from '../models/User.model'
+import { debugWrite } from '../debug'
+
+export class User implements UserType {
+	_id: ObjectId
+	steamId: string
+
+	constructor() {}
+
+	getId(): ObjectId {
+		return this._id
+	}
+
+	setSteamId(steamId: string): User {
+		this.steamId = steamId
+		return this
+	}
+
+	getSteamId() {
+		return this.steamId
+	}
+
+	save(): Promise<User> {
+		return new Promise((resolve, reject) => {
+			saveUser(this)
+				.then(() => resolve(this))
+				.catch((err) => {
+					debugWrite('error', err)
+					reject(null)
+				})
+		})
+	}
+}
+
 export type UserType = {
 	_id?: ObjectId
 	steamId?: string

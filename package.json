@@ -11,8 +11,8 @@
 	},
 	"scripts": {
 		"tests": "nodemon ./tests/index.js",
-		"server": "concurrently \"pnpm run transpile:typescript\" \"pnpm run mongodb\"",
-		"server:bak": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\" \"pnpm run mongodb\"",
+		"server:debug": "concurrently \"pnpm run transpile:typescript\" \"pnpm run mongodb\"",
+		"server": "concurrently \"pnpm run transpile:typescript\" \"nodemon ./server/dist/index.js\" \"pnpm run mongodb\"",
 		"mongodb": "mongod --dbpath='/Users/fran/MongoDB Databases' --directoryperdb --quiet",
 		"client:bak": "rimraf client/__sapper__/dev && cd client && pnpm run dev",
 		"client": "cd client && pnpm run dev",

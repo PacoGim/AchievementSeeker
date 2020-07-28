@@ -3,7 +3,7 @@
 <style>
 	image-placeholder {
 		display: inline-block;
-		background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+
 		width: 4rem;
 		height: 4rem;
 		max-width: 4rem;
@@ -13,21 +13,27 @@
 
 		grid-area: 1 / 1 / span 2 / 1;
 
-		animation: rotate infinite 1s cubic-bezier(0, 0, 0, 1.5);
+		animation: opacityInOut infinite 2s ease-in-out;
 	}
 
-	@keyframes rotate {
+	@keyframes opacityInOut {
 		0% {
-			transform: scale(1);
 			opacity: 1;
+			background-image: linear-gradient(to left, #fff, #c6c6c6);
 		}
-		50% {
-			transform: scale(0.8);
-			opacity: 0.7;
+		25% {
+			opacity: 0;
+		}
+		50%{
+			opacity: 1;
+			background-image: linear-gradient(to left, #c6c6c6, #fff);
+		}
+		75%{
+			opacity: 0;
 		}
 		100% {
-			transform: scale(1);
 			opacity: 1;
+			background-image: linear-gradient(to left, #fff, #c6c6c6);
 		}
 	}
 </style>
